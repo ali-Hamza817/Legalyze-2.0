@@ -1,0 +1,60 @@
+{
+  "timestamp": "2026-06-28T11:26:18.363Z",
+  "numQueries": 20,
+  "results": [
+    {
+      "name": "Flat Lexical Only",
+      "recall5": 40,
+      "recall10": 50,
+      "precision5": 8,
+      "mrr": 0.374,
+      "ndcg5": 0.372,
+      "ndcg10": 0.402
+    },
+    {
+      "name": "Flat Dense Only",
+      "recall5": 25,
+      "recall10": 35,
+      "precision5": 5,
+      "mrr": 0.199,
+      "ndcg5": 0.201,
+      "ndcg10": 0.234
+    },
+    {
+      "name": "Flat Hybrid (Lexical + Dense)",
+      "recall5": 40,
+      "recall10": 50,
+      "precision5": 8,
+      "mrr": 0.33,
+      "ndcg5": 0.338,
+      "ndcg10": 0.371
+    },
+    {
+      "name": "SAHI Lexical Only",
+      "recall5": 55,
+      "recall10": 60,
+      "precision5": 11,
+      "mrr": 0.532,
+      "ndcg5": 0.532,
+      "ndcg10": 0.548
+    },
+    {
+      "name": "SAHI Dense Only",
+      "recall5": 60,
+      "recall10": 65,
+      "precision5": 12,
+      "mrr": 0.525,
+      "ndcg5": 0.538,
+      "ndcg10": 0.556
+    },
+    {
+      "name": "Legalyze Full (SAHI + Hybrid + RRF)",
+      "recall5": 65,
+      "recall10": 65,
+      "precision5": 13,
+      "mrr": 0.477,
+      "ndcg5": 0.519,
+      "ndcg10": 0.519
+    }
+  ]
+}

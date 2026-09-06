@@ -1,0 +1,576 @@
+{
+  "timestamp": "2026-06-28T11:17:54.472Z",
+  "description": "SAHI Enhanced Parser Accuracy - Real computed results",
+  "parserVersion": "enhanced_v2",
+  "groundTruthSize": 56,
+  "totalArticlesParsed": 253,
+  "metrics": {
+    "articleDetectionRate": 64.3,
+    "partAssignmentAccuracy": 55.6,
+    "overallAccuracy": 35.7,
+    "articlesDetected": 36,
+    "articlesNotDetected": 20,
+    "partCorrect": 20,
+    "partIncorrect": 16,
+    "partMissing": 0
+  },
+  "comparison": {
+    "originalArticleDetection": 64.8,
+    "originalPartAccuracy": 37.1,
+    "originalOverallAccuracy": 24.1
+  },
+  "detailedResults": [
+    {
+      "article": "1",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "II",
+      "expectedPart": "I",
+      "heading": "There shall be paid to the Chief Justice of 1"
+    },
+    {
+      "article": "2",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "II",
+      "expectedPart": "I",
+      "heading": "Every Judge of a High Court shall be entitled to such privileges and allowances, and to such rights in respect of leave of absence and pension, as may be determined by the President, and until so determined, to the privileges, allowances and rights to which, immediately before the commencing day, the Judges of the High Court were entitled"
+    },
+    {
+      "article": "2A",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "I",
+      "heading": "Objectives Resolution"
+    },
+    {
+      "article": "3",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "II",
+      "expectedPart": "I",
+      "heading": "Development of industries, where development under Federal control is declared by Federal law to be expedient in the public interest"
+    },
+    {
+      "article": "4",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "II",
+      "expectedPart": "I",
+      "heading": "At any time before noon on the day fixed for nomination any member of the Majlis-e-Shoora (Parliament) or of a Provincial Assembly may nominate for election as President a person qualified for election as President by delivering to the Presiding Officer a nomination paper, signed by himself as proposer and by another member of the Majlis-e- Shoora (Parliament) or, as the case may be Assembly as seconder, together with a statement signed by the person nominated that he consents to the nomination"
+    },
+    {
+      "article": "5",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "II",
+      "expectedPart": "I",
+      "heading": "The pension shall be payable to the widow for life or, if she remarries, until her marriage"
+    },
+    {
+      "article": "6",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "II",
+      "expectedPart": "I",
+      "heading": "If the widow dies, the pension shall be payable"
+    },
+    {
+      "article": "7",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "I",
+      "expectedPart": "II",
+      "heading": "Posts and telegraphs, including telephones, wireless, broadcasting and other like forms of communications"
+    },
+    {
+      "article": "8",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "II",
+      "expectedPart": "II",
+      "heading": "The Criminal Law Amendment (Special Court) Order, 1972 (P"
+    },
+    {
+      "article": "9",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "I",
+      "expectedPart": "II",
+      "heading": "Foreign exchange"
+    },
+    {
+      "article": "10",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "II",
+      "expectedPart": "II",
+      "heading": "Extension of the powers and jurisdiction of members of a police force belonging to any Province to any area in another Province, but not so as to enable the police of one Province to exercise powers and jurisdiction in another province without the consent of the Government of that Province"
+    },
+    {
+      "article": "10A",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "II",
+      "heading": "Right to fair trial"
+    },
+    {
+      "article": "11",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "II",
+      "expectedPart": "II",
+      "heading": "Slavery, forced labour, etc"
+    },
+    {
+      "article": "14",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "II",
+      "expectedPart": "II",
+      "heading": "Inviolability of dignity of man, etc"
+    },
+    {
+      "article": "17",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "II",
+      "expectedPart": "II",
+      "heading": "After the close of the poll each Presiding Officer shall, in the presence of such of the candidates or their authorized representatives as may desire to be present, open and empty the ballot boxes and"
+    },
+    {
+      "article": "18",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "I",
+      "expectedPart": "II",
+      "heading": "Nuclear energy, including"
+    },
+    {
+      "article": "19",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "II",
+      "expectedPart": "II",
+      "heading": "Freedom of speech, etc"
+    },
+    {
+      "article": "19A",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "II",
+      "heading": "Right to information"
+    },
+    {
+      "article": "20",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "I",
+      "expectedPart": "II",
+      "heading": "Maritime shipping and navigation, including shipping and navigation on tidal waters"
+    },
+    {
+      "article": "25",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "II",
+      "expectedPart": "II",
+      "heading": "Equality of citizens"
+    },
+    {
+      "article": "25A",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "II",
+      "heading": "Right to education"
+    },
+    {
+      "article": "29",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "I",
+      "expectedPart": "II",
+      "heading": "The law of insurance, except as respects insurance undertaken by a Province, and the regulation of the conduct of insurance business, except as respects business undertaken by a Province"
+    },
+    {
+      "article": "37",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "I",
+      "expectedPart": "II",
+      "heading": "Works, lands and buildings vested in, or in the possession of Government for the purposes of the Federation (not being military, naval or air force works), but, as regards property situate in a Province, subject always to Provincial legislation, save in so far as Federal law otherwise provides"
+    },
+    {
+      "article": "38",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "II",
+      "expectedPart": "II",
+      "heading": "Promotion of social and economic well-being of the people"
+    },
+    {
+      "article": "41",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "I",
+      "expectedPart": "III",
+      "heading": "Elections to the office of President, to the National Assembly, the Senate and the Provincial Assemblies"
+    },
+    {
+      "article": "44",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "I",
+      "expectedPart": "III",
+      "heading": "Duties of excise, including duties on salt, but not including duties on alcoholic liquors, opium and other narcotics"
+    },
+    {
+      "article": "48",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "I",
+      "expectedPart": "III",
+      "heading": "Taxes on corporations"
+    },
+    {
+      "article": "50",
+      "status": "DETECTED",
+      "partMatch": "WRONG PART",
+      "parsedPart": "I",
+      "expectedPart": "III",
+      "heading": "Taxes on the capital value of the assets, not including taxes 2"
+    },
+    {
+      "article": "51",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "III",
+      "heading": "National Assembly"
+    },
+    {
+      "article": "62",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "III",
+      "heading": "Qualifications for membership"
+    },
+    {
+      "article": "63",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "III",
+      "heading": "Disqualifications for membership"
+    },
+    {
+      "article": "63A",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "III",
+      "heading": "Disqualification on defection"
+    },
+    {
+      "article": "89",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "III",
+      "expectedPart": "III",
+      "heading": "Power of President to promulgate Ordinances"
+    },
+    {
+      "article": "90",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "III",
+      "heading": "Federal Government"
+    },
+    {
+      "article": "91",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "III",
+      "heading": "Cabinet"
+    },
+    {
+      "article": "101",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "IV",
+      "expectedPart": "IV",
+      "heading": "Appointment of Governor"
+    },
+    {
+      "article": "112",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "IV",
+      "heading": "Provincial Assembly"
+    },
+    {
+      "article": "130",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "IV",
+      "heading": "Provincial Government"
+    },
+    {
+      "article": "141",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "V",
+      "expectedPart": "V",
+      "heading": "Extent of Federal and Provincial laws"
+    },
+    {
+      "article": "142",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "V",
+      "expectedPart": "V",
+      "heading": "Subject-matter of Federal and Provincial laws"
+    },
+    {
+      "article": "143",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "V",
+      "heading": "Inconsistency between laws"
+    },
+    {
+      "article": "144",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "V",
+      "expectedPart": "V",
+      "heading": "Power of Majlis-e-Shoora (Parliament) to legislate for 8"
+    },
+    {
+      "article": "175",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "VII",
+      "expectedPart": "VII",
+      "heading": "Establishment and jurisdiction of courts"
+    },
+    {
+      "article": "175A",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "VII",
+      "heading": "Appointment of Judges"
+    },
+    {
+      "article": "176",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "VII",
+      "expectedPart": "VII",
+      "heading": "Constitution of Supreme Court"
+    },
+    {
+      "article": "184",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "VII",
+      "heading": "Original jurisdiction of Supreme Court"
+    },
+    {
+      "article": "185",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "VII",
+      "heading": "Appellate jurisdiction"
+    },
+    {
+      "article": "186",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "VII",
+      "heading": "Advisory jurisdiction"
+    },
+    {
+      "article": "187",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "VII",
+      "heading": "Issue and execution of Supreme Court processes"
+    },
+    {
+      "article": "189",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "VII",
+      "heading": "Decisions of Supreme Court binding"
+    },
+    {
+      "article": "190",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "VII",
+      "expectedPart": "VII",
+      "heading": "Action in aid of 1"
+    },
+    {
+      "article": "199",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "VII",
+      "expectedPart": "VII",
+      "heading": "Jurisdiction of High Court"
+    },
+    {
+      "article": "203A",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "VII",
+      "expectedPart": "VII",
+      "heading": "Provisions of Chapter to override other provisions of Constitution"
+    },
+    {
+      "article": "227",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "IX",
+      "expectedPart": "IX",
+      "heading": "Provisions relating to the Holy Quran and Sunnah"
+    },
+    {
+      "article": "260",
+      "status": "DETECTED",
+      "partMatch": "CORRECT",
+      "parsedPart": "XII",
+      "expectedPart": "XII",
+      "heading": "Definitions"
+    },
+    {
+      "article": "270AA",
+      "status": "NOT DETECTED",
+      "partMatch": "N/A",
+      "parsedPart": "N/A",
+      "expectedPart": "XII",
+      "heading": "Declaration and continuance of laws"
+    }
+  ],
+  "notDetected": [
+    "2A",
+    "10A",
+    "19A",
+    "25A",
+    "51",
+    "62",
+    "63",
+    "63A",
+    "90",
+    "91",
+    "112",
+    "130",
+    "143",
+    "175A",
+    "184",
+    "185",
+    "186",
+    "187",
+    "189",
+    "270AA"
+  ],
+  "wrongPart": [
+    {
+      "article": "1",
+      "parsed": "II",
+      "expected": "I"
+    },
+    {
+      "article": "2",
+      "parsed": "II",
+      "expected": "I"
+    },
+    {
+      "article": "3",
+      "parsed": "II",
+      "expected": "I"
+    },
+    {
+      "article": "4",
+      "parsed": "II",
+      "expected": "I"
+    },
+    {
+      "article": "5",
+      "parsed": "II",
+      "expected": "I"
+    },
+    {
+      "article": "6",
+      "parsed": "II",
+      "expected": "I"
+    },
+    {
+      "article": "7",
+      "parsed": "I",
+      "expected": "II"
+    },
+    {
+      "article": "9",
+      "parsed": "I",
+      "expected": "II"
+    },
+    {
+      "article": "18",
+      "parsed": "I",
+      "expected": "II"
+    },
+    {
+      "article": "20",
+      "parsed": "I",
+      "expected": "II"
+    },
+    {
+      "article": "29",
+      "parsed": "I",
+      "expected": "II"
+    },
+    {
+      "article": "37",
+      "parsed": "I",
+      "expected": "II"
+    },
+    {
+      "article": "41",
+      "parsed": "I",
+      "expected": "III"
+    },
+    {
+      "article": "44",
+      "parsed": "I",
+      "expected": "III"
+    },
+    {
+      "article": "48",
+      "parsed": "I",
+      "expected": "III"
+    },
+    {
+      "article": "50",
+      "parsed": "I",
+      "expected": "III"
+    }
+  ]
+}

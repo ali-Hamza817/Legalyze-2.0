@@ -1,0 +1,1286 @@
+================================================================================
+LEGALYZE EVALUATION CORPUS SAMPLE
+================================================================================
+Total Corpus size: ~1.2 million tokens
+This supplementary document provides a lengthy, structured sample of the primary legal texts
+that constitute the 1.2-million-token corpus used to train and evaluate the Legalyze platform.
+
+Files included in the full corpus:
+  1. Constitution of the Islamic Republic of Pakistan (1973)
+  2. Pakistan Penal Code (PPC) (1860)
+  3. Code of Criminal Procedure (CrPC) (1898)
+  4. Qanun-e-Shahadat Order (QSO) (1984)
+
+The sections below contain extensive verbatim text extracts from each statutory code to 
+demonstrate the density, hierarchical formatting (Parts, Chapters, Sections, and Articles),
+and procedural terminology characteristic of the Pakistani legal framework.
+================================================================================
+
+================================================================================
+1. CONSTITUTION OF PAKISTAN (PART I & PART II EXTRACTS)
+================================================================================
+
+
+THE CONSTITUTION OF THE ISLAMIC REPUBLIC OF PAKISTAN
+
+
+
+
+
+
+
+
+1. The Republic and its territories
+
+2. Islam to be State religion
+
+CONTENTS PART I INTRODUCTORY
+
+
+2A. The Objectives Resolution to form part of substantive provisions
+
+3. Elimination of exploitation
+
+4. Right of individuals to be dealt with in accordance with law, etc.
+
+5. Loyalty to State and obedience to Constitution and law
+
+6. High treason
+PART II
+FUNDAMENTAL RIGHTS AND PRINCIPLES OF POLICY
+
+7. Definition of the State
+
+CHAPTER 1.- FUNDAMENTAL RIGHTS
+
+8. Laws inconsistent with or in derogation of Fundamental Rights to be void
+
+9. Security of person
+
+9A. Clean and healthy environment
+
+10. Safeguards as to arrest and detention 10A. Right to fair trial
+11. Slavery, forced labour, etc., prohibited
+
+12. Protection against retrospective punishment
+
+13. Protection against double punishment and self-incrimination
+
+14. Inviolability of dignity of man, etc.
+
+15. Freedom of movement, etc.
+
+16. Freedom of assembly
+
+17. Freedom of association
+
+18. Freedom of trade, business or profession
+
+19. Freedom of speech, etc. 19A. Right to information
+20. Freedom to profess religion and to manage religious institutions
+
+21. Safeguard against taxation for purposes of any particular religion
+
+22. Safeguards as to educational institutions in respect of religion, etc.
+
+23. Provision as to property
+
+24. Protection of property rights
+
+25. Equality of citizens 25A. Right to education
+26. Non-discrimination in respect of access to public places
+
+27. Safeguard against discrimination in services
+
+28. Preservation of language, script and culture
+
+CHAPTER 2.- PRINCIPLES OF POLICY
+
+29. Principles of Policy
+
+30. Responsibility with respect to Principles of Policy
+
+31. Islamic way of life
+
+32. Promotion of local Government institutions
+
+33. Parochial and other similar prejudices to be discouraged
+
+34. Full participation of women in national life
+
+35. Protection of family, etc.
+
+36. Protection of minorities
+
+37. Promotion of social justice and eradication of social evils
+
+38. Promotion of social and economic well-being of the people
+
+39. Participation of people in Armed Forces
+
+40. Strengthening bonds with Muslim world and promoting international peace
+PART III
+THE FEDERATION OF PAKISTAN
+
+
+
+41. The President
+
+42. Oath of President
+
+CHAPTER 1.
+
+THE PRESIDENT
+
+
+43. Conditions of President's office
+
+44. Term of office of President
+
+45. President's power to grant pardon, etc.
+
+46. President to be kept informed
+
+47. Removal or impeachment of President
+
+48. President to act on advice, etc.
+
+49. Chairman or Speaker to act as, or perform functions of, President
+
+CHAPTER 2.- THE MAJLIS-E-SHOORA (PARLIAMENT)
+COMPOSITION, DURATION AND MEETINGS OF MAJLIS-E-SHOORA (PARLIAMENT)
+
+50. Majlis-e-Shoora (Parliament)
+
+51. National Assembly
+
+52. Duration of National Assembly
+
+53. Speaker and Deputy Speaker of National Assembly
+
+54. Summoning and prorogation of Majlis-e-Shoora (Parliament)
+
+55. Voting in Assembly and quorum
+
+56. Address by President
+
+57. Right to speak in Majlis-e-Shoora (Parliament)
+
+58. Dissolution of the National Assembly
+
+59. The Senate
+
+60. Chairman and Deputy Chairman
+
+61. Other provisions relating to Senate
+
+Provisions as to Members of Majlis-e-Shoora (Parliament)
+
+62. Qualifications for membership of Majlis-e-Shoora (Parliament)
+
+63. Disqualifications for membership of Majlis-e-Shoora (Parliament) 63A. Disqualification on grounds of defection, etc.
+64. Vacation of seats
+
+65. Oath of members
+
+66. Privileges of members, etc.
+
+Procedure Generally
+
+67. Rules of procedure, etc.
+
+68. Restriction on discussion in Majlis-e-Shoora (Parliament)
+
+69. Courts not to inquire into proceedings of Majlis-e-Shoora (Parliament)
+
+70. Introduction and passing of Bills
+
+71. [Omitted]
+
+72. Procedure at joint sittings
+
+73. Procedure with respect to Money Bills
+
+74. Federal Government's consent required for financial measures
+
+75. President's assent to Bills
+
+76. Bill not to lapse on prorogation, etc.
+
+77. Tax to be levied by law only
+
+Financial Procedure
+
+78. Federal Consolidated Fund and Public Account
+
+79. Custody, etc., of Federal Consolidated Fund and Public Account
+
+80. Annual Budget Statement
+
+81. Expenditure charged upon Federal Consolidated Fund
+
+82. Procedure relating to Annual Budget Statement
+
+83. Authentication of schedule of authorised expenditure
+
+84. Supplementary and excess grants
+
+85. Votes on account
+
+86. Power to authorize expenditure when Assembly stands dissolved
+
+87. Secretariats of Majlis-e-Shoora (Parliament)
+
+88. Finance Committees
+
+Ordinances
+
+89. Power of President to promulgate Ordinances
+
+
+CHAPTER 3.
+
+90. The Federal Government
+
+91. The Cabinet
+
+THE FEDERAL GOVERNMENT
+
+
+92. Federal Ministers and Ministers of State
+
+93. Advisers
+
+94. Prime Minister continuing in office
+
+95. Vote of no-confidence against Prime Minister
+
+96. [Omitted] 96A. [Omitted]
+97. Extent of executive authority of Federation
+
+98. Conferring of functions on subordinate authorities
+
+99. Conduct of business of Federal Government
+
+100. Attorney-General for Pakistan
+
+PART IV
+PROVINCES
+
+CHAPTER 1.
+
+101. Appointment of Governor
+
+102. Oath of Office
+
+103. Conditions of Governor's office
+
+THE GOVERNORS
+
+104. Speaker Provincial Assembly to act as, or perform functions of Governor in his absence
+
+105. Governor to act on advice, etc.
+
+CHAPTER 2. PROVINCIAL ASSEMBLIES
+
+106. Constitution of Provincial Assemblies
+
+107. Duration of Provincial Assembly
+
+108. Speaker and Deputy Speaker
+
+109. Summoning and prorogation of Provincial Assembly
+
+110. Right of Governor to address Provincial Assembly
+
+111. Right to speak in Provincial Assembly
+
+112. Dissolution of Provincial Assembly
+
+113. Qualifications and disqualifications for membership of Provincial Assembly
+
+114. Restriction on discussion in Provincial Assembly
+
+115. Provincial Government's consent required for financial measures
+
+116. Governor's assent to Bills
+
+117. Bill not to lapse on prorogation, etc.
+
+Financial Procedure
+
+118. Provincial Consolidated Fund and Public Account
+
+119. Custody, etc., of Provincial Consolidated Fund and Public Account
+
+120. Annual Budget Statement
+
+121. Expenditure charged upon Provincial Consolidated Fund
+
+122. Procedure relating to Annual Budget Statement
+
+123. Authentication of schedule of authorized expenditure
+
+124. Supplementary and excess grant
+
+125. Votes on account
+
+126. Power to authorize expenditure when Assembly stands dissolved
+
+127. Provisions relating to National Assembly, etc., to apply to Provincial Assembly, etc.
+
+Ordinances
+
+128. Power of Governor to promulgate Ordinances
+
+
+CHAPTER 3.
+
+129. The Provincial Government
+
+130. The Cabinet
+
+131. Governor to be kept informed
+
+132. Provincial Ministers
+
+THE PROVINCIAL GOVERNMENTS
+
+
+133. Chief Minister continuing in office
+
+134. [Omitted]
+
+135. [Omitted]
+
+136. Vote of no-confidence against Chief Minister
+
+137. Extent of executive authority of Province
+
+138. Conferring of functions on subordinate authorities
+
+139. Conduct of business of Provincial Government
+140. Advocate General for a Province 140A. Local Government
+PART V
+RELATIONS BETWEEN FEDERATION AND PROVINCES
+CHAPTER 1. DISTRIBUTION OF LEGISLATIVE POWERS
+
+141. Extent of Federal and Provincial laws
+
+142. Subject-matter of Federal and Provincial laws
+
+
+
+================================================================================
+2. PAKISTAN PENAL CODE (PPC) (SECTIONS 1-40 EXTRACTS)
+================================================================================
+
+
+
+Page 1 of 179
+
+
+
+
+
+THE PAKISTAN PENAL CODE
+
+
+
+
+
+
+CONTENTS
+
+CHAPTER I
+INTRODUCTION
+1. Title and extent of operation of the Code
+2. Punishment of offences committed within Pakistan
+3. Punishment of offences committed beyond, but which by law may be tried within, Pakistan
+4. Extension of Code to extra-territorial offences
+5. Certain laws not to be affected by this Act
+CHAPTER II
+GENERAL EXPLANATIONS
+6. Definitions in the Code to be understood subject to exceptions
+7. Sense of expression once explained
+8. Gender
+9. Number
+10. "Man" "Woman"
+11. "Person"
+12. "Public"
+13. [Omitted]
+14. "Servant of the State"
+15. [Repealed]
+
+
+
+Page 2 of 179
+
+16. [Repealed]
+17. "Government"
+18. [Repealed]
+19. "Judge"
+20. "Court of Justice"
+21. "Public servant"
+22. "Moveable property"
+23. "Wrongful gain"
+"Wrongful loss"
+Gaining wrongfully.
+Losing wrongfully
+24. "Dishonestly"
+25. "Fraudulently"
+26. "Reason to believe"
+27. Property in possession of wife, clerk or servant
+28. "Counterfeit"
+29. "Document"
+30. "Valuable security"
+31. "A will"
+32. Words referring to acts include illegal omissions
+33. "Act"
+"Omission"
+34. Acts done by several persons in furtherance of common intention
+35. When such an act is criminal by reason of its being done with a criminal knowledge or intention
+36. Effect caused partly by act and partly by omission
+37. Co-operation by doing one of several acts constituting an offence
+38. Persons concerned in criminal act may be guilty of different offences
+39. "Voluntarily"
+40. "Offence"
+
+
+Page 3 of 179
+
+41. "Special law"
+42. "Local law"
+43. "Illegal"
+"Legally bound, to do"
+44. "Injury"
+45. "Life"
+46. "Death"
+47. "Animal"
+48. "Vessel"
+49. "Year"
+"Month"
+50. "Section"
+51. "Oath"
+52. "Good faith"
+52A. "Harbour"
+CHAPTER III
+OF PUNISHMENTS
+53. Punishments
+54. Commutation of sentence of death
+55. Commutation of sentence of imprisonment for life
+55A. Saving for President prerogative
+56. [Repealed]
+57. Fractions of terms of punishment
+58. [Omitted]
+59. [Omitted]
+60. Sentence may be (in certain cases of imprisonment) wholly or partly rigorous or simple
+61. [Repealed]
+62. [Repealed]
+63. Amount of fine
+
+
+Page 4 of 179
+
+64. Sentence of imprisonment for non-payment of fine
+65. Limit to imprisonment for non-payment of fine, when imprisonment and fine awardable
+66. Description of imprisonment for non-payment of fine
+67. Imprisonment for non-payment of fine, when offence punishable with fine only
+68. Imprisonment to terminate on payment of fine
+69. Termination of imprisonment on payment of proportional part of fine
+70. Fine leviable within six years, or during imprisonment. Death not to discharge property from
+liability
+71. Limit of punishment of offence made up of several offences
+72. Punishment of person guilty of one of several offences, the judgment stating that it is doubtful
+of which
+73. Solitary confinement
+74. Limit of solitary confinement
+75. Enhanced punishment for certain offences under Chapter XII or Chapter XVII after previous
+conviction
+CHAPTER IV
+GENERAL EXCEPTIONS
+76. Act done by a person bound, or by mistake of fact believing himself bound, by law
+77. Act of Judge when acting judicially
+78. Act done pursuant to the judgment or order of Court
+79. Act done by a person justified, or by mistake of fact believing himself justified, by law
+80. Accident in doing a lawful act
+81. Act likely to cause harm, but done without criminal intent, and to prevent other harm
+82. Act of a child under ten years of age
+83. Act of a child above ten and under fourteen of immature understanding
+84. Act of a person of unsound mind
+85. Act of a person incapable of judgment by reason of intoxication caused against his will
+86. Offence requiring a particular intent or knowledge committed by one who is intoxicated
+87. Act not intended and not known to be likely to cause death or grievous hurt, done by consent
+
+
+Page 5 of 179
+
+88. Act not intended to cause death, done by consent in good faith for person's benefit
+89. Act done in good faith for benefit of child or insane person, by or by consent of guardian
+90. Consent known to be given under fear or misconception
+Consent of insane person
+Consent of child
+91. Exclusion of acts which are offences independently of harm caused
+92. Act done in good faith for benefit of a person without consent
+93. Communication made in good faith
+94. Act to which a person is compelled by threats
+95. Act causing slight harm
+Of the Right of Private Defence
+96. Things done in private defence
+97. Right of private defence of the body and of property
+98. Right of private defence against the act of a person of unsound mind, etc
+99. Acts against which there is no right of private defence
+Extent to which the right may be exercised.
+100. When the right of private defence of the body extends to causing death
+101. When such right extends to causing any harm other than death
+102. Commencement and continuance of the right of private defence of the body
+103. When the right of private defence of property extends to causing death
+104. When such right extends to causing any harm other than death
+105. Commencement and continuance of the right of private defence of property
+106. Right of private defence against deadly assault when there is risk of harm to innocent person
+
+
+
+Page 6 of 179
+
+CHAPTER V
+OF ABETMENT
+107. Abetment of a thing
+108. Abettor
+108A. Abetment in Pakistan of offences outside it
+109. Punishment of abetment if the act abetted is committed in consequence and where no express
+provision is made for its punishment
+110. Punishment of abetment if person abetted does act with different intention from that of abettor
+111. Liability of abettor when one act abetted and different act done
+Proviso
+112. Abettor when liable to cumulative punishment for act abetted and for act done
+113. Liability of abettor for an effect caused by the act abetted different from that intended by the
+abettor
+114. Abettor present when offence is committed
+115. Abetment of offence punishable with death or imprisonment for life
+__
+if offence not committed;
+if act causing harm be done in consequence
+116. Abetment of offence punishable with imprisonment
+__
+if offence be not committed;
+if abettor or person abetted be a public servant whose duty it is to prevent offence
+117. Abetting commission of offence by the public or by more than ten persons
+118. Concealing design to commit offence punishable with death or imprisonment for life
+__
+
+if offence be committed;
+if offence be not committed
+119. Public servant concealing design to commit offence which it is his duty to prevent
+__
+
+if offence be committed;
+if offence be punishable with death, etc;
+if offence be not committed
+120. Concealing design to commit offence punishable with imprisonment
+__
+
+if offence be committed;
+if offence be not committed
+CHAPTER VA
+CRIMINAL CONSPIRACY
+120A. Definition of criminal conspiracy
+120B. Punishment of criminal conspiracy
+
+
+Page 7 of 179
+
+CHAPTER VI
+OF OFFENCES AGAINST THE STATE
+
+121. Waging or attempting to wage war or abetting waging of war against Pakistan
+121A. Conspiracy to commit offences punishable by section 121
+122. Collecting arms, etc., with intention of waging war against Pakistan
+123. Concealing with intent to facilitate design to wage war
+123A. Condemnation of the creation of the State, and advocacy of abolition of its sovereignty
+123B. Defiling or unauthorisedly removing the National Flag of Pakistan from Government building,
+etc
+124. Assaulting President, Governor, etc., with intent to compel or restrain the exercise of any lawful
+power
+124A. Sedition
+125. Waging war against any Power in alliance with Pakistan
+126. Committing depredation on territories of Power at peace with Pakistan
+127. Receiving property taken by war or depredation mentioned in sections 125 and 126
+128. Public servant voluntarily allowing prisoner of State or war to escape
+129. Public servant negligently suffering such prisoner to escape
+130. Aiding escape of, rescuing or harbouring such prisoner
+CHAPTER VII
+OF OFFENCES RELATING TO THE ARMY, NAVY AND AIR FORCE
+131. Abetting mutiny, or attempting to seduce a soldier, sailor or airman from his duty
+132. Abetment of mutiny, if mutiny is committed in consequence thereof
+133. Abetment of assault by soldier, sailor or airman on his superior officer, when in execution of
+his office
+134. Abetment of such assault, if the assault is committed
+135. Abetment of desertion of soldier, sailor or airman
+136. Harbouring deserter
+137. Deserter concealed on board merchant vessel through negligence of master
+138. Abetment of act of insubordination by soldier, sailor or airman
+
+
+Page 8 of 179
+
+138A. [Repealed]
+139. Persons subject to certain Acts
+140. Wearing garb or carrying token used by soldier, sailor or airman
+CHAPTER VIII
+OF OFFENCES AGAINST THE PUBLIC TRANQUILLITY
+141. Unlawful assembly
+142. Being member of unlawful assembly
+143. Punishment
+144. Joining unlawful assembly, armed with deadly weapon
+145. Joining or continuing in unlawful assembly, knowing it has been commanded to disperse
+146. Rioting
+147. Punishment for rioting
+148. Rioting, armed with deadly weapon
+149. Every member of unlawful assembly guilty of offence committed in prosecution of common
+object
+150. Hiring, or conniving at hiring, or persons to join unlawful assembly
+151. Knowingly joining or continuing in assembly of five or more persons after it has been
+commanded to disperse
+152. Assaulting or obstructing public servant when suppressing riot, etc
+153. Want only giving provocation with intent to cause riot
+__
+
+if rioting be committed;
+if not committed
+153A. Promoting enmity between different groups, etc
+153B. Inducing students, etc., to take part in political activity
+154. Owner or occupier of land on which an unlawful assembly is held
+155. Liability of person for whose benefit riot is committed
+156. Liability of agent of owner or occupier for whose benefit riot is committed
+157. Harbouring persons hired for an unlawful assembly
+158. Being hired to take part in an unlawful assembly or riot; or to go armed
+
+
+Page 9 of 179
+
+159. Affray
+160. Punishment for committing affray
+CHAPTER IX
+OF OFFENCES BY OR RELATING TO PUBLIC SERVANTS
+161. Public servant taking gratification other than legal remuneration in respect of an official act
+162. Taking gratification, in order, by corrupt or illegal means to influence public servant
+163. Taking gratification, for exercise of personal influence with public servant
+164. Punishment for abetment by public servant of offences defined in section 162 or 163
+165. Public servant obtaining valuable thing, without consideration from person concerned in
+proceeding or business transacted by such public servant
+165A. Punishment for abetment of offences defined in sections 161 and 165
+165B. Certain abettors excepted
+166. Public servant disobeying law, with intent to cause injury to any person
+167. Public servant framing an incorrect document with intent to cause injury
+168. Public servant unlawfully engaging in trade
+169. Public servant unlawfully buying or bidding for property
+170. Personating a public servant
+171. Wearing garb or carrying token used by public servant with fraudulent intent
+CHAPTER IXA
+OF OFFENCES RELATING TO ELECTIONS
+171A. "Candidates" "Electoral right" defined
+171B. Bribery
+171C. Undue influence at elections
+171D. Personation at elections
+171E. Punishment for bribery
+171F. Punishment for undue influence or personation at an election
+171G. False statement in connection with an election
+171H. Illegal payments in connection with an election
+
+
+Page 10 of 179
+
+171I. Failure to keep election accounts
+171J. Inducing any person not to participate in any election or referendum, etc
+CHAPTER X
+OF CONTEMPTS OF THE LAWFUL AUTHORITY OF PUBLIC SERVANTS
+172. Absconding to avoid service of summons or other proceeding
+173. Preventing service of summons or other proceeding, or preventing publication thereof
+174. Non-attendance in obedience to an order from public servant
+175. Omission to produce document to public servant by person legally bound to produce it
+176. Omission to give notice or information to public servant by person legally bound to give it
+177. Furnishing false information
+178. Refusing oath or affirmation when duly required by public servant to make it
+179. Refusing to answer public servant authorised to question
+180. Refusing to sign statement
+181. False statement on oath or affirmation to public servant or person authorised to administer an
+oath or affirmation
+182. False information with intent to cause public servant to use his lawful power to the injury of
+another person
+183. Resistance to the taking of property by the lawful authority of a public servant
+184. Obstructing sale of property offered for sale by authority of public servant
+185. Illegal Purchase or bid for property offered for sale by authority of public servant
+186. Obstructing public servant in discharge of public functions
+187. Omission to assist public servant when bound by law to give assistance
+188. Disobedience to order duly promulgated by public servant
+189. Threat of injury to public servant
+190. Threat of injury to induce person to refrain from applying for protection to public servant
+CHAPTER XI
+OF FALSE EVIDENCE AND OFFENCES AGAINST PUBLIC JUSTICE
+191. Giving false evidence
+192. Fabricating false evidence
+
+
+Page 11 of 179
+
+
+
+================================================================================
+3. CODE OF CRIMINAL PROCEDURE (CRPC) (SECTIONS 1-50 EXTRACTS)
+================================================================================
+
+
+
+Page 1 of 307
+
+
+
+
+ THE CODE OF CRIMINAL PROCEDURE, 1898
+
+
+
+
+
+
+
+CONTENTS
+PART I
+PRELIMINARY
+CHAPTER I
+1. Short title
+Commencement
+Extent
+2. [Repealed]
+3. References to Code of Criminal Procedure and other repealed enactments
+Expressions in former Acts
+4. Definitions
+Words referring to acts
+Words to have same meaning as in Pakistan Penal Code
+5. Trial of offences under Penal Code
+Trial of offences against other laws
+PART II
+CONSTITUTION AND POWERS OF CRIMINAL COURTS AND OFFICES.
+CHAPTER II
+OF THE CONSTITUTION OF CRIMINAL COURTS AND OFFICES
+A.
+__
+ Classes of Criminal Courts
+6. Classes of Criminal Courts and Magistrates
+B.
+__
+Territorial Divisions
+7. Sessions divisions and districts
+Power to alter divisions and districts
+
+
+
+Page 2 of 307
+
+Existing divisions and districts maintained till altered
+8. Power to divide districts into sub-divisions
+C.
+__
+Courts and Offices
+9. Court of Session
+10. [Omitted]
+11. [Omitted]
+12. Sub-ordinate Magistrates
+Local limits of their jurisdiction
+13. [Omitted]
+14. Special Judicial Magistrates
+14A. Appointment of Special Magistrate
+15. Benches of Magistrates.
+Powers exercisable by Bench in absence of special direction
+16. Power to frame rules for guidance of Magistrates and Benches
+17. Subordination of Magistrates and Benches to Session Judge
+Subordination of Assistant Sessions Judges to Sessions Judge
+D.
+__
+ Courts of Presidency Magistrates
+18-21. [Omitted]
+E.
+__
+ Justice of the Peace
+22. Appointment of Justices of the peace
+22A. Powers of Justices of the peace
+22B. Duties of Justices of the peace
+23-24. [Repealed]
+25. Ex-officio Justices of the peace
+F.
+__
+ Suspension and Removal.
+26-27. [Repealed]
+
+
+Page 3 of 307
+
+CHAPTER III
+POWERS OF COURTS
+A.
+__
+Description of offences cognizable by each Court
+28. Offences under Penal Code
+29. Offences under other laws
+29A. [Omitted]
+29B. Jurisdiction in the case of Juveniles
+30. Offences not punishable with death
+B.
+__
+Sentences which may be passed by Courts of various classes
+31. Sentences which High Courts and Sessions Judges may pass
+32. Sentences which Magistrates may pass
+33. Power of Magistrate to sentence to imprisonment in default of fine
+Proviso as to certain cases.
+34. Higher powers of certain Magistrates
+34A. [Omitted]
+35. Sentence in cases of conviction of several offences at one trial
+Maximum terms of punishment
+C.
+__
+ Ordinary and Additional Powers
+36. Ordinary powers of Magistrates
+37. Additional powers conferrable on Magistrates
+38. [Omitted]
+D.
+__
+ Conferment, Continuance and Cancellation of Powers
+39. Mode of conferring powers
+40. Powers of officers appointed
+41. Withdrawal of powers
+PART III
+GENERAL PROVISIONS
+CHAPTER IV
+OF AID AND INFORMATION TO THE MAGISTRATES, THE POLICE AND PERSONS
+MAKING ARRESTS.
+42. Public when to assist Magistrate and Police
+
+
+Page 4 of 307
+
+43. Aid to person other than police-officer, executing warrant
+44. Public to give information of certain offences
+45. Village-headmen, accountants, landholders and others bound to report certain matters
+Appointment of village-headmen *** in certain cases for purposes of this section
+CHAPTER V
+OF ARREST, ESCAPE AND RETAKING
+A.
+__
+Arrest generally
+46. Arrest how made
+Resisting endeavour to arrest
+47. Search of place entered by person sought to be arrested
+48. Procedure where ingress not obtainable
+Breaking open zanana
+49. Power to break open doors and windows for purposes of liberation
+50. No unnecessary restraint
+51. Search of arrested persons
+52. Mode of searching women
+53. Power to seize offensive weapons
+53A. Examination of person accused of rape, etc. by medical practitioner
+B.
+__
+ Arrest without warrant
+54. When police may arrest without warrant
+55. Arrest of vagabonds, habitual robbers, etc
+56. Procedure when police officer deputes subordinate to arrest without warrant
+57. Refusal to give name and residence
+58. Pursuit of offenders into other jurisdictions
+59. Arrest by private persons and procedure on such arrest
+60. Person arrested to be taken before Magistrate or officer in charge of police-station
+61. Person arrested not to be detained more than twenty-four hours
+62. Police to report apprehensions
+63. Discharge of person apprehended
+64. Offence committed in Magistrate's presence
+
+
+Page 5 of 307
+
+65. Arrest by or in presence of Magistrate
+66. Power, on escape, to pursue and retake
+67. Provisions of sections 47, 48 and 49 to apply to arrests under section 66
+CHAPTER VI
+OF PROCESSES TO COMPEL APPEARANCE
+A.
+__
+ Summons
+68. Form of summons
+Summons by whom served
+69. Summons how served
+Signature of receipt for summons
+70. Service when person summoned cannot be found
+71. Procedure when service cannot be effected as before provided
+72. Service on servant of State, Statutory body or Company
+73. Service of summons outside local limits
+74. Proof of service in such cases and when serving [person] not present
+B.
+__
+ Warrant of arrest
+75. Form of warrant of arrest
+Continuance of warrant of arrest
+76. Court may direct security to be taken
+Recognizance to be forwarded
+77. Warrants to whom directed
+Warrants to several persons
+78. Warrant may be directed to land-holders, etc
+79. Warrant directed to police-officer
+80. Notification of substance of warrant
+81. Person arrested to be brought before Court without delay
+82. Where warrant may be executed
+83. Warrant forwarded for execution outside jurisdiction
+84. Warrant directed to police-officer for execution outside jurisdiction
+85. Procedure on arrest of person against to whom warrant issued
+86. Procedure by Magistrate before whom person arrested is brought
+
+
+Page 6 of 307
+
+86A. Procedure for removal in custody to Tribal Area
+C.
+__
+ Proclamation and Attachment
+87. Proclamation for person absconding
+88. Attachment of property of person absconding
+89. Restoration of attached property
+D.
+__
+Other Rules regarding Processes
+90. Issue of warrant in lieu of, or in addition to summons
+91. Power to take bond for appearance
+92. Arrest on breach of bond for appearance
+93. Provisions of this Chapter generally applicable to summonses and warrants of arrest
+E.
+__
+ Special Rules regarding processes issued for service or execution outside [Pakistan] and
+processes received from outside [Pakistan] for service or execution within [Pakistan]
+93A. Sending of summons for service outside Pakistan
+93B. Sending of warrants for execution outside Pakistan
+93C. Service and execution in Pakistan of processes received from outside Pakistan
+CHAPTER VII
+OF PROCESSES TO COMPEL THE PRODUCTION OF DOCUMENTS AND OTHER
+MOVEABLE PROPERTY, AND FOR THE DISCOVERY OF PERSONS WRONGFULLY
+CONFINED
+A.
+__
+Summons to Produce
+94. Summons to produce document or other thing
+95. Procedure as to letters and telegrams
+B.
+__
+ Search Warrants
+96. When search-warrant may be issued
+97. Power to restrict warrant
+98. Search of house suspected to contain stolen property, forged documents, etc
+99. Disposal of things found in search beyond jurisdiction
+99A. Power to declare certain publications forfeited and to issue search-warrants for the same
+99B. Application to High Court to set aside order of forfeiture
+
+
+Page 7 of 307
+
+99C. [Omitted]
+99D. Order of High Court setting aside forfeiture
+99E. Evidence to prove nature or tendency of newspapers
+ 99F. Procedure in High Court
+99G. Jurisdiction barred
+C.
+__
+ Discovery of Persons wrongfully confined
+100. Search for persons wrongfully confined
+D.
+__
+ General Provisions relating to Searches
+101. Direction, etc., of search-warrants
+102. Persons in charge of closed place to allow search
+103. Search to be made in presence of witnesses
+Occupant of place searched may attend
+E.
+__
+ Miscellaneous
+104. Power to impound document, etc., produced
+105. Magistrate may direct search in his presence
+
+PART IV
+PREVENTION OF OFFENCES
+CHAPTER VIII
+OF SECURITY FOR KEEPING THE PEACE AND FOR GOOD BEHAVIOUR
+A.-Security for keeping the Peace on Conviction
+106. Security for keeping the peace on conviction
+B.
+__
+Security for keeping the Peace in other Cases and Security for Good Behaviour
+107. Security for keeping the peace in other cases
+Procedure of Magistrate not empowered to act under sub-section (1)
+108. Security for good behaviour from persons disseminating seditious matter
+109. Security for good behaviour from vagrants and suspected persons
+110. Security for good behaviour from habitual offenders
+111. [Repealed]
+
+
+Page 8 of 307
+
+112. Order to be made
+113. Procedure in respect of person present in court
+114. Summons or warrant in case of person not so present
+115. Copy of order under section 112 to accompany summons or warrant
+116. Power to dispense with personal attendance
+117. Inquiry as to truth of information
+118. Order to give security
+119. Discharge of person informed against
+C.
+__
+ Proceedings in all Cases subsequent to Order to furnish Security
+120. Commencement of period for which security is required
+121. Contents of bond
+122. Power to reject sureties
+123. Imprisonment in default of security
+Proceedings when to be laid before High Court or Court of Sessions
+Kind of imprisonment
+124. Power to release persons imprisoned for failing to give security
+125. Power to District Magistrate to cancel any bond for keeping the peace or good behaviour
+126. Discharge of sureties
+126A. Security for unexpired period of bond
+CHAPTER IX
+UNLAWFUL ASSEMBLIES [AND MAINTENANCE OF PUBLIC PEACE AND SECURITY]
+127. Assembly to disperse on command of Magistrate or police-officer
+128. Use of civil force to disperse
+129. Use of military force
+130. Duty of Officer Commanding troops required by Magistrate to disperse assembly
+131. Power of commissioned military officers to disperse assembly
+131A. Power to use military force for public security and maintenance of law and order
+132. Protection against prosecution for acts done under the chapter
+132A. Definitions
+
+
+Page 9 of 307
+
+CHAPTER X
+PUBLIC NUISANCES
+133. Conditional order for removal of nuisance
+134. Service or notification of order
+135. Person to whom order is addressed to obey or show cause or claim jury
+136. Consequence of his failing to do so
+137. Procedure where he appears to show cause
+138. Procedure where he claims jury
+139. Procedure where jury finds Magistrate's order to be reasonable
+139A. Procedure where existence of public right is denied
+140. Procedure on order being made absolute
+Consequences of disobedience to order
+141. Procedure on failure to appoint jury or omission to return verdict
+142. Injunction pending inquiry
+143. Magistrate may prohibit repetition or continuance of public nuisance
+CHAPTER XI
+TEMPORARY ORDERS IN URGENT CASES OF NUISANCE OR APPREHENDED
+DANGER.
+144. Power to issue order absolute at once in urgent cases of nuisance or apprehended danger
+CHAPTER XII
+DISPUTES AS TO IMMOVEABLE PROPERTY
+145. Procedure where dispute concerning land, etc, is likely to cause breach of peace
+Inquiry as to possession
+Party in possession to retain possession until legally evicted
+
+
+================================================================================
+4. QANUN-E-SHAHADAT ORDER (QSO) (ARTICLES 1-25 EXTRACTS)
+================================================================================
+
+
+
+Page 1 of 65
+
+
+
+
+
+
+
+
+THE QANUN-E-SHAHADAT, 1984
+
+
+
+
+
+CONTENTS
+
+ ________
+
+PART I
+RELEVANCY OF FACTS
+
+CHAPTER I
+PRELIMINARY
+
+ARTICLES.
+
+1. Short title, extent and commencement.
+
+2. Interpretation.
+
+CHAPTER II
+OF WITNESSES
+
+3. Who may testify.
+
+4. Judges and Magistrates.
+
+5. Communications during marriage.
+
+6. Evidence as to affairs of State.
+
+7. Official communications.
+
+8. Information as to commission of offences.
+
+9. Professional communications.
+
+10. Article 9 to apply to interpreters, etc.
+
+
+
+Page 2 of 65
+
+11. Privilege not waived by volunteering evidence.
+
+12. Confidential communications with legal advisers.
+
+13. Production of title deed of witness, not a party.
+
+14. Production of documents which another person, having possession, could refuse to produce.
+
+15. Witness not excused from answering on ground that answer will criminate.
+
+16. Accomplice.
+
+17. Competence and number of witnesses.
+
+CHAPTER III
+OF THE RELEVANCY OF FACTS
+
+18. Evidence may be given of facts in issue and relevant facts.
+
+19. Relevancy of facts forming part of same transaction.
+
+20. Facts which are the occasion, cause or effect of facts in issue.
+
+21. Motive, preparation and previous or subsequent conduct.
+
+22. Facts necessary to explain or introduce relevant facts.
+
+23. Things said or done by conspirator in reference to common design.
+
+24. When facts not otherwise relevant become relevant.
+
+25. In suits for damages facts tending to enable Court to determine amount are relevant.
+
+26. Facts relevant when right or custom is in question.
+
+27. Facts showing existence of state of mind, or of body, or bodily feeling.
+
+28. Facts bearing on question whether act was accidental or intentional.
+
+29. Existence of course of business when relevant.
+
+ADMISSIONS
+
+30. Admission defined.
+
+31. Admission by party to proceeding or his agent, etc.
+
+32. Admission by persons whose position must be proved as against party to suit.
+
+33. Admission by persons expressly referred to by party to suit.
+
+
+Page 3 of 65
+
+34. Proof of admissions against persons making them, and by or on their behalf.
+
+35. When oral admissions as to contents of documents are relevant.
+
+36. Admissions in civil cases when relevant.
+
+37. Confession caused by inducement, threat or promise, when irrelevant in criminal proceeding.
+
+38. Confession to police-officer not to be proved.
+
+39. Confession by accused while in custody of police not to be proved against him.
+
+40. How much of information received from accused may be proved.
+
+41. Confession made after removal of impression caused by inducement, threat or promise,
+relevant.
+
+42. Confession otherwise relevant not to become irrelevant because of promise of secrecy, etc.
+
+43. Consideration of proved confession affecting person making it and others jointly under trial for
+same offence.
+
+44. Accused persons to be liable to cross-examination.
+
+45. Admission not conclusive proof but may estop.
+
+STATEMENTS BY PERSONS WHO CANNOT BE CALLED AS WITNESSES
+
+46. Cases in which statement of relevant fact by person who is dead or cannot be found, etc., is
+relevant.
+
+46A. Relevance of information generated, received or recorded by automated information system.
+
+47. Relevancy of certain evidence for proving, in subsequent proceeding, the truth of facts therein
+stated.
+
+STATEMENTS MADE UNDER SPECIAL CIRUMSTANCES
+
+48. Entries in books of account when relevent.
+
+49. Relevancy of entry in public record made in performance of duty.
+
+50. Relevancy of statements in maps, charts and plans.
+
+51. Relevancy of statements as to fact of public nature, contained in certain Acts or notifications.
+
+52. Relevancy of statements as to any law contained in law-books.
+
+
+
+
+
+Page 4 of 65
+
+HOW MUCH OF A STATEMENT IS TO BE PROVED
+
+53. What evidence to be given when statement froms part of a conversation, document, book or
+series of letters or papers.
+
+JUDGMENTS OF COURTS OF JUSTICE WHEN RELEVANT
+
+54. Previous judgments relevant to bar a second suit or trial.
+
+55. Relevancy of certain judgments in probate, etc., jurisdiction.
+
+56. Relevancy and effect of judgments, orders or decrees, other than those mentioned in Article
+55.
+
+57. Judgments, etc., other than those mentioned in Articles 54 to 56, when relevant.
+
+58. Fraud or collusion in obtaining judgment, or Incompetency of Court, may be proved.
+
+OPINION OF THIRD PERSONS WHEN RELEVANT
+
+59. Opinions of experts.
+
+60. Facts bearing upon opinions of experts.
+
+61. Opinion as to hand-writing when relevant.
+
+62. Opinion as to existence of right or custom, when relevant.
+
+63. Opinion as to usages, tenets, etc., when relevant.
+
+64. Opinion on relationship when relevant.
+
+65. Grounds of opinion when relevant.
+
+CHARACTER WHEN RELEVANT

@@ -1,0 +1,91 @@
+\documentclass[11pt]{article}
+\usepackage[margin=0.8in, landscape]{geometry}
+\usepackage{amsmath,amssymb,amsfonts}
+\usepackage{tabularx}
+\usepackage{booktabs}
+\usepackage{multirow}
+\usepackage{array}
+\usepackage{float}
+\usepackage{caption}
+\usepackage[table]{xcolor}
+\usepackage{colortbl}
+\usepackage{hyperref}
+
+\captionsetup{
+  font=small,
+  labelfont=bf,
+  justification=centering,
+  skip=6pt
+}
+
+\newcommand{\rev}[1]{#1}
+\newcommand{\Cref}[1]{Table~#1}
+\newcommand{\cref}[1]{Table~#1}
+
+\pagestyle{empty}
+
+\begin{document}
+
+\vspace*{1cm}
+\setcounter{table}{0}
+
+\begin{table}[H]
+\caption{Overview of legal AI research highlighting methodologies, key findings, and unresolved limitations across prior studies.}
+\label{tab:litreview}
+\centering
+\footnotesize
+\begin{tabularx}{\textwidth}{|>{\raggedright\arraybackslash}p{2.5cm}|>{\raggedright\arraybackslash}p{3.0cm}|>{\raggedright\arraybackslash}X|>{\raggedright\arraybackslash}X|}
+\hline
+\rowcolor{black!15}
+\textbf{Study} & \textbf{Methodology} & \textbf{Key Findings} & \textbf{Limitations} \\
+\hline
+
+Ashley (1991) & Case-Based Reasoning & Defined legal reasoning as structured interpretation over authoritative legal texts and prior cases. & Limited scalability for large digital legal corpora. \\
+\hline
+
+Zhong et al. (2020) & Task Taxonomy & Established a taxonomy for legal AI tasks and accelerated the transition toward neural legal systems. & Did not address hallucination or grounding limitations. \\
+\hline
+
+Chalkidis et al. (2020) & Domain Pretraining & LEGAL-BERT improved legal language understanding through domain-specific pretraining. & Relied on static knowledge without external retrieval grounding. \\
+\hline
+
+Villata et al. (2022) & Review Study & Identified explainability as a major barrier to legal AI adoption. & Did not propose a technical mitigation framework. \\
+\hline
+
+Ryu et al. (2023) & Eval-RAG Framework & Retrieval-based verification improved factual consistency in generated responses. & Performance remained dependent on retriever quality. \\
+\hline
+
+Dahl et al. (2024) & Empirical Evaluation & Reported hallucination rates approaching 58\% in legal AI systems. & Did not propose an architectural solution. \\
+\hline
+
+Magesh et al. (2024) & Audit Study & Demonstrated that commercial legal AI tools frequently generated fabricated citations. & Focused primarily on auditing rather than system development. \\
+\hline
+
+Pipitone and Alami (2024) & Benchmarking & Highlighted retrieval gaps and dependency failures in RAG systems. & Did not introduce a retrieval architecture. \\
+\hline
+
+Faisal and Yousaf (2024) & Dataset Development & Created the first bilingual Urdu-English constitutional dataset for Pakistan. & Limited exclusively to constitutional law. \\
+\hline
+
+Wasi et al. (2024) & Regional Legal AI Study & Identified insufficient precision of generalized AI systems in South Asian litigation contexts. & Generic architectures lacked jurisdiction-specific adaptation. \\
+\hline
+
+Hou et al. (2024) & Evaluation Study & Found factual gaps in nearly 80\% of generated legal analyses. & Detection mechanisms remained limited. \\
+\hline
+
+Louis et al. (2024) & Long-form Legal QA & Identified grounding inconsistency across multi-paragraph legal responses. & Weak long-form coherence and evidence preservation. \\
+\hline
+
+Abuzir (2025) & System Design Analysis & Advocated for verification-integrated professional legal AI systems. & Lacked empirical implementation and validation. \\
+\hline
+
+Zhang et al. (2025) & Multi-round RAG & Improved retrieval recall performance through iterative retrieval mechanisms. & Introduced high computational latency. \\
+\hline
+
+Reuter et al. (2025) & Retrieval Optimization & Reduced document-level retrieval mismatch using summary-augmented retrieval. & Relied heavily on generated summaries for context preservation. \\
+\hline
+
+\end{tabularx}
+\end{table}
+
+\end{document}

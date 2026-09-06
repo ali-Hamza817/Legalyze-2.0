@@ -1,0 +1,53 @@
+# ---- Dependencies ----
+node_modules/
+.pnp
+.pnp.js
+
+# ---- Environment / secrets ----
+.env
+.env.local
+.env.*.local
+backend/.env
+frontend/.env
+
+# ---- Build output ----
+dist/
+build/
+dist-ssr/
+*.local
+
+# ---- Runtime artifacts ----
+backend/temp/*
+!backend/temp/.gitkeep
+backend/uploads/
+backend/logs/
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+
+# ---- LaTeX build artifacts (paper/) ----
+paper/**/*.aux
+paper/**/*.bbl
+paper/**/*.blg
+paper/**/*.out
+paper/**/*.toc
+paper/**/*.synctex.gz
+paper/**/*.fls
+paper/**/*.fdb_latexmk
+paper/**/main.log
+
+# ---- Editors / OS ----
+.vscode/*
+!.vscode/extensions.json
+.idea/
+.DS_Store
+Thumbs.db
+*.suo
+*.sw?
+
+# ---- Misc ----
+.cache
+.parcel-cache
+/coverage

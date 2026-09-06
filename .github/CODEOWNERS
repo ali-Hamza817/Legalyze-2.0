@@ -1,0 +1,27 @@
+# Legalyze - Code Ownership
+
+# All code and files are owned and maintained by Ali Hamza
+* @ali-Hamza817
+
+# Backend ownership
+/backend/ @ali-Hamza817
+/backend/src/ @ali-Hamza817
+/backend/routes/ @ali-Hamza817
+/backend/services/ @ali-Hamza817
+/backend/models/ @ali-Hamza817
+
+# Frontend ownership
+/frontend/ @ali-Hamza817
+/frontend/src/ @ali-Hamza817
+
+# Documentation ownership
+*.md @ali-Hamza817
+/docs/ @ali-Hamza817
+
+# Configuration ownership
+docker-compose.yml @ali-Hamza817
+.env.example @ali-Hamza817
+.eslintrc.* @ali-Hamza817
+
+# This repo is actively maintained and developed by Ali Hamza
+# For inquiries about code contributions or collaborations, contact: cyberhamza8.17@gmail.com
