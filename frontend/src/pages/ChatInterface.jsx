@@ -29,7 +29,10 @@ import {
     Tooltip,
     Accordion,
     AccordionSummary,
-    AccordionDetails
+    AccordionDetails,
+    ToggleButton,
+    ToggleButtonGroup,
+    Link as MuiLink
 } from '@mui/material';
 import MuiAlert from '@mui/material/Alert';
 import {
@@ -63,7 +66,11 @@ import {
     Close,
     ExpandMore,
     CloudUpload,
-    History
+    History,
+    Public,
+    CheckCircle,
+    Cancel,
+    Balance
 } from '@mui/icons-material';
 import { useNavigate } from 'react-router-dom';
 import { AnimatePresence, motion } from 'framer-motion';
@@ -71,7 +78,7 @@ import { useColorMode } from '../App';
 import { useAuth } from '../context/AuthContext';
 import ThemeSwitcher from '../components/ThemeSwitcher';
 import CaseBuildingWizard from '../components/CaseBuildingWizard';
-import { chatAPI, documentAPI, authAPI, generateAPI, smartGenerateAPI } from '../utils/api';
+import { chatAPI, documentAPI, authAPI, generateAPI, smartGenerateAPI, internationalAPI } from '../utils/api';
 import ReactMarkdown from 'react-markdown';
 import html2pdf from 'html2pdf.js';
 import { documentTemplates } from '../utils/mockData';
@@ -82,6 +89,154 @@ const DOC_SIDEBAR_WIDTH = 280;
 const Alert = React.forwardRef(function Alert(props, ref) {
     return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
 });
+
+// ---- Legalyze 2.0 (International Law) structured-answer bubble ----
+const IntlSectionLabel = ({ children }) => (
+    <Typography
+        variant="caption"
+        sx={{ display: 'block', fontWeight: 700, letterSpacing: 0.8, textTransform: 'uppercase',
+              color: 'text.secondary', mb: 0.75, fontSize: '0.68rem' }}
+    >
+        {children}
+    </Typography>
+);
+
+const conclusionBadge = (conclusion) => {
+    const c = (conclusion || '').trim().toLowerCase();
+    // Check "not established" before the yes/no prefixes ("Not established" starts with "no").
+    if (c.includes('do not establish') || c.startsWith('not established') || c.includes('not established from'))
+        return { label: 'NOT ESTABLISHED', color: 'warning' };
+    if (c.startsWith('yes')) return { label: 'AFFIRMATIVE', color: 'success' };
+    if (c.startsWith('no.') || c.startsWith('no,') || c.startsWith('no ')) return { label: 'NEGATIVE', color: 'error' };
+    return { label: 'ANSWER', color: 'info' };
+};
+
+const InternationalAnswer = ({ data }) => {
+    const d = data || {};
+    const meta = d.meta || {};
+    const badge = conclusionBadge(d.conclusion);
+    const citations = d.citations || [];
+    return (
+        <Paper
+            elevation={0}
+            sx={{ p: 2, bgcolor: 'background.paper', border: '1px solid', borderColor: 'divider',
+                  borderRadius: '4px', maxWidth: 760 }}
+        >
+            {/* meta row */}
+            <Box sx={{ display: 'flex', alignItems: 'center', gap: 0.75, mb: 1.25, flexWrap: 'wrap' }}>
+                <Chip size="small" color={badge.color} label={badge.label}
+                      sx={{ fontWeight: 700, letterSpacing: 0.4, height: 22 }} />
+                {(meta.candidate_instruments || []).map((i) => (
+                    <Chip key={i} size="small" variant="outlined" label={i} sx={{ height: 22 }} />
+                ))}
+                {meta.needs_temporal && (
+                    <Chip size="small" variant="outlined" color="info"
+                          label={`temporal · ${meta.as_of || 'date-aware'}`} sx={{ height: 22 }} />
+                )}
+                <Chip size="small" variant="outlined" label={`engine · ${meta.backend || 'offline'}`}
+                      sx={{ height: 22 }} />
+            </Box>
+
+            {/* conclusion */}
+            <IntlSectionLabel>Conclusion</IntlSectionLabel>
+            <Typography variant="body2"
+                sx={{ fontSize: '0.95rem', fontWeight: 600, lineHeight: 1.6, mb: 1.75 }}>
+                {d.conclusion}
+            </Typography>
+
+            {/* legal basis */}
+            {(d.legal_basis || []).length > 0 && (
+                <Box sx={{ mb: 1.75 }}>
+                    <IntlSectionLabel>Legal basis</IntlSectionLabel>
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.75 }}>
+                        {d.legal_basis.map((b, i) => (
+                            <Chip key={i} size="small" icon={<Balance sx={{ fontSize: 14 }} />} label={b}
+                                  sx={{ height: 24, bgcolor: 'action.hover', fontSize: '0.75rem' }} />
+                        ))}
+                    </Box>
+                </Box>
+            )}
+
+            {/* applicability */}
+            {d.applicability && (
+                <Box sx={{ mb: 1.75 }}>
+                    <IntlSectionLabel>Applicability &amp; status</IntlSectionLabel>
+                    <Typography variant="body2" sx={{ fontSize: '0.875rem', lineHeight: 1.6 }}>
+                        {d.applicability}
+                    </Typography>
+                </Box>
+            )}
+
+            {/* interpretation / jurisprudence */}
+            {d.interpretation && (
+                <Box sx={{ mb: 1.75 }}>
+                    <IntlSectionLabel>Interpretation · jurisprudence</IntlSectionLabel>
+                    <Typography variant="body2" sx={{ fontSize: '0.875rem', lineHeight: 1.6 }}>
+                        {d.interpretation}
+                    </Typography>
+                </Box>
+            )}
+
+            {/* evidence + citation verification */}
+            {citations.length > 0 && (
+                <Accordion disableGutters elevation={0}
+                    sx={{ bgcolor: 'action.hover', borderRadius: '4px', border: '1px solid',
+                          borderColor: 'divider', '&:before': { display: 'none' }, mb: 1 }}>
+                    <AccordionSummary expandIcon={<ExpandMore fontSize="small" />} sx={{ minHeight: 42, px: 1.5 }}>
+                        <Typography variant="caption"
+                            sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, color: 'text.secondary' }}>
+                            Evidence · citation verification ({citations.length})
+                        </Typography>
+                    </AccordionSummary>
+                    <AccordionDetails sx={{ pt: 0, px: 1.5, pb: 1.5 }}>
+                        {citations.map((c, i) => (
+                            <Box key={i} sx={{ py: 1, borderTop: i ? '1px solid' : 'none', borderColor: 'divider' }}>
+                                <Box sx={{ display: 'flex', gap: 1, alignItems: 'flex-start' }}>
+                                    {c.supported
+                                        ? <CheckCircle sx={{ fontSize: 18, color: 'success.main', mt: '2px', flexShrink: 0 }} />
+                                        : <Cancel sx={{ fontSize: 18, color: 'error.main', mt: '2px', flexShrink: 0 }} />}
+                                    <Box sx={{ minWidth: 0 }}>
+                                        <Typography variant="body2" sx={{ fontSize: '0.82rem', lineHeight: 1.5 }}>
+                                            {c.claim}
+                                        </Typography>
+                                        <Typography variant="caption"
+                                            sx={{ display: 'block', color: 'text.secondary', fontFamily: 'monospace',
+                                                  fontSize: '0.7rem', mt: 0.25 }}>
+                                            {c.provision_id}
+                                            {c.source_location && /^https?:/.test(c.source_location) && (
+                                                <>{'  ·  '}<MuiLink href={c.source_location} target="_blank" rel="noopener"
+                                                    sx={{ fontFamily: 'inherit' }}>source ↗</MuiLink></>
+                                            )}
+                                        </Typography>
+                                        {c.quote && (
+                                            <Typography variant="body2"
+                                                sx={{ mt: 0.5, pl: 1, borderLeft: '2px solid', borderColor: 'primary.main',
+                                                      color: 'text.secondary', fontSize: '0.78rem', fontStyle: 'italic' }}>
+                                                “{c.quote}”
+                                            </Typography>
+                                        )}
+                                        {!c.supported && c.reason && (
+                                            <Typography variant="caption" sx={{ color: 'error.main', fontSize: '0.7rem' }}>
+                                                Not counted as evidence: {c.reason}
+                                            </Typography>
+                                        )}
+                                    </Box>
+                                </Box>
+                            </Box>
+                        ))}
+                    </AccordionDetails>
+                </Accordion>
+            )}
+
+            {/* uncertainty */}
+            {d.uncertainty && (
+                <Typography variant="caption" sx={{ display: 'block', color: 'text.secondary', mt: 0.5 }}>
+                    <b>Uncertainty:</b> {d.uncertainty}
+                </Typography>
+            )}
+        </Paper>
+    );
+};
 
 const DocumentMessageBubble = ({ document, role, theme, mode }) => {
     const isUser = role === 'user';
@@ -227,6 +382,8 @@ const ChatInterface = () => {
 
     const [leftOpen, setLeftOpen] = useState(true);
     const [rightOpen, setRightOpen] = useState(true);
+    // Legalyze 2.0 — 'pakistan' (default 1.0 flow) or 'international' (2.0 engine)
+    const [lawMode, setLawMode] = useState('pakistan');
 
     const messagesEndRef = useRef(null);
     const fileInputRef = useRef(null);
@@ -380,6 +537,40 @@ const ChatInterface = () => {
 
         setMessages(prev => [...prev, tempUserMessage]);
         setIsTyping(true);
+
+        // ---- Legalyze 2.0: International Law mode (separate engine; does not touch the Pakistan flow) ----
+        if (lawMode === 'international') {
+            try {
+                const res = await internationalAPI.ask(messageContent);
+                if (res && res.success && res.data) {
+                    setMessages(prev => [...prev, {
+                        role: 'assistant',
+                        type: 'international',
+                        intl: res.data,
+                        id: 'intl-' + Date.now()
+                    }]);
+                } else {
+                    setMessages(prev => [...prev, {
+                        role: 'assistant',
+                        content: `⚠️ ${res?.message || 'The International Law engine returned no answer.'}`,
+                        id: 'intlwarn-' + Date.now()
+                    }]);
+                }
+            } catch (error) {
+                const offline = error?.status === 503 || error?.status === 0;
+                setMessages(prev => [...prev, {
+                    role: 'assistant',
+                    content: offline
+                        ? `⚠️ **International Law engine is offline.**\n\nStart the Legalyze 2.0 engine, then try again:\n\n\`\`\`\ncd Legalyze-2.0\npython service.py\n\`\`\``
+                        : `❌ ${error?.message || 'Error contacting the International Law engine.'}`,
+                    id: 'intlerr-' + Date.now()
+                }]);
+            } finally {
+                setIsTyping(false);
+                if (fileInputRef.current) fileInputRef.current.value = '';
+            }
+            return;
+        }
 
         try {
             // Check for unprocessed files
@@ -938,9 +1129,30 @@ const ChatInterface = () => {
                             {leftOpen ? <ChevronLeft /> : <MenuIcon />}
                         </IconButton>
                         <ThemeSwitcher />
-                        <Typography variant="subtitle1" fontWeight={600}>
+                        <Typography variant="subtitle1" fontWeight={600} sx={{ display: { xs: 'none', sm: 'block' } }}>
                             {activeChat?.title || 'New Conversation'}
                         </Typography>
+                        <ToggleButtonGroup
+                            size="small"
+                            exclusive
+                            value={lawMode}
+                            onChange={(e, v) => { if (v) setLawMode(v); }}
+                            aria-label="legal domain"
+                            sx={{
+                                ml: { xs: 0, sm: 1 },
+                                '& .MuiToggleButton-root': {
+                                    textTransform: 'none', px: 1.5, py: 0.25,
+                                    fontSize: '0.75rem', fontWeight: 600, gap: 0.5
+                                }
+                            }}
+                        >
+                            <ToggleButton value="pakistan">
+                                <Gavel sx={{ fontSize: 15 }} /> Pakistan Law
+                            </ToggleButton>
+                            <ToggleButton value="international">
+                                <Public sx={{ fontSize: 15 }} /> International Law
+                            </ToggleButton>
+                        </ToggleButtonGroup>
                     </Box>
                     <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
                         <IconButton onClick={() => setRightOpen(!rightOpen)}>
@@ -981,12 +1193,14 @@ const ChatInterface = () => {
                                 </Avatar>
                                 <Box sx={{ display: 'flex', flexDirection: 'column', gap: 0.5 }}>
                                     {message.type === 'document' ? (
-                                        <DocumentMessageBubble 
-                                            document={message.document} 
-                                            role={message.role} 
-                                            theme={theme} 
-                                            mode={mode} 
+                                        <DocumentMessageBubble
+                                            document={message.document}
+                                            role={message.role}
+                                            theme={theme}
+                                            mode={mode}
                                         />
+                                    ) : message.type === 'international' ? (
+                                        <InternationalAnswer data={message.intl} />
                                     ) : (
                                         <>
                                             {/* File Bubble for Uploaded Documents */}
@@ -1370,7 +1584,7 @@ const ChatInterface = () => {
                             )}
                             <TextField
                                 fullWidth
-                                placeholder={user?.disabledFeatures?.includes('chat') ? "Chat is restricted by admin" : "Type your message..."}
+                                placeholder={user?.disabledFeatures?.includes('chat') ? "Chat is restricted by admin" : (lawMode === 'international' ? "Ask an international-law question (UN Charter · ICJ Statute · Vienna Convention)…" : "Type your message...")}
                                 value={inputMessage}
                                 onChange={(e) => setInputMessage(e.target.value)}
                                 onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && handleSendMessage()}

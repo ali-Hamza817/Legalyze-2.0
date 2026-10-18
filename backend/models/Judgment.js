@@ -64,6 +64,11 @@ const JudgmentSchema = new mongoose.Schema({
         type: String,
         text: true  // Enable text search for ratio
     },
+    fullText: String,          // verbatim judgment text (from the original signed PDF)
+    fullTextChars: Number,
+    pageCount: Number,
+    hasFullText: { type: Boolean, default: false, index: true },
+    localPdf: String,          // relative path of the downloaded original PDF
     statutes: [{
         type: String
     }],
@@ -74,6 +79,10 @@ const JudgmentSchema = new mongoose.Schema({
 
     // Source
     pdfUrl: String,
+    source: { type: String, index: true },   // e.g. 'SCP Quarterly Case Law Update'
+    sourceQuarter: String,                    // e.g. 'Jan Mar 2024'
+    jurisdiction: { type: String, default: 'Pakistan' },
+    vectorized: { type: Boolean, default: false, index: true },
     textLength: Number,
     chunkCount: Number,
 

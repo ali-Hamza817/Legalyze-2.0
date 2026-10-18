@@ -146,6 +146,21 @@ export const chatAPI = {
     }
 };
 
+// International Law API endpoints (Legalyze 2.0 engine)
+export const internationalAPI = {
+    // Ask the Legalyze 2.0 international-law engine a question.
+    ask: async (question) => {
+        const response = await api.post('/international', { question });
+        return response.data;
+    },
+
+    // Check whether the 2.0 engine service is running.
+    health: async () => {
+        const response = await api.get('/international/health');
+        return response.data;
+    }
+};
+
 // Document API endpoints
 export const documentAPI = {
     // Upload document

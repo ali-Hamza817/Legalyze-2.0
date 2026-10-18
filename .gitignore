@@ -51,3 +51,23 @@ Thumbs.db
 .cache
 .parcel-cache
 /coverage
+
+# Personal research/PhD strategy docs (kept local only, not for the public repo)
+research-proposal/
+
+# ---- Data corpus & copyright/terms-sensitive material (NOT for the public repo) ----
+# Judgment corpus (incl. pakistancaselaw.com-derived data whose terms forbid
+# redistribution, and copyright-restricted case law). Code-only repo.
+Legal Corpus/
+# Unpublished / academic working material
+Thesis/
+paper/
+Survey Paper Legalyze/
+Proposal Defence for Legalyze/
+NUST Template for MS Thesis/
+Final Accepted Research Paper/
+Assets/
+# Loose binaries / papers / decks at repo root
+*.pptx
+EXSY70415.pdf
+Legalyze_2_0_Implementation_Research_Specification.pdf

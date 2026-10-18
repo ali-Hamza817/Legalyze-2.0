@@ -38,10 +38,11 @@ export const AuthProvider = ({ children }) => {
                 // Verify with backend
                 try {
                     const response = await authAPI.getCurrentUser();
-                    if (response.success) {
-                        setUser(response.user);
+                    const freshUser = response?.data?.user;
+                    if (response.success && freshUser) {
+                        setUser(freshUser);
                         // Optional: Update stored user with fresh data
-                        localStorage.setItem('user', JSON.stringify(response.user));
+                        localStorage.setItem('user', JSON.stringify(freshUser));
                     } else {
                         throw new Error('Verification failed');
                     }
@@ -91,6 +92,45 @@ export const AuthProvider = ({ children }) => {
             }
         } catch (err) {
             const errorMessage = err.message || 'Login failed. Please try again.';
+            setError(errorMessage);
+            return { success: false, error: errorMessage };
+        } finally {
+            setLoading(false);
+        }
+    };
+
+    // Login with an existing JWT (used by the Google OAuth callback page).
+    // The backend has already verified the Google identity and issued this token;
+    // we just need to hydrate the user profile from /api/auth/me.
+    const loginWithToken = async (authToken) => {
+        try {
+            setError(null);
+            setLoading(true);
+
+            if (!authToken) {
+                throw new Error('No authentication token received');
+            }
+
+            localStorage.setItem('token', authToken);
+            setToken(authToken);
+
+            const response = await authAPI.getCurrentUser();
+            const userData = response?.data?.user;
+
+            if (response.success && userData) {
+                setUser(userData);
+                localStorage.setItem('user', JSON.stringify(userData));
+                return { success: true, user: userData };
+            }
+
+            throw new Error('Could not load your profile');
+        } catch (err) {
+            // Roll back partial state so the app doesn't get stuck "half logged in"
+            setToken(null);
+            setUser(null);
+            localStorage.removeItem('token');
+            localStorage.removeItem('user');
+            const errorMessage = err.message || 'Google sign-in failed. Please try again.';
             setError(errorMessage);
             return { success: false, error: errorMessage };
         } finally {
@@ -175,9 +215,10 @@ export const AuthProvider = ({ children }) => {
     const refreshUser = async () => {
         try {
             const response = await authAPI.getCurrentUser();
-            if (response.success) {
-                setUser(response.user);
-                localStorage.setItem('user', JSON.stringify(response.user));
+            const freshUser = response?.data?.user;
+            if (response.success && freshUser) {
+                setUser(freshUser);
+                localStorage.setItem('user', JSON.stringify(freshUser));
                 return { success: true };
             }
         } catch (err) {
@@ -192,6 +233,7 @@ export const AuthProvider = ({ children }) => {
         loading,
         error,
         login,
+        loginWithToken,
         signup,
         logout,
         verifyEmail,

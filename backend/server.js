@@ -1,5 +1,7 @@
 console.log('--- SERVER STARTING ---');
-require('dotenv').config();
+// override:true so the .env key wins over any stale OPENAI_API_KEY exported in the
+// shell/OS environment (dotenv does not overwrite an existing env var by default).
+require('dotenv').config({ override: true });
 const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
@@ -13,6 +15,7 @@ const smartGenerateRoutes = require('./routes/smartGenerate');
 const constitutionalComplianceRoutes = require('./routes/constitutionalCompliance');
 const judgmentRoutes = require('./routes/judgments');
 const caseBuildingRoutes = require('./routes/caseBuilding');
+const internationalRoutes = require('./routes/international'); // Legalyze 2.0 (International Law)
 let adminRoutes;
 try {
     adminRoutes = require('./routes/admin'); // Import Admin Routes
@@ -78,6 +81,7 @@ app.use('/api/smart-generate', smartGenerateRoutes);
 app.use('/api/constitutional-compliance', constitutionalComplianceRoutes);
 app.use('/api/judgments', judgmentRoutes);
 app.use('/api/case-building', caseBuildingRoutes);
+app.use('/api/international', internationalRoutes); // Legalyze 2.0 (International Law)
 if (adminRoutes) {
     app.use('/api/admin', adminRoutes); // Register Admin Routes
 }
@@ -150,6 +154,13 @@ const server = app.listen(PORT, () => {
     console.log(`🌐 Frontend URL: ${process.env.FRONTEND_URL}`);
     console.log(`🔗 API URL: http://localhost:${PORT}`);
     console.log('='.repeat(50));
+    // Auto-start the Legalyze 2.0 engine for the "International Law" chat mode.
+    try {
+        const { startLegalyze2Engine } = require('./services/legalyze2Engine');
+        startLegalyze2Engine();
+    } catch (e) {
+        console.warn('🌐 Legalyze 2.0 engine autostart skipped:', e.message);
+    }
 });
 
 // Set server timeout to 10 minutes (600,000 ms) to handle long-running operations

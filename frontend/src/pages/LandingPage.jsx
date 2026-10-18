@@ -244,36 +244,53 @@ const LandingPage = () => {
         }
     ];
 
+    // photo: optional headshot URL (falls back to initials). linkedin/email: optional -
+    // the matching icon only renders when a value is present, so no dead links.
     const teamMembers = [
         {
             name: 'Shafa-at Ali Sheikh',
             role: 'Chief Executive Officer',
             title: 'Project Lead & AI Architect',
-            bio: 'Expert in AI/ML systems and legal tech innovation'
+            bio: 'Expert in AI/ML systems and legal tech innovation',
+            photo: '',
+            linkedin: '',
+            email: ''
         },
         {
             name: 'Ali Hamza',
             role: 'Technical Lead',
             title: 'Cloud Engineer',
-            bio: 'Architecting scalable cloud infrastructure and secure deployments'
+            bio: 'Architecting scalable cloud infrastructure and secure deployments',
+            photo: '',
+            linkedin: '',
+            email: 'cyberhamza8.17@gmail.com'
         },
         {
             name: 'Maaz Bin Ramzan',
             role: 'Chief Technology Officer',
             title: 'Backend Developer',
-            bio: 'Specializes in FastAPI and cloud infrastructure'
+            bio: 'Specializes in FastAPI and cloud infrastructure',
+            photo: '',
+            linkedin: '',
+            email: ''
         },
         {
             name: 'Osama Imtiaz',
             role: 'Head of AI Research',
             title: 'AI/ML Engineer',
-            bio: 'Focuses on LLM integration and RAG systems'
+            bio: 'Focuses on LLM integration and RAG systems',
+            photo: '',
+            linkedin: '',
+            email: ''
         },
         {
             name: 'Nouman Ali',
             role: 'Chief Product Officer',
             title: 'Full Stack Developer',
-            bio: 'Expert in React and system integration'
+            bio: 'Expert in React and system integration',
+            photo: '',
+            linkedin: '',
+            email: ''
         }
     ];
 
@@ -671,14 +688,30 @@ const LandingPage = () => {
                                         boxShadow: '0 12px 40px rgba(0,0,0,0.1)'
                                     }
                                 }}>
-                                    <Box sx={{ 
-                                        height: 200, 
+                                    <Box sx={{
+                                        height: 200,
                                         display: 'flex',
                                         alignItems: 'center',
                                         justifyContent: 'center',
                                         bgcolor: 'action.hover'
                                     }}>
-                                        <PersonIcon sx={{ fontSize: 64, color: 'primary.main' }} />
+                                        {member.photo ? (
+                                            <Box
+                                                component="img"
+                                                src={member.photo}
+                                                alt={member.name}
+                                                sx={{ width: '100%', height: '100%', objectFit: 'cover' }}
+                                            />
+                                        ) : (
+                                            <Box sx={{
+                                                width: 96, height: 96, borderRadius: '50%',
+                                                display: 'flex', alignItems: 'center', justifyContent: 'center',
+                                                background: 'linear-gradient(135deg, var(--primary, #4f46e5), var(--secondary, #06b6d4))',
+                                                color: '#fff', fontWeight: 700, fontSize: '1.75rem', letterSpacing: 1
+                                            }}>
+                                                {member.name.split(' ').filter(Boolean).map(w => w[0]).slice(0, 2).join('').toUpperCase()}
+                                            </Box>
+                                        )}
                                     </Box>
                                     <CardContent sx={{ textAlign: 'center', p: 2 }}>
                                         <Typography variant="subtitle1" fontWeight={700} gutterBottom sx={{ fontSize: '0.9rem' }}>{member.name}</Typography>
@@ -688,14 +721,34 @@ const LandingPage = () => {
                                         <Typography variant="caption" color="text.secondary" display="block" sx={{ mb: 1.5, fontSize: '0.7rem' }}>
                                             {member.title}
                                         </Typography>
-                                        <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
-                                            <IconButton size="small" sx={{ p: 0.5, bgcolor: 'action.hover', '&:hover': { bgcolor: 'primary.main', color: 'white' } }}>
-                                                <LinkedIn sx={{ fontSize: 16 }} />
-                                            </IconButton>
-                                            <IconButton size="small" sx={{ p: 0.5, bgcolor: 'action.hover', '&:hover': { bgcolor: 'primary.main', color: 'white' } }}>
-                                                <Email sx={{ fontSize: 16 }} />
-                                            </IconButton>
-                                        </Box>
+                                        {(member.linkedin || member.email) && (
+                                            <Box sx={{ display: 'flex', gap: 1, justifyContent: 'center' }}>
+                                                {member.linkedin && (
+                                                    <IconButton
+                                                        size="small"
+                                                        component="a"
+                                                        href={member.linkedin}
+                                                        target="_blank"
+                                                        rel="noopener noreferrer"
+                                                        aria-label={`${member.name} on LinkedIn`}
+                                                        sx={{ p: 0.5, bgcolor: 'action.hover', '&:hover': { bgcolor: 'primary.main', color: 'white' } }}
+                                                    >
+                                                        <LinkedIn sx={{ fontSize: 16 }} />
+                                                    </IconButton>
+                                                )}
+                                                {member.email && (
+                                                    <IconButton
+                                                        size="small"
+                                                        component="a"
+                                                        href={`mailto:${member.email}`}
+                                                        aria-label={`Email ${member.name}`}
+                                                        sx={{ p: 0.5, bgcolor: 'action.hover', '&:hover': { bgcolor: 'primary.main', color: 'white' } }}
+                                                    >
+                                                        <Email sx={{ fontSize: 16 }} />
+                                                    </IconButton>
+                                                )}
+                                            </Box>
+                                        )}
                                     </CardContent>
                                 </Card>
                             </motion.div>

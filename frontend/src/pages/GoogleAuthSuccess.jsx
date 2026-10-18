@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
 import { useNavigate, useSearchParams } from 'react-router-dom';
 import { Box, CircularProgress, Typography } from '@mui/material';
 import { useAuth } from '../context/AuthContext';
@@ -6,33 +6,34 @@ import { useAuth } from '../context/AuthContext';
 const GoogleAuthSuccess = () => {
     const [searchParams] = useSearchParams();
     const navigate = useNavigate();
-    const { login } = useAuth();
+    const { loginWithToken } = useAuth();
+    const [message, setMessage] = useState('Completing Sign In with Google...');
+    const handled = useRef(false);
 
     useEffect(() => {
-        const handleGoogleAuth = async () => {
-            const token = searchParams.get('token');
-            const userId = searchParams.get(' userId');
+        // React 18 StrictMode double-invokes effects in dev; guard against a double run.
+        if (handled.current) return;
+        handled.current = true;
 
-            if (token && userId) {
-                // Store token and redirect to dashboard
-                localStorage.setItem('token', token);
-                localStorage.setItem('userId', userId);
+        const token = searchParams.get('token');
+        const oauthError = searchParams.get('error');
 
-                // Update auth context
-                await login({ token, userId });
+        if (oauthError || !token) {
+            navigate('/signin?error=google_auth_failed', { replace: true });
+            return;
+        }
 
-                // Redirect to chat
-                setTimeout(() => {
-                    navigate('/chat');
-                }, 1000);
+        (async () => {
+            // The JWT is enough - /api/auth/me resolves the user from it.
+            const result = await loginWithToken(token);
+            if (result.success) {
+                navigate('/chat', { replace: true });
             } else {
-                // If no token, redirect to sign in with error
-                navigate('/signin?error=google_auth_failed');
+                setMessage('Sign in failed. Redirecting...');
+                navigate('/signin?error=google_auth_failed', { replace: true });
             }
-        };
-
-        handleGoogleAuth();
-    }, [searchParams, navigate, login]);
+        })();
+    }, [searchParams, navigate, loginWithToken]);
 
     return (
         <Box sx={{
@@ -45,7 +46,7 @@ const GoogleAuthSuccess = () => {
         }}>
             <CircularProgress size={60} />
             <Typography variant="h5" fontWeight={600}>
-                Completing Sign In with Google...
+                {message}
             </Typography>
             <Typography variant="body2" color="text.secondary">
                 Please wait while we set up your account

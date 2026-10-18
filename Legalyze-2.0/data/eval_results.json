@@ -1,0 +1,161 @@
+{
+  "systems": {
+    "Zero-shot LLM": {
+      "answer_accuracy": 0.0,
+      "hallucinated": 0.0,
+      "citation_precision": null,
+      "citation_recall": null,
+      "retrieval_recall_at_k": 0.0,
+      "structural_retrieval_accuracy": 0.0,
+      "temporal_accuracy": 0.0,
+      "applicability_accuracy": 0.0,
+      "n": 16
+    },
+    "Standard RAG": {
+      "answer_accuracy": 0.188,
+      "hallucinated": 0.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "retrieval_recall_at_k": 0.6,
+      "structural_retrieval_accuracy": 0.0,
+      "temporal_accuracy": 0.0,
+      "applicability_accuracy": 0.0,
+      "n": 16
+    },
+    "Legalyze 1.0 (transfer)": {
+      "answer_accuracy": 0.375,
+      "hallucinated": 0.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "retrieval_recall_at_k": 1.0,
+      "structural_retrieval_accuracy": 0.6,
+      "temporal_accuracy": 0.0,
+      "applicability_accuracy": 0.0,
+      "n": 16
+    },
+    "Legalyze 2.0 without SAHI": {
+      "answer_accuracy": 0.562,
+      "hallucinated": 0.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "retrieval_recall_at_k": 0.6,
+      "structural_retrieval_accuracy": 0.0,
+      "temporal_accuracy": 1.0,
+      "applicability_accuracy": 0.833,
+      "n": 16
+    },
+    "Legalyze 2.0 without status/temporal": {
+      "answer_accuracy": 0.438,
+      "hallucinated": 0.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "retrieval_recall_at_k": 1.0,
+      "structural_retrieval_accuracy": 0.6,
+      "temporal_accuracy": 0.0,
+      "applicability_accuracy": 0.0,
+      "n": 16
+    },
+    "Full Legalyze 2.0": {
+      "answer_accuracy": 0.75,
+      "hallucinated": 0.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "retrieval_recall_at_k": 1.0,
+      "structural_retrieval_accuracy": 0.6,
+      "temporal_accuracy": 1.0,
+      "applicability_accuracy": 0.833,
+      "n": 16
+    }
+  },
+  "ablations": {
+    "\u2212 hierarchical structure (no SAHI)": {
+      "answer_accuracy": 0.562,
+      "hallucinated": 0.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "retrieval_recall_at_k": 0.6,
+      "structural_retrieval_accuracy": 0.0,
+      "temporal_accuracy": 1.0,
+      "applicability_accuracy": 0.833,
+      "n": 16
+    },
+    "\u2212 BM25 (semantic only)": {
+      "answer_accuracy": 0.75,
+      "hallucinated": 0.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "retrieval_recall_at_k": 1.0,
+      "structural_retrieval_accuracy": 0.6,
+      "temporal_accuracy": 1.0,
+      "applicability_accuracy": 0.833,
+      "n": 16
+    },
+    "\u2212 semantic (BM25 only)": {
+      "answer_accuracy": 0.75,
+      "hallucinated": 0.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "retrieval_recall_at_k": 1.0,
+      "structural_retrieval_accuracy": 0.6,
+      "temporal_accuracy": 1.0,
+      "applicability_accuracy": 0.833,
+      "n": 16
+    },
+    "\u2212 treaty-status metadata": {
+      "answer_accuracy": 0.438,
+      "hallucinated": 0.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "retrieval_recall_at_k": 1.0,
+      "structural_retrieval_accuracy": 0.6,
+      "temporal_accuracy": 0.0,
+      "applicability_accuracy": 0.0,
+      "n": 16
+    },
+    "\u2212 temporal reasoning": {
+      "answer_accuracy": 0.688,
+      "hallucinated": 0.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "retrieval_recall_at_k": 1.0,
+      "structural_retrieval_accuracy": 0.6,
+      "temporal_accuracy": 0.333,
+      "applicability_accuracy": 0.667,
+      "n": 16
+    },
+    "\u2212 jurisprudence retrieval": {
+      "answer_accuracy": 0.688,
+      "hallucinated": 0.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "retrieval_recall_at_k": 1.0,
+      "structural_retrieval_accuracy": 0.6,
+      "temporal_accuracy": 1.0,
+      "applicability_accuracy": 0.833,
+      "n": 16
+    },
+    "\u2212 citation verification": {
+      "answer_accuracy": 0.75,
+      "hallucinated": 0.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "retrieval_recall_at_k": 1.0,
+      "structural_retrieval_accuracy": 0.6,
+      "temporal_accuracy": 1.0,
+      "applicability_accuracy": 0.833,
+      "n": 16
+    },
+    "single-agent orchestration": {
+      "answer_accuracy": 0.375,
+      "hallucinated": 0.0,
+      "citation_precision": 1.0,
+      "citation_recall": 1.0,
+      "retrieval_recall_at_k": 1.0,
+      "structural_retrieval_accuracy": 0.6,
+      "temporal_accuracy": 0.0,
+      "applicability_accuracy": 0.0,
+      "n": 16
+    }
+  },
+  "n_items": 16
+}

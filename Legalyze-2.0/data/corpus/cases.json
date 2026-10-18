@@ -1,0 +1,38 @@
+[
+  {
+    "case_id": "ICJ_GABCIKOVO_1997",
+    "title": "Gabčíkovo-Nagymaros Project (Hungary/Slovakia)",
+    "court": "International Court of Justice",
+    "date": "1997-09-25",
+    "case_number": "General List No. 92",
+    "instrument_links": ["VCLT"],
+    "summary": "The Court applied the Vienna Convention on the Law of Treaties, treating its rules on treaty termination and suspension (including material breach under Article 60 and the customary rules reflected in the Convention) as applicable, and held that a state of necessity is not a ground for terminating a treaty. It confirmed that a party may not terminate or suspend a treaty except on grounds recognised by the law of treaties.",
+    "source_url": "https://www.icj-cij.org/case/92",
+    "provenance": {
+      "source_url": "https://www.icj-cij.org/case/92",
+      "retrieved_at": "",
+      "document_id": "ICJ Reports 1997, p. 7",
+      "institution": "International Court of Justice",
+      "sha256": "",
+      "note": "Case metadata and widely-documented holding summary; full text to be indexed from the ICJ case page."
+    }
+  },
+  {
+    "case_id": "ICJ_NICARAGUA_1986",
+    "title": "Military and Paramilitary Activities in and against Nicaragua (Nicaragua v. United States of America)",
+    "court": "International Court of Justice",
+    "date": "1986-06-27",
+    "case_number": "General List No. 70",
+    "instrument_links": ["UN_CHARTER"],
+    "summary": "The Court addressed the prohibition of the threat or use of force and held that the principle in Article 2, paragraph 4, of the United Nations Charter also reflects customary international law. It examined the right of self-defence under Article 51 and the conditions of necessity and proportionality.",
+    "source_url": "https://www.icj-cij.org/case/70",
+    "provenance": {
+      "source_url": "https://www.icj-cij.org/case/70",
+      "retrieved_at": "",
+      "document_id": "ICJ Reports 1986, p. 14",
+      "institution": "International Court of Justice",
+      "sha256": "",
+      "note": "Case metadata and widely-documented holding summary; full text to be indexed from the ICJ case page."
+    }
+  }
+]

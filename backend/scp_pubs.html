@@ -1,0 +1,945 @@
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <!-- Google Analytics (GA4) -->
+    <script async src="https://www.googletagmanager.com/gtag/js?id=G-L13RMC2T9C"></script>
+    <script>
+      window.dataLayer = window.dataLayer || [];
+      function gtag(){dataLayer.push(arguments);}
+      gtag('js', new Date());
+      gtag('config', 'G-L13RMC2T9C');
+    </script>
+
+    <meta charset="UTF-8" /><meta name="viewport" content="width=device-width, initial-scale=1.0" /><title>
+	Research Centre Publications - Supreme Court of Pakistan
+</title><link rel="icon" type="image/png" href="/images/fabicon.png" /><link rel="stylesheet" href="/Content/tailwind.css" />
+
+    <!-- Google Fonts: Noto Sans + Playfair Display -->
+    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans:ital,wght@0,300;0,400;0,500;0,600;0,700;1,400&amp;family=Playfair+Display:wght@400;500;600;700&amp;display=swap" rel="stylesheet" />
+
+    <!-- Font Awesome Icons -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css" />
+
+    <!-- Header-only styles (dropdown / mobile-menu behavior) -->
+    <link rel="stylesheet" href="/Content/header.css" />
+
+    <!-- Site-wide styles -->
+    <link rel="stylesheet" href="/Content/styles.css" />
+    <style>
+/* ══ Research Centre Publications Page ══ */
+.dl-main { max-width: 1200px; margin: 0 auto; padding: 48px 28px 80px; }
+
+/* Table card */
+.dl-card {
+  background: #fff; border-radius: 14px;
+  border: 1px solid #dce8e1;
+  box-shadow: 0 2px 16px rgba(26,60,46,.07);
+  overflow: hidden;
+}
+
+/* Toolbar */
+.dl-toolbar {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 18px 24px; border-bottom: 1px solid #eef4f0;
+  flex-wrap: wrap; gap: 14px; background: #fafcfb;
+}
+.dl-disp {
+  display: flex; align-items: center;
+  gap: 10px; font-family: 'Noto Sans', sans-serif;
+}
+.dl-disp-lbl { font-size: 13px; color: #5a7a6a; font-weight: 500; }
+.dl-disp-sel {
+  background: #fff; border: 1.5px solid #dce8e1;
+  color: #1A3C2E; font-size: 13px; font-weight: 600;
+  padding: 6px 12px; border-radius: 7px; outline: none;
+  cursor: pointer; font-family: 'Noto Sans', sans-serif;
+  transition: border-color .2s;
+}
+.dl-disp-sel:focus { border-color: #1A3C2E; }
+.dl-disp-suf { font-size: 12px; color: #9db5a6; }
+.dl-search {
+  display: flex; align-items: center; gap: 10px;
+  font-family: 'Noto Sans', sans-serif;
+}
+.dl-search label { font-size: 13px; color: #5a7a6a; font-weight: 500; }
+.dl-search-wrap { position: relative; }
+.dl-search-wrap i {
+  position: absolute; left: 11px; top: 50%;
+  transform: translateY(-50%); color: #9db5a6; font-size: 12px;
+}
+.dl-search input {
+  background: #fff; border: 1.5px solid #dce8e1;
+  padding: 8px 14px 8px 32px; border-radius: 8px;
+  font-size: 13px; outline: none; width: 220px;
+  transition: border-color .2s;
+  font-family: 'Noto Sans', sans-serif; color: #1a1a1a;
+}
+.dl-search input:focus { border-color: #1A3C2E; }
+.dl-search input::placeholder { color: #b0bcb6; }
+
+/* Table */
+.dl-tbl-wrap { overflow-x: auto; }
+.dl-tbl { width: 100%; border-collapse: collapse; }
+.dl-tbl thead tr { background: #f4f8f5; }
+.dl-tbl th {
+  text-align: left; padding: 13px 22px;
+  font-size: 12px; font-weight: 700; color: #1A3C2E;
+  border-bottom: 2px solid #dce8e1;
+  white-space: nowrap; cursor: pointer; user-select: none;
+  font-family: 'Noto Sans', sans-serif; letter-spacing: .04em;
+  text-transform: uppercase;
+}
+.dl-tbl th .sort-ic { margin-left: 5px; font-size: 9px; color: #9db5a6; }
+.dl-tbl th.sorted .sort-ic { color: #C9A84C; }
+.dl-tbl tbody tr { border-bottom: 1px solid rgba(26,60,46,.07); transition: background .18s; }
+.dl-tbl tbody tr:nth-child(even) { background: #f4f8f5; }
+.dl-tbl tbody tr:nth-child(odd) { background: #ffffff; }
+.dl-tbl tbody tr:hover { background: #e6f0eb; border-bottom-color: rgba(26,60,46,.07); }
+.dl-tbl tbody tr:last-child { border-bottom: none; }
+.dl-tbl td { padding: 16px 22px; font-size: 13.5px; color: #2E4538; font-family: 'Noto Sans', sans-serif; vertical-align: middle; }
+
+/* Title cell */
+.dl-doc-title { font-weight: 600; color: #1A3C2E; line-height: 1.45; }
+.dl-doc-title:hover { color: #C9A84C; }
+
+/* Category link */
+.dl-cat-link {
+  font-size: 12.5px; color: #2563a8; font-weight: 500;
+  display: inline-flex; align-items: center; gap: 5px;
+  transition: color .18s;
+}
+.dl-cat-link:hover { color: #1A3C2E; }
+
+/* PDF download button */
+.dl-pdf-btn {
+  display: inline-flex; flex-direction: column;
+  align-items: center; justify-content: center;
+  width: 42px; height: 42px;
+  background: #fff5f5; border: 1.5px solid #ffd5d5;
+  border-radius: 9px; text-decoration: none;
+  transition: all .22s; gap: 1px;
+}
+.dl-pdf-btn:hover { transform: translateY(-2px); box-shadow: 0 4px 14px rgba(211,47,47,.18); background: #fff0f0; }
+.dl-pdf-top { font-size: 7px; font-weight: 900; color: #D32F2F; letter-spacing: .5px; line-height: 1; }
+.dl-pdf-ic { font-size: 16px; color: #D32F2F; line-height: 1; }
+
+/* Date cell */
+.dl-date { font-size: 12.5px; color: #7a9085; white-space: nowrap; }
+
+/* Empty state */
+.dl-empty td {
+  text-align: center; padding: 56px 22px;
+  color: #9db5a6; font-size: 14px;
+}
+
+/* Footer */
+.dl-tbl-foot {
+  display: flex; align-items: center;
+  justify-content: space-between;
+  padding: 16px 24px; border-top: 1px solid #eef4f0;
+  flex-wrap: wrap; gap: 12px;
+}
+.dl-result-info { font-size: 13px; color: #7a9085; font-family: 'Noto Sans', sans-serif; }
+.dl-pager { display: flex; align-items: center; gap: 6px; }
+.dl-pg {
+  font-size: 13px; font-weight: 600; color: #9db5a6;
+  padding: 7px 15px; border-radius: 7px;
+  cursor: not-allowed; background: #f4f8f5;
+  border: 1px solid #dce8e1; font-family: 'Noto Sans', sans-serif;
+  transition: all .18s;
+}
+.dl-pg.on { background: #1A3C2E; color: #fff; border-color: #1A3C2E; cursor: default; }
+.dl-pg.clickable { color: #1A3C2E; cursor: pointer; }
+.dl-pg.clickable:hover { background: #1A3C2E; color: #fff; border-color: #1A3C2E; }
+
+/* Responsive */
+@media(max-width: 768px) {
+  .dl-toolbar { flex-direction: column; align-items: stretch; }
+  .dl-search input { width: 100%; }
+  .dl-tbl-foot { flex-direction: column; align-items: flex-start; }
+}
+@media(max-width: 560px) {
+  .dl-main { padding: 28px 16px 60px; }
+}
+</style>
+
+
+    <!-- Reversible site-wide upright-text policy; loaded last to override
+         page-specific italics. Database-authored judge biographies opt out. -->
+    <link rel="stylesheet" href="/Content/no-italics.css" />
+
+    <!-- Header behavior overrides - plain hand-written CSS, not relying on
+         any Tailwind utility class (tailwind.css here is a purged/JIT build
+         containing only classes the original design actually used, so any
+         new class combination invented later may silently not exist - see
+         chat history for how this bit us before on the stats bar). -->
+    <style>
+      /* Top black info bar: hidden on mobile (clutters limited space, all
+         those links are reachable via the hamburger menu anyway), shown
+         normally on desktop. Same 1024px breakpoint the nav already uses
+         to switch between hamburger and full menu, for consistency. */
+      .scp-topbar { display: none; }
+      @media (min-width: 1024px) { .scp-topbar { display: block; } }
+
+      /* Main header (logo + search + nav): sticky on desktop only. On
+         mobile it scrolls away normally with the rest of the page - no
+         sticky/fixed positioning at all there. */
+      .scp-sticky-header { position: static; }
+      @media (min-width: 1024px) {
+        .scp-sticky-header { position: sticky; top: 0; z-index: 999; }
+      }
+
+      /* Temporary PFC launch header. These rules are deliberately plain CSS:
+         the site's Tailwind build is purged and does not contain every spacing
+         utility used by newly-added markup. */
+      .launch-header { background:#fff; box-shadow:0 2px 10px rgba(0,0,0,.10); }
+      .launch-header-inner {
+        max-width:1280px; margin:0 auto; padding:12px 24px;
+        display:flex; align-items:center; justify-content:flex-start;
+      }
+      .launch-header-logo { display:block; flex:0 0 auto; }
+      .launch-header-logo img { display:block; height:64px; width:auto; }
+
+      /* Site status badge: kept with the logo so it is consistently visible
+         without competing with navigation or page-specific headings. */
+      .site-brand-lockup { display:inline-flex; align-items:flex-start; gap:8px; }
+      .site-beta-badge {
+        margin-top:3px; padding:3px 7px;
+        border:1px solid rgba(201,168,76,.65); border-radius:999px;
+        background:#fbf7e8; color:#1A3C2E;
+        font:700 9px/1 'Noto Sans',sans-serif;
+        letter-spacing:.12em; text-transform:uppercase; white-space:nowrap;
+      }
+      @media (max-width: 900px) {
+        .launch-header-inner { padding:10px 16px; }
+        .launch-header-logo img { height:54px; }
+      }
+      @media (max-width: 600px) {
+        .launch-header-logo img { height:52px; }
+        .site-brand-lockup { gap:5px; }
+        .site-beta-badge { padding:3px 6px; font-size:8px; }
+      }
+    </style>
+</head>
+    <script>
+        function doHeaderSearch() {
+            var input = document.getElementById('headerSearchInput');
+            var val = input.value.trim();
+            if (val) {
+                window.location.href = 'SiteSearch.aspx?q=' + encodeURIComponent(val);
+            }
+        }
+</script>
+<body class="bg-white antialiased">
+
+    <form method="post" action="./ResearchCentrePublications" id="form1">
+<div class="aspNetHidden">
+<input type="hidden" name="__VIEWSTATE" id="__VIEWSTATE" value="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" />
+</div>
+
+<div class="aspNetHidden">
+
+	<input type="hidden" name="__VIEWSTATEGENERATOR" id="__VIEWSTATEGENERATOR" value="B0AABA96" />
+</div>
+
+<!-- ============================================================
+     SITE HEADER (static markup — originally injected by header.js
+     from header.html; now part of the master page directly)
+     ============================================================ -->
+    <!-- TOP INFO BAR -->
+    
+    <div style="background:#1c1c1c; font-size:12px;" class="text-white scp-topbar">
+      <div class="max-w-7xl mx-auto px-4 lg:px-10 flex items-center justify-between py-2 gap-4 flex-wrap">
+        <div class="flex items-center gap-3 flex-wrap text-xs">
+          <a href="AntiCorruptionHotline.aspx" class="flex items-center gap-1.5 font-semibold hover:text-white transition-colors">
+            <span class="inline-block w-2 h-2 rounded-full bg-red-500 shrink-0"></span>
+            Anti-Corruption Hotline
+          </a>
+          <span class="text-gray-500">|</span>
+          <span style="color:#E8934A;" class="font-medium">SMS: 0326-4442444</span>
+          <span class="text-gray-500">|</span>
+          <span style="color:#E8934A;" class="font-medium">WhatsApp: 0329-0266663</span>
+          <span class="text-gray-500 hidden sm:inline">|</span>
+          <span class="text-gray-300 hidden sm:inline">Overseas Litigant Facilitation Cell</span>
+        </div>
+        <div class="flex items-center gap-5 shrink-0 text-gray-300 text-xs">
+          <a href="CauseList.aspx" class="flex items-center gap-1.5 hover:text-white transition-colors">
+            <i class="fas fa-file-alt" style="font-size:10px;"></i> Cause List
+          </a>
+          <a href="Newsletter.aspx" class="flex items-center gap-1.5 hover:text-white transition-colors">
+            <i class="fas fa-newspaper" style="font-size:10px;"></i> Newsletter
+          </a>
+          <a href="VideoLink.aspx" class="flex items-center gap-1.5 hover:text-white transition-colors">
+            <i class="fas fa-video" style="font-size:10px;"></i> Video Link
+          </a>
+          <a href="AllDownloads.aspx" class="flex items-center gap-1.5 hover:text-white transition-colors">
+            <i class="fas fa-download" style="font-size:10px;"></i> Downloads
+          </a>
+        </div>
+      </div>
+    </div>
+
+    <!-- MAIN HEADER -->
+    <header class="bg-white shadow-md scp-sticky-header">
+
+      <div class="max-w-7xl mx-auto px-4 lg:px-10">
+        <div class="flex items-center gap-4 lg:gap-8 py-3">
+
+          <!-- Logo -->
+          <a href="Default.aspx" class="shrink-0 site-brand-lockup">
+            <img src="/images/logo.png" alt="Supreme Court of Pakistan" class="h-16 w-auto object-contain">
+            <span class="site-beta-badge" aria-label="Beta version">Beta</span>
+          </a>
+
+          <!-- Search Box + PFC -->
+          <div class="flex-1 hidden md:flex items-center gap-3 max-w-2xl mx-auto">
+            <div class="flex w-full border border-gray-300 rounded-md overflow-hidden shadow-sm">
+              <input type="text" id="headerSearchInput" placeholder="Search cases, judgments, notices..."
+                     class="flex-1 px-4 py-2.5 text-sm outline-none text-gray-700 bg-white"
+                     onkeypress="if(event.key === 'Enter'){ doHeaderSearch(); }">
+              <button type="button" class="px-5 py-2.5 text-white shrink-0" style="background:#1A3C2E;" onclick="doHeaderSearch()">
+                <i class="fas fa-search text-sm"></i>
+              </button>
+            </div>
+            <a href="PFC.aspx" target="_blank" rel="noopener" class="pfc-btn shrink-0">
+              <span class="pfc-btn-ic"><i class="fas fa-building-columns"></i></span>
+              <span class="pfc-btn-txt">
+                <span class="pfc-btn-title">PFC<i class="fas fa-arrow-up-right-from-square pfc-btn-ext"></i></span>
+                <span class="pfc-btn-sub">Public Facilitation Centre</span>
+              </span>
+            </a>
+          </div>
+
+          <!-- Contact + Get App -->
+          <div class="hidden lg:flex flex-col items-end gap-1 shrink-0">
+            <div class="flex items-center gap-2 text-sm">
+              <i class="fas fa-phone-alt" style="color:#1A3C2E; font-size:13px;"></i>
+              <span class="font-extrabold text-lg leading-none" style="color:#1A3C2E;">1818</span>
+              <span class="text-gray-500 text-xs">Public Helpline</span>
+            </div>
+            
+            <a href="https://play.google.com/store/apps/details?id=pk.gov.supremecourt&hl=en" class="mt-1 px-5 py-1.5 rounded text-white text-xs font-semibold flex items-center gap-2 btn-green" target="_blank">
+              <i class="fas fa-mobile-alt text-sm"></i> Get App
+            </a>
+          </div>
+
+          <!-- Mobile Hamburger -->
+          <button type="button" id="mobileToggle" class="lg:hidden p-2 text-gray-700 ml-auto">
+            <i class="fas fa-bars text-xl"></i>
+          </button>
+
+        </div>
+      </div>
+
+      <!-- NAV ROW -->
+      <div class="border-t border-gray-100" style="border-bottom:3px solid #C9A84C;">
+        <div class="max-w-7xl mx-auto px-4 lg:px-10">
+          <nav class="hidden lg:flex items-center text-sm font-medium">
+
+            <div class="has-drop">
+              <a href="#" class="nav-a flex items-center gap-1 px-4 py-4">
+                About <i class="fas fa-chevron-down ml-1" style="font-size:8px;"></i>
+              </a>
+              <div class="drop-menu">
+                <a href="History.aspx">History</a>
+                <a href="Building.aspx">Building</a>
+
+                <!-- Branches — nested -->
+                <div class="has-sub">
+                  <a href="#">
+                    Branches
+                    <i class="fas fa-chevron-right" style="font-size:9px; color:#aaa;"></i>
+                  </a>
+                  <div class="sub-menu">
+                    <a href="LahoreBranch.aspx">Lahore Branch Registry</a>
+                    <a href="KarachiBranch.aspx">Karachi Branch Registry</a>
+                    <a href="PeshawarBranch.aspx">Peshawar Branch Registry</a>
+                    <a href="QuettaBranch.aspx">Quetta Branch Registry</a>
+                  </div>
+                </div>
+
+                <!-- Judiciary — nested -->
+                <div class="has-sub">
+                  <a href="#">
+                    Judiciary
+                    <i class="fas fa-chevron-right" style="font-size:9px; color:#aaa;"></i>
+                  </a>
+                  <div class="sub-menu">
+                    <a href="CourtAdministration.aspx">Court Administration</a>
+                    <a href="FederalJudicialAcademy.aspx">Federal Judicial Academy</a>
+                    <a href="Judicature.aspx">Judicature</a>
+                    <a href="JudicialCommissionofPakistan.aspx">Judicial Commission of Pakistan</a>
+                    <a href="JudicialSystem.aspx">Judicial System of Pakistan</a>
+                    <a href="LawJusticeCommission.aspx">Law and Justice Commission</a>
+                    <a href="SupremeCourtRules.aspx">Supreme Court Rules</a>
+                    <a href="SupremeJudicialCouncil.aspx">Supreme Judicial Council</a>
+                  </div>
+                </div>
+
+                <a href="Administration.aspx">Administration</a>
+                <a href="Newsletter.aspx">Quarterly Newsletter</a>
+              </div>
+            </div>
+
+            <div class="has-drop">
+              <a href="#" class="nav-a flex items-center gap-1 px-4 py-4">
+                Judges <i class="fas fa-chevron-down ml-1" style="font-size:8px;"></i>
+              </a>
+              <div class="drop-menu">
+                <a href="ChiefJustice.aspx">Honorable Chief Justice of Pakistan</a>
+                <a href="HonorableJudges.aspx">Honorable Judges</a>
+                <a href="JudgesAppointment.aspx">Judges Appointment &amp; Court Composition</a>
+              </div>
+            </div>
+
+            <div class="has-drop">
+              <a href="#" class="nav-a flex items-center gap-1 px-4 py-4">
+                Case Management <i class="fas fa-chevron-down ml-1" style="font-size:8px;"></i>
+              </a>
+              <div class="drop-menu">
+                <a href="OnlineCaseInformation.aspx">Online Case Status</a>
+                <a href="JudgmentsSearch.aspx">Judgement Search</a>
+                <a href="CauseList.aspx">Cause List</a>
+                <a href="CauseListSearch.aspx">Cause List Search</a>
+                <a href="LatestJudgments.aspx">Latest Judgments</a>
+                <a href="VideoLink.aspx">Video Link</a>
+                <a href="RosterofSittings.aspx">Roster of Sittings</a>
+                <a href="FortnightlyDisposalReport.aspx">Fortnightly Disposal Report</a>
+              </div>
+            </div>
+
+            <div class="has-drop">
+              <a href="#" class="nav-a flex items-center gap-1 px-4 py-4">
+                Library <i class="fas fa-chevron-down ml-1" style="font-size:8px;"></i>
+              </a>
+              <div class="drop-menu">
+                <a href="#">Portal</a>
+                <a href="AnnualReports.aspx">Annual Reports</a>
+              </div>
+            </div>
+
+            <a href="Museum.aspx" class="nav-a px-4 py-4">Museum</a>
+
+            <div class="has-drop">
+              <a href="#" class="nav-a flex items-center gap-1 px-4 py-4">
+                Research Centre <i class="fas fa-chevron-down ml-1" style="font-size:8px;"></i>
+              </a>
+              <div class="drop-menu">
+                <a href="ResearchCentre.aspx">Introduction</a>
+                <a href="ResearchCentrePublications.aspx">Publications</a>
+                <a href="ScrcTeamMembers.aspx">Team Members</a>
+              </div>
+            </div>
+
+            <a href="PressRelease.aspx" class="nav-a px-4 py-4">Press Release</a>
+
+            <div class="has-drop">
+              <a href="Gallery.aspx" class="nav-a flex items-center gap-1 px-4 py-4">
+                Media Gallery <i class="fas fa-chevron-down ml-1" style="font-size:8px;"></i>
+              </a>
+              <div class="drop-menu">
+                <a href="Gallery.aspx">Photo Gallery</a>
+                <a href="VideoGallery.aspx">Videos Gallery</a>
+              </div>
+            </div>
+
+            <div class="has-drop">
+              <a href="#" class="nav-a flex items-center gap-1 px-4 py-4">
+                Public Portal <i class="fas fa-chevron-down ml-1" style="font-size:8px;"></i>
+              </a>
+              <div class="drop-menu">
+                <a href="PFC.aspx">Applications Status</a>
+                <a href="PFC.aspx">Information</a>
+                <a href="PFC.aspx">Feedback / Complaints</a>
+                <a href="AntiCorruptionHotline.aspx">Anti-Corruption Hotline</a>
+                <a href="OSComplaints.aspx">Overseas Litigants Facilitation Cell</a>
+                <a href="Helpline.aspx">Helpline</a>
+                <a href="Faq.aspx">Frequently Asked Questions</a>
+              </div>
+            </div>
+
+            <a href="ContactUs.aspx" class="nav-a px-4 py-4">Contact Us</a>   
+
+          </nav>
+        </div>
+      </div>
+
+      <!-- Mobile Menu -->
+      <div id="mobileMenu" class="lg:hidden hidden bg-white border-t border-gray-100 shadow-lg">
+        <div class="px-4 py-3">
+          <!-- Mobile Search -->
+          <div class="flex border border-gray-300 rounded overflow-hidden mb-3">
+            <input type="text" placeholder="Search..." class="flex-1 px-3 py-2 text-sm outline-none">
+            <button type="button" class="px-3 py-2 text-white btn-green">
+              <i class="fas fa-search text-sm"></i>
+            </button>
+          </div>
+
+          <!-- About -->
+          <div class="mob-acc-item border-b border-gray-100">
+            <button type="button" class="mob-acc-btn w-full flex items-center justify-between py-2.5 text-gray-700 text-sm font-medium">
+              About <i class="fas fa-chevron-down text-xs text-gray-400 mob-acc-icon transition-transform duration-200"></i>
+            </button>
+            <div class="mob-acc-body hidden pl-3 pb-2">
+              <a href="History.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">History</a>
+              <a href="Building.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Building</a>
+              <!-- Branches sub -->
+              <div class="mob-acc-item">
+                <button type="button" class="mob-acc-btn w-full flex items-center justify-between py-2 border-b border-gray-50 text-gray-600 text-sm">
+                  Branches <i class="fas fa-chevron-down text-xs text-gray-400 mob-acc-icon transition-transform duration-200"></i>
+                </button>
+                <div class="mob-acc-body hidden pl-3 pb-1">
+                  <a href="LahoreBranch.aspx" class="block py-1.5 text-gray-500 text-sm">Lahore Branch Registry</a>
+                  <a href="KarachiBranch.aspx" class="block py-1.5 text-gray-500 text-sm">Karachi Branch Registry</a>
+                  <a href="PeshawarBranch.aspx" class="block py-1.5 text-gray-500 text-sm">Peshawar Branch Registry</a>
+                  <a href="QuettaBranch.aspx" class="block py-1.5 text-gray-500 text-sm">Quetta Branch Registry</a>
+                </div>
+              </div>
+              <!-- Judiciary sub -->
+              <div class="mob-acc-item">
+                <button type="button" class="mob-acc-btn w-full flex items-center justify-between py-2 border-b border-gray-50 text-gray-600 text-sm">
+                  Judiciary <i class="fas fa-chevron-down text-xs text-gray-400 mob-acc-icon transition-transform duration-200"></i>
+                </button>
+                <div class="mob-acc-body hidden pl-3 pb-1">
+                  <a href="CourtAdministration.aspx" class="block py-1.5 text-gray-500 text-sm">Court Administration</a>
+                  <a href="FederalJudicialAcademy.aspx" class="block py-1.5 text-gray-500 text-sm">Federal Judicial Academy</a>
+                  <a href="Judicature.aspx" class="block py-1.5 text-gray-500 text-sm">Judicature</a>
+                  <a href="Downloads.aspx" class="block py-1.5 text-gray-500 text-sm">Judicial Commission of Pakistan</a>
+                  <a href="JudicialSystem.aspx" class="block py-1.5 text-gray-500 text-sm">Judicial System of Pakistan</a>
+                  <a href="LawJusticeCommission.aspx" class="block py-1.5 text-gray-500 text-sm">Law and Justice Commission</a>
+                  <a href="SupremeCourtRules.aspx" class="block py-1.5 text-gray-500 text-sm">Supreme Court Rules</a>
+                  <a href="SupremeJudicialCouncil.aspx" class="block py-1.5 text-gray-500 text-sm">Supreme Judicial Council</a>
+                </div>
+              </div>
+              <a href="Administration.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Administration</a>
+              <a href="Newsletter.aspx" class="block py-2 text-gray-600 text-sm">Quarterly Newsletter</a>
+            </div>
+          </div>
+
+          <!-- Judges -->
+          <div class="mob-acc-item border-b border-gray-100">
+            <button type="button" class="mob-acc-btn w-full flex items-center justify-between py-2.5 text-gray-700 text-sm font-medium">
+              Judges <i class="fas fa-chevron-down text-xs text-gray-400 mob-acc-icon transition-transform duration-200"></i>
+            </button>
+            <div class="mob-acc-body hidden pl-3 pb-2">
+              <a href="ChiefJustice.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Honorable Chief Justice of Pakistan</a>
+              <a href="HonorableJudges.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Honorable Judges</a>
+              <a href="JudgesAppointment.aspx" class="block py-2 text-gray-600 text-sm">Judges Appointment &amp; Court Composition</a>
+            </div>
+          </div>
+
+          <!-- Case Management -->
+          <div class="mob-acc-item border-b border-gray-100">
+            <button type="button" class="mob-acc-btn w-full flex items-center justify-between py-2.5 text-gray-700 text-sm font-medium">
+              Case Management <i class="fas fa-chevron-down text-xs text-gray-400 mob-acc-icon transition-transform duration-200"></i>
+            </button>
+            <div class="mob-acc-body hidden pl-3 pb-2">
+                <a href="OnlineCaseInformation.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Online Case Status</a>
+                <a href="JudgmentsSearch.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Judgement Search</a>
+                <a href="CauseList.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Cause List</a>
+                <a href="CauseListSearch.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Cause List Search</a>
+                <a href="LatestJudgments.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Latest Judgments</a>
+                <a href="VideoLink.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Video Link</a>
+                <a href="RosterofSittings.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Roster of Sittings</a>
+                <a href="FortnightlyDisposalReport.aspx" class="block py-2 text-gray-600 text-sm">Fortnightly Disposal Report</a>
+            </div>
+          </div>
+
+          <!-- Library -->
+          <div class="mob-acc-item border-b border-gray-100">
+            <button type="button" class="mob-acc-btn w-full flex items-center justify-between py-2.5 text-gray-700 text-sm font-medium">
+              Library <i class="fas fa-chevron-down text-xs text-gray-400 mob-acc-icon transition-transform duration-200"></i>
+            </button>
+            <div class="mob-acc-body hidden pl-3 pb-2">
+              <a href="#" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Portal</a>
+              <a href="AnnualReports.aspx" class="block py-2 text-gray-600 text-sm">Annual Reports</a>
+            </div>
+          </div>
+
+          <!-- Museum -->
+          <a href="Museum.aspx" class="block py-2.5 border-b border-gray-100 text-gray-700 text-sm font-medium">Museum</a>
+
+          <!-- Research Centre -->
+          <div class="mob-acc-item border-b border-gray-100">
+            <button type="button" class="mob-acc-btn w-full flex items-center justify-between py-2.5 text-gray-700 text-sm font-medium">
+              Research Centre <i class="fas fa-chevron-down text-xs text-gray-400 mob-acc-icon transition-transform duration-200"></i>
+            </button>
+            <div class="mob-acc-body hidden pl-3 pb-2">
+              <a href="ResearchCentre.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Introduction</a>
+              <a href="ResearchCentrePublications.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Publications</a>
+              <a href="ScrcTeamMembers.aspx" class="block py-2 text-gray-600 text-sm">Team Members</a>
+            </div>
+          </div>
+
+          <!-- Press Release (no dropdown) -->
+          <a href="PressRelease.aspx" class="block py-2.5 border-b border-gray-100 text-gray-700 text-sm font-medium">Press Release</a>
+
+          <!-- Photo Gallery (no dropdown) -->
+          <a href="Gallery.aspx" class="block py-2.5 border-b border-gray-100 text-gray-700 text-sm font-medium">Photo Gallery</a>
+
+          <!-- Videos Gallery (no dropdown) -->
+          <a href="VideoGallery.aspx" class="block py-2.5 border-b border-gray-100 text-gray-700 text-sm font-medium">Videos Gallery</a>
+
+          <!-- Public Portal -->
+          <div class="mob-acc-item border-b border-gray-100">
+            <button type="button" class="mob-acc-btn w-full flex items-center justify-between py-2.5 text-gray-700 text-sm font-medium">
+              Public Portal <i class="fas fa-chevron-down text-xs text-gray-400 mob-acc-icon transition-transform duration-200"></i>
+            </button>
+            <div class="mob-acc-body hidden pl-3 pb-2">
+              <a href="PFC.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Applications Status</a>
+              <a href="PFC.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Information</a>
+              <a href="PFC.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Feedback / Complaints</a>
+              <a href="AntiCorruptionHotline.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Anti-Corruption Hotline</a>
+              <a href="OSComplaints.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Overseas Litigants Facilitation Cell</a>
+              <a href="Helpline.aspx" class="block py-2 border-b border-gray-50 text-gray-600 text-sm">Helpline</a>
+              <a href="Faq.aspx" class="block py-2 text-gray-600 text-sm">Frequently Asked Questions</a>
+            </div>
+          </div>
+
+          <!-- Contact Us (no dropdown) -->
+          <a href="ContactUs.aspx" class="block py-2.5 text-gray-700 text-sm font-medium">Contact Us</a>
+        </div>
+      </div>
+
+    </header>
+    
+
+    
+<!-- ============================================================
+     END SITE HEADER
+     ============================================================ -->
+
+    
+<!-- HERO -->
+<section class="jdg-hero">
+  <div class="jdg-hero-bg" style="background-image:url('images/Press Release/bgpress.png');"></div>
+
+  <div class="relative z-10 flex flex-col items-center justify-center text-center px-6 h-full">
+    <p class="jdg-hero-tag">Research Centre</p>
+    <h1 class="jdg-hero-title">Research Centre Publications</h1>
+    <nav class="hist-breadcrumb" style="margin-top:18px;">
+      <a href="Default.aspx">Home</a><span>/</span>
+      <a href="#">Research Centre</a><span>/</span>
+      <span class="hist-bc-active">Publications</span>
+    </nav>
+  </div>
+</section>
+
+<!-- MAIN -->
+<div class="dl-main">
+
+  <!-- TABLE CARD -->
+  <div class="dl-card">
+
+    <!-- TOOLBAR -->
+    <div class="dl-toolbar">
+      <div class="dl-disp">
+        <span class="dl-disp-lbl">Display</span>
+        <select class="dl-disp-sel" id="dl-per-page">
+          <option value="10" selected>10</option>
+          <option value="25">25</option>
+          <option value="50">50</option>
+          <option value="100">100</option>
+        </select>
+        <span class="dl-disp-suf">downloads per page</span>
+      </div>
+      <div class="dl-search">
+        <label>Search:</label>
+        <div class="dl-search-wrap">
+          <i class="fas fa-search"></i>
+          <input type="text" id="dl-search-input" placeholder="Search documents...">
+        </div>
+      </div>
+    </div>
+
+    <!-- TABLE -->
+    <div class="dl-tbl-wrap">
+      <table class="dl-tbl" id="dl-table">
+        <thead>
+          <tr>
+            <th data-col="title">Title <span class="sort-ic"><i class="fas fa-sort"></i></span></th>
+            <th data-col="category">Document Type <span class="sort-ic"><i class="fas fa-sort"></i></span></th>
+            <th data-col="download">Download</th>
+            <th data-col="date" class="sorted">Upload Date <span class="sort-ic"><i class="fas fa-sort-down" style="color:#C9A84C;"></i></span></th>
+          </tr>
+        </thead>
+        <tbody id="dl-tbody">
+          <!-- Rows injected by JS -->
+        </tbody>
+      </table>
+    </div>
+
+    <!-- FOOTER -->
+    <div class="dl-tbl-foot">
+      <div class="dl-result-info" id="dl-info">Showing 1 to 10 of 10 downloads</div>
+      <div class="dl-pager" id="dl-pager">
+        <div class="dl-pg">Previous</div>
+        <div class="dl-pg on">1</div>
+        <div class="dl-pg">Next</div>
+      </div>
+    </div>
+
+  </div>
+
+</div>
+
+
+<!-- ============================================================
+     SITE FOOTER (static markup — originally injected by footer.js
+     from footer.html; now part of the master page directly)
+     ============================================================ -->
+    
+    <footer style="background:linear-gradient(180deg,#0d2a1c 0%,#0a2016 100%);">
+
+      <!-- Quick links bar -->
+      <div style="background:rgba(0,0,0,0.18); border-bottom:1px solid rgba(255,255,255,0.07);">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 py-3.5 flex flex-wrap items-center gap-x-6 gap-y-2">
+          <span class="text-xs font-semibold uppercase tracking-widest" style="color:#C9A84C;">Quick Links</span>
+          <span style="color:rgba(255,255,255,0.2);">|</span>
+          <a href="OnlineCaseInformation.aspx" class="ftr-quick">Online Case Search</a>
+          <a href="JudgmentsSearch.aspx" class="ftr-quick">Judgement Search</a>
+          <a href="CauseList.aspx" class="ftr-quick">Cause List Search</a>
+          <a href="LatestJudgments.aspx" class="ftr-quick">Latest Judgments</a>
+          <a href="PressRelease.aspx" class="ftr-quick">Press Release</a>
+          <a href="#" class="ftr-quick">e-Filing</a>
+        </div>
+      </div>
+
+      <!-- Main columns -->
+      <div class="max-w-7xl mx-auto px-6 lg:px-12 py-10">
+        <div class="grid grid-cols-2 sm:grid-cols-4 gap-8">
+
+          <!-- Col 1 -->
+          <div>
+            <h5 class="ftr-heading">About &amp; Services</h5>
+            <ul class="ftr-list">
+              <li><a href="SupremeJudicialCouncil.aspx">Supreme Judicial Council</a></li>
+              <li><a href="JudicialCommissionofPakistan.aspx">Judicial Commission of Pakistan</a></li>
+              <li><a href="NationalJudicialPolicy.aspx">National Judicial Policy 2009</a></li>
+              <li><a href="Conferences.aspx">Conferences</a></li>
+              <li><a href="FortnightlyDisposalReport.aspx">Fortnightly Disposal Report</a></li>
+              <li><a href="LawClerkshipProgram.aspx">Law Clerkship Program</a></li>
+              <li><a href="Downloads.aspx?type=Minutes of the Meeting of the Committee">Minutes of Committee Meetings</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 2 -->
+          <div>
+            <h5 class="ftr-heading">Resources</h5>
+            <ul class="ftr-list">
+              <li><a href="#">Library</a></li>
+              <li><a href="Museum.aspx">Museum</a></li>
+              <li><a href="AllDownloads.aspx">All Downloads</a></li>
+              <li><a href="PressRelease.aspx">In the Press</a></li>
+              <li><a href="Gallery.aspx">Photo Gallery</a></li>
+              <li><a href="FederalProvincialCode.aspx">Federal and Provincial Code</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 3 -->
+          <div>
+            <h5 class="ftr-heading">Information</h5>
+            <ul class="ftr-list">
+              <li><a href="Careers.aspx">Careers</a></li>
+              <li><a href="Faq.aspx">Frequently Asked Questions</a></li>
+              <li><a href="Downloads.aspx?type=Forms">Forms</a></li>
+              <li><a href="https://www.ljcp.gov.pk/SliderDetail/NmJhZmVhY2MtMTkxYS00ODM5LTg4NjItNzQ1YTcxNTAyN2Vm">75 Years of Judiciary</a></li>
+              <li><a href="Downloads.aspx?type=NotificationsCirculars">Notifications / Circulars</a></li>
+              <li><a href="https://scp.gov.pk/AdvGeneralAdj">General Adjournments</a></li>
+            </ul>
+          </div>
+
+          <!-- Col 4: App + Social -->
+          <div>
+            <h5 class="ftr-heading">Supreme Court App</h5>
+            <p class="text-xs mb-5" style="color:rgba(255,255,255,0.50); line-height:1.6;">Get your information on the go. Download the official app for case updates, judgments &amp; more.</p>
+
+            <a href="https://play.google.com/store/apps/details?id=pk.gov.supremecourt&hl=en" class="inline-flex items-center gap-3 rounded-xl px-4 py-3 mb-3"
+               style="background:#111; border:1px solid rgba(255,255,255,0.12); transition:background .2s;"
+               onmouseover="this.style.background='#1a1a1a'" onmouseout="this.style.background='#111'" target="_blank">
+              <i class="fab fa-google-play" style="color:#4FC3F7; font-size:24px;"></i>
+              <div>
+                <div style="color:rgba(255,255,255,0.5); font-size:9px; letter-spacing:.06em;">GET IT ON</div>
+                <div class="text-white font-semibold" style="font-size:14px;">Google Play</div>
+              </div>
+            </a>
+
+            
+
+            <!-- Social icons -->
+            
+          </div>
+
+        </div>
+      </div>
+
+      <!-- Copyright bar -->
+      <div style="border-top:1px solid rgba(255,255,255,0.08);">
+        <div class="max-w-7xl mx-auto px-6 lg:px-12 py-4 flex flex-col sm:flex-row items-center justify-between gap-3">
+          <p class="text-xs" style="color:rgba(255,255,255,0.40);">
+            Copyright &copy; 2026 Supreme Court of Pakistan. All Rights Reserved
+          </p>
+          <div class="flex items-center gap-5">
+            <a href="#" class="text-xs hover:text-white" style="color:rgba(255,255,255,0.40); transition:color .18s;">Privacy Policy</a>
+            <a href="#" class="text-xs hover:text-white" style="color:rgba(255,255,255,0.40); transition:color .18s;">Terms of Use</a>
+            <a href="Sitemap.aspx" class="text-xs hover:text-white" style="color:rgba(255,255,255,0.40); transition:color .18s;">Sitemap</a>
+          </div>
+        </div>
+      </div>
+
+    </footer>
+    
+<!-- ============================================================
+     END SITE FOOTER
+     ============================================================ -->
+
+    
+<link rel="stylesheet" href="/Content/accessibility.css" />
+<div id="scp-accessibility" class="scp-a11y" hidden>
+    <button type="button" id="scp-a11y-toggle" class="scp-a11y-toggle" aria-label="Accessibility options" aria-controls="scp-a11y-panel" aria-expanded="false">
+        <svg aria-hidden="true" viewBox="0 0 24 24" width="26" height="26" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><circle cx="12" cy="4" r="2" /><path d="M4 8l8 2 8-2M12 10v5m0 0l-4 6m4-6l4 6" /></svg>
+        <span class="scp-a11y-toggle-label">Accessibility</span>
+    </button>
+    <section id="scp-a11y-panel" class="scp-a11y-panel" role="dialog" aria-labelledby="scp-a11y-title" hidden>
+        <div class="scp-a11y-heading">
+            <h2 id="scp-a11y-title">Accessibility options</h2>
+            <button type="button" id="scp-a11y-close" aria-label="Close accessibility options">&times;</button>
+        </div>
+        <div class="scp-a11y-body">
+            <p id="scp-a11y-size-label">Text size</p>
+            <div class="scp-a11y-size" role="group" aria-labelledby="scp-a11y-size-label">
+                <button type="button" id="scp-a11y-smaller" aria-label="Decrease text size">A&minus;</button>
+                <button type="button" id="scp-a11y-default" aria-label="Restore default text size">Default</button>
+                <button type="button" id="scp-a11y-larger" aria-label="Increase text size">A+</button>
+            </div>
+            <p id="scp-a11y-status" class="scp-a11y-status" role="status" aria-live="polite" aria-atomic="true">Text size: 100%</p>
+            <label class="scp-a11y-option"><input type="checkbox" id="scp-a11y-underline" /> <span>Underline links</span></label>
+            <label class="scp-a11y-option"><input type="checkbox" id="scp-a11y-contrast" /> <span>High contrast</span></label>
+            <button type="button" id="scp-a11y-reset" class="scp-a11y-reset">Reset all settings</button>
+            <p class="scp-a11y-note">Preferences are saved in this browser. Keyboard focus is always highlighted.</p>
+        </div>
+    </section>
+</div>
+<script src="/Scripts/accessibility.js" defer></script>
+
+    </form>
+
+    <!-- Shared site JavaScript -->
+    <script src="/Scripts/app.js"></script>
+    <script src="/Scripts/site-header.js"></script>
+
+    
+<script>
+const DL_DATA = [{title:'Quarterly Case Law Update - (Jul-Sep 2026)',category:'Research Centre Publications',file:'documents/all_downloads/research_centre_publications/Case_Law_Update_Jul_Sep_2026.pdf',date:'October 9, 2026',date_ts:new Date('2026-10-09')},{title:'Quarterly Case Law Update - (Apr-Jun 2026)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Apr_Jun_2026.pdf',date:'July 7, 2026',date_ts:new Date('2026-07-07')},{title:'Quarterly Case Law Update - (Jan-Mar 2026)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Jan_Mar_2026.pdf',date:'May 13, 2026',date_ts:new Date('2026-05-13')},{title:'Quarterly Case Law Update - (Oct-Dec 2025)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Oct_Dec_2025.pdf',date:'January 15, 2026',date_ts:new Date('2026-01-15')},{title:'Quarterly Case Law Update - (Jul-Sep 2025)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Jul_Sep_2025.pdf',date:'October 14, 2025',date_ts:new Date('2025-10-14')},{title:'Quarterly Case Law Update - (Apr-Jun 2025)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Apr_Jun_2025.pdf',date:'August 7, 2025',date_ts:new Date('2025-08-07')},{title:'Quarterly Case Law Update - (Jan-Mar 2025)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Jan_Mar_2025.pdf',date:'May 16, 2025',date_ts:new Date('2025-05-16')},{title:'Quarterly Case Law Update - (Oct-Dec 2024)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Oct_Dec_2024.pdf',date:'February 11, 2025',date_ts:new Date('2025-02-11')},{title:'Quarterly Case Law Update - (Jul-Sep 2024)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Jul_Sep_2024.pdf',date:'November 5, 2024',date_ts:new Date('2024-11-05')},{title:'Quarterly Case Law Update - (Apr-Jun 2024)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Apr_Jun_2024.pdf',date:'October 12, 2024',date_ts:new Date('2024-10-12')},{title:'Quarterly Case Law Update - (Jan-Mar 2024)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Jan_Mar_2024.pdf',date:'October 12, 2024',date_ts:new Date('2024-10-12')},{title:'Quarterly Case Law Update - (Jul-Sep 2023)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Jul_Sep_2023.pdf',date:'December 21, 2023',date_ts:new Date('2023-12-21')},{title:'Quarterly Case Law Update - (Apr-Jun 2023)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Apr_Jun_2023.pdf',date:'December 21, 2023',date_ts:new Date('2023-12-21')},{title:'Quarterly Case Law Update - (Jan-Mar 2023)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Jan_Mar_2023.pdf',date:'December 11, 2023',date_ts:new Date('2023-12-11')},{title:'Quarterly Case Law Update - (Oct-Dec 2022)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Oct_Dec_2022_CLUD.pdf',date:'January 28, 2023',date_ts:new Date('2023-01-28')},{title:'Quarterly Case Law Update - (Jan-Mar 2022)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Jan_Mar_2022.pdf',date:'September 6, 2022',date_ts:new Date('2022-09-06')},{title:'Quarterly Case Law Update - (October-December 2021)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_Oct_Dec_2021.pdf',date:'March 28, 2022',date_ts:new Date('2022-03-28')},{title:'Quarterly Case Law Update - (July-September 2021)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_July_Sep_2021.pdf',date:'October 29, 2021',date_ts:new Date('2021-10-29')},{title:'Quarterly Case Law Update - (April-June 2021)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_April_June_2021.pdf',date:'August 30, 2021',date_ts:new Date('2021-08-30')},{title:'Quarterly Case Law Update - (January-March 2021)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_January_March_2021.pdf',date:'April 22, 2021',date_ts:new Date('2021-04-22')},{title:'Quarterly Case Law Update - (October-December 2020)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_October_December_2020.pdf',date:'January 28, 2021',date_ts:new Date('2021-01-28')},{title:'Quarterly Case Law Update - (July-September 2020)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_July_September_2020.pdf',date:'October 22, 2020',date_ts:new Date('2020-10-22')},{title:'Quarterly Case Law Update - (April-June 2020)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_April_June_2020.pdf',date:'August 4, 2020',date_ts:new Date('2020-08-04')},{title:'Quarterly Case Law Update - (January-March 2020)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_January_March_2020.pdf',date:'April 18, 2020',date_ts:new Date('2020-04-18')},{title:'Quarterly Case Law Update - (October-December 2019)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/Case_Law_Update_October_December_2019.pdf',date:'January 18, 2020',date_ts:new Date('2020-01-18')},{title:'Quarterly Case Law Update (July-September 2019)',category:'Research Centre Publications',file:'documents/all_downloads/scrc/scrc_case_law_update_approved.pdf',date:'January 8, 2020',date_ts:new Date('2020-01-08')}];
+
+let currentSearch = '';
+let sortCol = 'date';
+let sortDir = -1;
+let currentPage = 1;
+let perPage = 10;
+
+function getFiltered() {
+  return DL_DATA.filter(function(d) {
+    const q = currentSearch.toLowerCase();
+    return !q || d.title.toLowerCase().includes(q) || d.category.toLowerCase().includes(q);
+  }).sort(function(a, b) {
+    if (sortCol === 'date') return sortDir * (a.date_ts - b.date_ts);
+    if (sortCol === 'title') return sortDir * a.title.localeCompare(b.title);
+    if (sortCol === 'category') return sortDir * a.category.localeCompare(b.category);
+    return 0;
+  });
+}
+
+function render() {
+  const data = getFiltered();
+  const total = data.length;
+  const totalPages = Math.max(1, Math.ceil(total / perPage));
+  if (currentPage > totalPages) currentPage = totalPages;
+  const start = (currentPage - 1) * perPage;
+  const slice = data.slice(start, start + perPage);
+
+  const tbody = document.getElementById('dl-tbody');
+  if (slice.length === 0) {
+    tbody.innerHTML = '<tr class="dl-empty"><td colspan="4"><i class="fas fa-folder-open" style="font-size:32px;color:#c6d9ce;display:block;margin-bottom:12px;"></i>No documents found.</td></tr>';
+  } else {
+    tbody.innerHTML = slice.map(function(d) {
+      return '<tr>' +
+        '<td><a href="' + d.file + '" class="dl-doc-title" target="_blank">' + d.title + '</a></td>' +
+        '<td><a href="#" class="dl-cat-link"><i class="fas fa-folder" style="font-size:11px;color:#9db5a6;"></i>' + d.category + '</a></td>' +
+        '<td><a href="' + d.file + '" class="dl-pdf-btn" title="Open PDF" target="_blank">' +
+          '<span class="dl-pdf-top">PDF</span>' +
+          '<i class="fas fa-file-pdf dl-pdf-ic"></i>' +
+        '</a></td>' +
+        '<td class="dl-date"><i class="far fa-calendar-alt" style="margin-right:6px;color:#9db5a6;font-size:11px;"></i>' + d.date + '</td>' +
+        '</tr>';
+    }).join('');
+  }
+
+  const from = total === 0 ? 0 : start + 1;
+  const to = Math.min(start + perPage, total);
+  document.getElementById('dl-info').textContent = 'Showing ' + from + ' to ' + to + ' of ' + total + ' download' + (total !== 1 ? 's' : '');
+
+  const pager = document.getElementById('dl-pager');
+  let pgHtml = '<div class="dl-pg' + (currentPage <= 1 ? '' : ' clickable') + '" id="pg-prev">Previous</div>';
+  for (let p = 1; p <= totalPages; p++) {
+    pgHtml += '<div class="dl-pg' + (p === currentPage ? ' on' : ' clickable') + '" data-page="' + p + '">' + p + '</div>';
+  }
+  pgHtml += '<div class="dl-pg' + (currentPage >= totalPages ? '' : ' clickable') + '" id="pg-next">Next</div>';
+  pager.innerHTML = pgHtml;
+
+  pager.querySelectorAll('[data-page]').forEach(function(el) {
+    el.addEventListener('click', function() {
+      currentPage = parseInt(this.dataset.page);
+      render();
+    });
+  });
+  const prev = pager.querySelector('#pg-prev');
+  if (prev && prev.classList.contains('clickable')) {
+    prev.addEventListener('click', function() { currentPage--; render(); });
+  }
+  const next = pager.querySelector('#pg-next');
+  if (next && next.classList.contains('clickable')) {
+    next.addEventListener('click', function() { currentPage++; render(); });
+  }
+}
+
+document.getElementById('dl-search-input').addEventListener('input', function() {
+  currentSearch = this.value;
+  currentPage = 1;
+  render();
+});
+
+document.getElementById('dl-per-page').addEventListener('change', function() {
+  perPage = parseInt(this.value);
+  currentPage = 1;
+  render();
+});
+
+document.querySelectorAll('.dl-tbl th[data-col]').forEach(function(th) {
+  th.addEventListener('click', function() {
+    const col = this.dataset.col;
+    if (col === 'download') return;
+    if (sortCol === col) { sortDir *= -1; }
+    else { sortCol = col; sortDir = 1; }
+    document.querySelectorAll('.dl-tbl th').forEach(function(t) {
+      t.classList.remove('sorted');
+      const ic = t.querySelector('.sort-ic i');
+      if (ic) { ic.className = 'fas fa-sort'; ic.style.color = ''; }
+    });
+    this.classList.add('sorted');
+    const ic = this.querySelector('.sort-ic i');
+    if (ic) {
+      ic.className = sortDir === 1 ? 'fas fa-sort-up' : 'fas fa-sort-down';
+      ic.style.color = '#C9A84C';
+    }
+    render();
+  });
+});
+
+render();
+</script>
+
+</body>
+</html>

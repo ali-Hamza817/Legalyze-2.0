@@ -1,0 +1,47 @@
+[
+  {
+    "instrument_id": "VCLT",
+    "state": "State A (illustrative)",
+    "action_type": "ratification",
+    "action_date": "1971-06-25",
+    "effective_date": "1971-06-25",
+    "source_record": "ILLUSTRATIVE SEED — replace with UN Treaty Collection VCLT status page (https://treaties.un.org). Not verified.",
+    "verified": false
+  },
+  {
+    "instrument_id": "VCLT",
+    "state": "State B (illustrative)",
+    "action_type": "accession",
+    "action_date": "1990-04-05",
+    "effective_date": "1990-05-05",
+    "source_record": "ILLUSTRATIVE SEED — replace with UN Treaty Collection VCLT status page. Not verified.",
+    "verified": false
+  },
+  {
+    "instrument_id": "VCLT",
+    "state": "State C (illustrative)",
+    "action_type": "signature",
+    "action_date": "1969-05-23",
+    "effective_date": null,
+    "source_record": "ILLUSTRATIVE SEED — signature only; never treat as ratification. Not verified.",
+    "verified": false
+  },
+  {
+    "instrument_id": "VCLT",
+    "state": "State D (illustrative)",
+    "action_type": "ratification",
+    "action_date": "1979-03-01",
+    "effective_date": "1979-03-01",
+    "source_record": "ILLUSTRATIVE SEED — ratified before general entry into force (1980-01-27). Not verified.",
+    "verified": false
+  },
+  {
+    "instrument_id": "VCLT",
+    "state": "State D (illustrative)",
+    "action_type": "withdrawal",
+    "action_date": "2015-06-01",
+    "effective_date": "2016-06-01",
+    "source_record": "ILLUSTRATIVE SEED — withdrawal example. Not verified.",
+    "verified": false
+  }
+]

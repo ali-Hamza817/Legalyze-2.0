@@ -1,0 +1,53 @@
+[
+  {
+    "instrument_id": "UN_CHARTER",
+    "title": "Charter of the United Nations",
+    "instrument_type": "charter",
+    "issuing_body": "United Nations",
+    "adoption_date": "1945-06-26",
+    "entry_into_force_date": "1945-10-24",
+    "source_url": "https://www.un.org/en/about-us/un-charter/full-text",
+    "provenance": {
+      "source_url": "https://www.un.org/en/about-us/un-charter/full-text",
+      "retrieved_at": "2026-09-13T19:33:28Z",
+      "document_id": "UN Charter (1945)",
+      "institution": "United Nations",
+      "sha256": "615fcb1c31c143251c5f71155aa6f6f55d56f5350f478d6125c2e70431ab1a6c",
+      "note": "Authoritative source; 150983 bytes; local copy un_charter.html"
+    }
+  },
+  {
+    "instrument_id": "ICJ_STATUTE",
+    "title": "Statute of the International Court of Justice",
+    "instrument_type": "statute",
+    "issuing_body": "International Court of Justice",
+    "adoption_date": "1945-06-26",
+    "entry_into_force_date": "1945-10-24",
+    "source_url": "https://www.icj-cij.org/statute",
+    "provenance": {
+      "source_url": "https://www.icj-cij.org/statute",
+      "retrieved_at": "2026-09-13T19:33:28Z",
+      "document_id": "Statute of the ICJ (1945)",
+      "institution": "International Court of Justice",
+      "sha256": "24f5ac460d82ea01f25d3323693a40f5abff7cc88f29f717751e99e229cf4690",
+      "note": "Authoritative source; 95603 bytes; local copy icj_statute.html"
+    }
+  },
+  {
+    "instrument_id": "VCLT",
+    "title": "Vienna Convention on the Law of Treaties",
+    "instrument_type": "convention",
+    "issuing_body": "United Nations (depositary: Secretary-General)",
+    "adoption_date": "1969-05-23",
+    "entry_into_force_date": "1980-01-27",
+    "source_url": "https://legal.un.org/ilc/texts/instruments/english/conventions/1_1_1969.pdf",
+    "provenance": {
+      "source_url": "https://legal.un.org/ilc/texts/instruments/english/conventions/1_1_1969.pdf",
+      "retrieved_at": "2026-09-13T19:33:28Z",
+      "document_id": "VCLT (1969), 1155 UNTS 331",
+      "institution": "United Nations (ILC / depositary)",
+      "sha256": "f01906ba0581d7329f685d49656e9a7cb3c5d0a8790219e1600c1edb30893d08",
+      "note": "Authoritative source; 160283 bytes; local copy vclt_1969.pdf"
+    }
+  }
+]

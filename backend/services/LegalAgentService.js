@@ -106,17 +106,17 @@ RESPONSE FORMAT: JSON
     }
 
     /**
-     * Retrieve from Global Legal Library
+     * Retrieve from the Global Legal Library using genuine Dual-Stream Discovery:
+     * BM25 (MongoDB) + semantic (Pinecone), fused by Reciprocal Rank Fusion (k=60).
      */
     static async retrieveAuthoritativeLaws(query) {
-        const embedding = await generateEmbedding(query);
-        const results = await pineconeService.queryVectorsWithFilter(
-            embedding,
-            5,
-            { isAuthoritative: true },
-            'authoritative-laws'
+        const { retrieveAuthoritative } = require('./authoritativeRetrieval');
+        const result = await retrieveAuthoritative(query, 8);
+        console.log(
+            `⚖️ Dual-stream+RRF: semantic=${result.meta.semantic} lexical=${result.meta.lexical} ` +
+            `→ fused ${result.data.length} (hybrid hits=${result.meta.hybridHits}, k=${result.meta.k})`
         );
-        return { type: 'laws', data: results };
+        return result; // { type:'laws', data:[{source, fullCitation, breadcrumb, text, matchType}], meta }
     }
 
     /**
@@ -263,9 +263,10 @@ RESPONSE FORMAT: JSON
         
         results.forEach(res => {
             if (res.type === 'laws') {
-                formatted += "--- AUTHORITATIVE PAKISTANI STATUTES ---\n";
+                formatted += "--- AUTHORITATIVE PAKISTANI LAW (dual-stream BM25 + semantic, fused by RRF) ---\n";
                 res.data.forEach(match => {
-                    formatted += `[Source: ${match.metadata.source}]\nContent: ${match.metadata.text}\n\n`;
+                    const cite = match.fullCitation || match.breadcrumb || match.source || 'Authoritative law';
+                    formatted += `[${cite}]\nContent: ${match.text}\n\n`;
                 });
             } else if (res.type === 'user-docs') {
                 formatted += "--- USER CASE CONTEXT (Uploaded Documents) ---\n";

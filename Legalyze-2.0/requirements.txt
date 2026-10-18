@@ -1,0 +1,8 @@
+# Legalyze 2.0 — minimal, dependency-light research stack.
+# BM25 is implemented in-house; OpenAI is called via `requests` (no SDK needed).
+numpy>=1.24
+requests>=2.28
+pydantic>=2.0
+beautifulsoup4>=4.11
+python-dotenv>=1.0
+pypdf>=4.0

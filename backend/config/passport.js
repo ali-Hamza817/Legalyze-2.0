@@ -23,7 +23,13 @@ passport.use(
         {
             clientID: process.env.GOOGLE_CLIENT_ID,
             clientSecret: process.env.GOOGLE_CLIENT_SECRET,
-            callbackURL: `${process.env.BACKEND_URL || 'http://localhost:5000'}/api/auth/google/callback`,
+            // Must byte-for-byte match an "Authorized redirect URI" in the Google Cloud
+            // OAuth client. Prefer an explicit override, then derive from BACKEND_URL,
+            // then fall back to local dev.
+            callbackURL:
+                process.env.GOOGLE_CALLBACK_URL ||
+                process.env.CALLBACK_URL ||
+                `${process.env.BACKEND_URL || 'http://localhost:5000'}/api/auth/google/callback`,
             proxy: true
         },
         async (accessToken, refreshToken, profile, done) => {

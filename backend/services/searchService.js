@@ -2,6 +2,7 @@ const Judgment = require('../models/Judgment');
 const pineconeService = require('./pineconeService');
 const openai = require('../config/openai');
 const { generateEmbedding } = require('../utils/documentProcessor');
+const { reciprocalRankFusion, RRF_K } = require('./rankFusion');
 
 /**
  * Legalyze Hybrid Search Service
@@ -81,49 +82,39 @@ async function hybridSearch(query, filters = {}, limit = 20) {
 }
 
 /**
- * Merge Keyword and Vector results using Reciprocal Rank Fusion (simplified)
+ * Merge the lexical (MongoDB $text / BM25) and semantic (Pinecone) streams using
+ * genuine Reciprocal Rank Fusion — RRF(d) = Σ_L 1/(k + rank_L(d)), k = 60.
+ *
+ * Fusion uses each document's RANK in its own stream, never the raw score, so
+ * BM25 text-scores and Pinecone cosine-scores (different scales) are never added
+ * together. A document ranked highly by BOTH streams is promoted above one that
+ * only a single stream liked.
  */
 function mergeResults(keywordResults, vectorResults) {
-    const resultMap = new Map();
+    // Each list must already be ordered best-first (both are: Mongo sorts by
+    // textScore, Pinecone returns by descending similarity).
+    const keywordList = keywordResults.map((doc) => ({ id: doc._id.toString(), doc }));
+    const vectorList = vectorResults.map((match) => ({ id: match.id, vectorScore: match.score || 0 }));
 
-    // Process Keyword Results (High value for citations)
-    keywordResults.forEach((doc, index) => {
-        // Normalize score: 1.0 down to 0.5 based on rank
-        const rankScore = 1.0 - (index / (keywordResults.length + 1)) * 0.5;
-        resultMap.set(doc._id.toString(), {
-            id: doc._id.toString(),
-            doc: doc,
-            score: rankScore,
-            source: 'keyword'
-        });
+    const fused = reciprocalRankFusion([keywordList, vectorList], {
+        k: RRF_K,
+        key: (x) => x.id,
     });
 
-    // Process Vector Results
-    vectorResults.forEach((match, index) => {
-        // Vector match.id is the MongoDB _id
-        const existing = resultMap.get(match.id);
-        
-        // Normalize score from Pinecone (usually 0.7-0.9 for good matches)
-        const vectorScore = match.score || 0;
+    const docById = new Map(keywordList.map((x) => [x.id, x.doc]));
 
-        if (existing) {
-            // Boost score if found in BOTH (Hybrid Hit!)
-            existing.score += vectorScore;
-            existing.source = 'hybrid';
-            existing.vectorScore = vectorScore;
-        } else {
-            resultMap.set(match.id, {
-                id: match.id,
-                // Result needs detailed hydration later
-                score: vectorScore, 
-                source: 'vector'
-            });
-        }
+    // stream index 0 = keyword, 1 = vector
+    return fused.map(({ id, rrfScore, streams }) => {
+        const inKeyword = streams.includes(0);
+        const inVector = streams.includes(1);
+        const source = inKeyword && inVector ? 'hybrid' : inKeyword ? 'keyword' : 'vector';
+        return {
+            id,
+            doc: docById.get(id) || null, // vector-only ids are hydrated from Mongo later
+            score: rrfScore,
+            source,
+        };
     });
-
-    // Convert to array and sort by score
-    return Array.from(resultMap.values())
-        .sort((a, b) => b.score - a.score);
 }
 
 /**
