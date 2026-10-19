@@ -56,6 +56,7 @@ export const AuthProvider = ({ children }) => {
                         setToken(null);
                         setUser(null);
                         localStorage.removeItem('token');
+                        localStorage.removeItem('refreshToken');
                         localStorage.removeItem('user');
                     } else {
                         console.warn('Transient error during session check, keeping session alive:', err.message);
@@ -78,14 +79,15 @@ export const AuthProvider = ({ children }) => {
             const response = await authAPI.login({ email, password });
 
             if (response.success) {
-                const { user: userData, token: userToken } = response.data;
+                const { user: userData, token: userToken, refreshToken } = response.data;
 
                 // Store in state
                 setUser(userData);
                 setToken(userToken);
 
-                // Store in localStorage
+                // Store in localStorage (short-lived access token + long-lived refresh token)
                 localStorage.setItem('token', userToken);
+                if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
                 localStorage.setItem('user', JSON.stringify(userData));
 
                 return { success: true, user: userData };
@@ -102,7 +104,7 @@ export const AuthProvider = ({ children }) => {
     // Login with an existing JWT (used by the Google OAuth callback page).
     // The backend has already verified the Google identity and issued this token;
     // we just need to hydrate the user profile from /api/auth/me.
-    const loginWithToken = async (authToken) => {
+    const loginWithToken = async (authToken, refreshToken) => {
         try {
             setError(null);
             setLoading(true);
@@ -112,6 +114,7 @@ export const AuthProvider = ({ children }) => {
             }
 
             localStorage.setItem('token', authToken);
+            if (refreshToken) localStorage.setItem('refreshToken', refreshToken);
             setToken(authToken);
 
             const response = await authAPI.getCurrentUser();
@@ -129,6 +132,7 @@ export const AuthProvider = ({ children }) => {
             setToken(null);
             setUser(null);
             localStorage.removeItem('token');
+            localStorage.removeItem('refreshToken');
             localStorage.removeItem('user');
             const errorMessage = err.message || 'Google sign-in failed. Please try again.';
             setError(errorMessage);
@@ -176,6 +180,7 @@ export const AuthProvider = ({ children }) => {
 
             // Clear localStorage
             localStorage.removeItem('token');
+            localStorage.removeItem('refreshToken');
             localStorage.removeItem('user');
         }
     };

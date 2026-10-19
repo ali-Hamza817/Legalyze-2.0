@@ -67,6 +67,13 @@ const userSchema = new mongoose.Schema(
             type: Date,
             default: null
         },
+        // Bumped to invalidate all outstanding refresh tokens (logout / password
+        // change / forced sign-out). Refresh tokens embed this value and are rejected
+        // once it no longer matches.
+        tokenVersion: {
+            type: Number,
+            default: 0
+        },
         disabledFeatures: [{
             type: String // e.g., 'compliance', 'chat', 'documents'
         }],

@@ -5,6 +5,10 @@ require('dotenv').config({ override: true });
 const express = require('express');
 const cors = require('cors');
 const rateLimit = require('express-rate-limit');
+const helmet = require('helmet');
+const compression = require('compression');
+const mongoSanitize = require('express-mongo-sanitize');
+const hpp = require('hpp');
 const connectDB = require('./config/db');
 const authRoutes = require('./routes/auth');
 const chatRoutes = require('./routes/chat');
@@ -38,41 +42,76 @@ app.use(passport.initialize());
 // Connect to MongoDB
 connectDB();
 
-// CORS configuration - Allow requests from any origin
-app.use(cors({
-    origin: '*',
-    optionsSuccessStatus: 200
+// ---- Security headers (clickjacking, MIME-sniffing, HSTS, referrer, etc.) ----
+// This is a JSON API with a separate frontend, so a strict CSP here would only risk
+// breaking things without protecting the API; we keep every other hardening header.
+app.use(helmet({
+    contentSecurityPolicy: false,
+    crossOriginResourcePolicy: { policy: 'cross-origin' },
 }));
 
-// Body parser middleware
-app.use(express.json({ limit: '50mb' }));
-app.use(express.urlencoded({ extended: true, limit: '50mb' }));
+// ---- Gzip/deflate response compression (lower latency & bandwidth) ----
+app.use(compression());
 
-// Rate limiting to prevent brute force attacks
+// ---- CORS: allow only known frontends (no credentials; Bearer tokens in header) ----
+const allowedOrigins = [
+    process.env.FRONTEND_URL,
+    'http://localhost:3000',
+    'http://127.0.0.1:3000',
+].filter(Boolean);
+app.use(cors({
+    origin(origin, cb) {
+        // allow non-browser clients (no Origin header) and whitelisted origins only.
+        // Disallowed origins get no CORS headers (browser blocks the read) — we return
+        // false rather than throwing, to avoid noisy 500s.
+        if (!origin || allowedOrigins.includes(origin)) return cb(null, true);
+        return cb(null, false);
+    },
+    optionsSuccessStatus: 200,
+}));
+
+// ---- Body parsers with sane limits (the previous 50mb was a DoS vector) ----
+app.use(express.json({ limit: '5mb' }));
+app.use(express.urlencoded({ extended: true, limit: '5mb' }));
+
+// ---- Injection hardening ----
+app.use(mongoSanitize()); // strips $ / . from keys → blocks NoSQL operator injection
+app.use(hpp());           // blocks HTTP parameter pollution (?role=user&role=admin)
+
+// ---- Rate limiting ----
+// Generous global limiter (DoS guard).
 const limiter = rateLimit({
     windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 5000, // Increased from 100 to 5000 to prevent Admin 429 lockouts
-    message: {
-        success: false,
-        message: 'Too many requests from this IP, please try again later.'
-    }
+    max: 5000,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, message: 'Too many requests from this IP, please try again later.' },
 });
-
-// Apply rate limiting to all routes
 app.use(limiter);
 
-// Stricter rate limiting for auth routes
+// Strict limiter over the whole auth surface.
 const authLimiter = rateLimit({
-    windowMs: 15 * 60 * 1000, // 15 minutes
-    max: 500, // Increased from 100 to 500
-    message: {
-        success: false,
-        message: 'Too many authentication attempts, please try again later.'
-    }
+    windowMs: 15 * 60 * 1000,
+    max: 100,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, message: 'Too many authentication attempts, please try again later.' },
+});
+
+// Even stricter for login — only FAILED attempts count, so real users aren't punished
+// but credential brute-force is throttled hard.
+const loginLimiter = rateLimit({
+    windowMs: 15 * 60 * 1000,
+    max: 20,
+    skipSuccessfulRequests: true,
+    standardHeaders: true,
+    legacyHeaders: false,
+    message: { success: false, message: 'Too many failed login attempts. Please try again in 15 minutes.' },
 });
 
 //Routes
-app.use('/api/auth', authRoutes);
+app.use('/api/auth/login', loginLimiter);   // hard brute-force cap on credential checks
+app.use('/api/auth', authLimiter, authRoutes); // strict limiter across the auth surface
 app.use('/api/chat', chatRoutes);
 app.use('/api/documents', documentRoutes);
 app.use('/api/contact', contactRoutes);
@@ -136,12 +175,19 @@ app.use((req, res) => {
 
 // Global error handler
 app.use((err, req, res, next) => {
+    // Full detail stays SERVER-SIDE only.
     console.error('Global error handler:', err);
-    
-    res.status(err.status || 500).json({
+
+    const status = err.status || err.statusCode || 500;
+    // Never leak internal error details to the client on server (5xx) errors — driver /
+    // connection / stack messages can expose DB hosts, credentials hints or internals.
+    // Client (4xx) errors carry safe, intentional messages (validation, auth, etc.).
+    const isClientError = status >= 400 && status < 500;
+    const safeMessage = isClientError ? (err.message || 'Request error') : 'Internal server error';
+
+    res.status(status).json({
         success: false,
-        message: err.message || 'Internal server error',
-        error: process.env.NODE_ENV === 'development' ? err.stack : undefined
+        message: safeMessage,
     });
 });
 

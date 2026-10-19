@@ -807,17 +807,14 @@ Return JSON array: [{"section": "...", "law": "...", "description": "...", "rele
                                                 size="large"
                                                 onClick={handleAnalysis}
                                                 disabled={loading || !caseData.facts.trim()}
-                                                sx={{ 
+                                                sx={{
                                                     mt: 3,
-                                                    py: 2,
-                                                    fontSize: '1.1rem',
-                                                    fontWeight: 'bold',
-                                                    borderRadius: '1px',
+                                                    py: 1.5,
+                                                    fontWeight: 600,
                                                     bgcolor: analysisComplete ? 'success.main' : 'primary.main',
                                                     '&:hover': {
                                                         bgcolor: analysisComplete ? 'success.dark' : 'primary.dark',
                                                     },
-                                                    boxShadow: analysisComplete ? '0 0 20px rgba(76, 175, 80, 0.4)' : 4
                                                 }}
                                             >
                                                 {loading ? <CircularProgress size={24} color="inherit" /> : 
@@ -925,192 +922,14 @@ Return JSON array: [{"section": "...", "law": "...", "description": "...", "rele
                                                 <Typography variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: 600 }}>
                                                     Our engine will perform a cross-referential search across the entire Pakistani legal corpus to find the exact sections relevant to your case.
                                                 </Typography>
-                                                <Button 
-                                                    variant="contained" 
+                                                <Button
+                                                    variant="contained"
                                                     size="large"
-                                                    startIcon={<Search />} 
+                                                    startIcon={<Search />}
                                                     onClick={handleFindLaws}
-                                                    sx={{ 
-                                                        borderRadius: '50px', 
-                                                        px: 10, 
-                                                        py: 2, 
-                                                        fontSize: '1.2rem', 
-                                                        fontWeight: 'bold', 
-                                                        boxShadow: '0 10px 30px rgba(25, 118, 210, 0.3)',
-                                                        '&:hover': { transform: 'scale(1.02)', boxShadow: '0 15px 40px rgba(25, 118, 210, 0.4)' }
-                                                    }}
+                                                    sx={{ px: 5, py: 1.5, fontWeight: 600 }}
                                                 >
-                                                    Initiate Statutory Intelligence Scan
-                                                </Button>
-                                            </Paper>
-                                        </motion.div>
-                                    ) : (
-                                        <motion.div
-                                            key="results-dashboard"
-                                            initial={{ opacity: 0, y: 30 }}
-                                            animate={{ opacity: 1, y: 0 }}
-                                        >
-                                            <Grid container spacing={3}>
-                                                {loading ? (
-                                                    <Grid item xs={12} sx={{ textAlign: 'center', py: 15 }}>
-                                                        <Box sx={{ position: 'relative', display: 'inline-flex', mb: 4 }}>
-                                                            <CircularProgress size={100} thickness={2} sx={{ color: 'rgba(25, 118, 210, 0.2)' }} />
-                                                            <CircularProgress
-                                                                size={100}
-                                                                thickness={4}
-                                                                sx={{
-                                                                    color: 'primary.main',
-                                                                    position: 'absolute',
-                                                                    left: 0,
-                                                                    [`& .MuiCircularProgress-circle`]: { strokeLinecap: 'round' },
-                                                                }}
-                                                            />
-                                                            <Gavel sx={{ position: 'absolute', top: '50%', left: '50%', transform: 'translate(-50%, -50%)', fontSize: 40, color: 'primary.main' }} />
-                                                        </Box>
-                                                        <Typography variant="h5" sx={{ fontWeight: '800', letterSpacing: 1 }} color="primary">
-                                                            {statusMessage || 'Scanning Global Legal Library...'}
-                                                        </Typography>
-                                                        <Typography variant="body2" color="text.secondary" sx={{ mt: 1, fontStyle: 'italic' }}>
-                                                            Cross-referencing Constitution, PPC, CrPC, and local statutes...
-                                                        </Typography>
-                                                    </Grid>
-                                                ) : (
-                                                    <>
-                                                        <Grid item xs={12}>
-                                                            <motion.div initial={{ scale: 0.9 }} animate={{ scale: 1 }}>
-                                                                <Paper sx={{ 
-                                                                    p: 3, 
-                                                                    bgcolor: 'success.main', 
-                                                                    color: 'white', 
-                                                                    borderRadius: 4, 
-                                                                    display: 'flex', 
-                                                                    alignItems: 'center', 
-                                                                    justifyContent: 'center',
-                                                                    gap: 2, 
-                                                                    boxShadow: '0 10px 30px rgba(76, 175, 80, 0.3)',
-                                                                    mb: 2
-                                                                }}>
-                                                                    <CheckCircle sx={{ fontSize: 32 }} />
-                                                                    <Typography variant="h6" fontWeight="900">
-                                                                        SCAN COMPLETE: {caseData.relevantLaws.length} Authoritative Statutes Secured
-                                                                    </Typography>
-                                                                </Paper>
-                                                            </motion.div>
-                                                        </Grid>
-                                                        
-                                                        {caseData.relevantLaws.map((law, i) => (
-                                                            <Grid item xs={12} md={6} key={i}>
-                                                                <Card 
-                                                                    elevation={0} 
-                                                                    sx={{ 
-                                                                        borderRadius: 3, 
-                                                                        border: '1px solid', 
-                                                                        borderColor: 'divider',
-                                                                        height: '100%',
-                                                                        transition: 'transform 0.2s, box-shadow 0.2s',
-                                                                        '&:hover': {
-                                                                            transform: 'translateY(-4px)',
-                                                                            boxShadow: 4,
-                                                                            borderColor: 'primary.main'
-                                                                        }
-                                                                    }}
-                                                                >
-                                                                    <CardContent sx={{ p: 3 }}>
-                                                                        <Box sx={{ display: 'flex', alignItems: 'center', gap: 1.5, mb: 2 }}>
-                                                                            <Avatar sx={{ bgcolor: 'primary.main', width: 32, height: 32, fontSize: '0.9rem', fontWeight: 'bold' }}>
-                                                                                §
-                                                                            </Avatar>
-                                                                            <Typography variant="h6" color="primary" fontWeight="800">
-                                                                                {law.section || law.law}
-                                                                            </Typography>
-                                                                        </Box>
-                                                                        <Typography variant="body2" sx={{ mb: 2, color: 'text.primary', lineHeight: 1.7 }}>
-                                                                            {law.description}
-                                                                        </Typography>
-                                                                        <Divider sx={{ my: 2, borderStyle: 'dashed' }} />
-                                                                        <Box sx={{ display: 'flex', alignItems: 'flex-start', gap: 1 }}>
-                                                                            <Lightbulb sx={{ fontSize: 18, mt: 0.3, color: 'warning.main' }} />
-                                                                            <Typography variant="caption" color="text.secondary" sx={{ fontWeight: '500' }}>
-                                                                                <strong>APPLICATION:</strong> {law.relevance}
-                                                                            </Typography>
-                                                                        </Box>
-                                                                    </CardContent>
-                                                                </Card>
-                                                            </Grid>
-                                                        ))}
-                                                    </>
-                                                )}
-                                            </Grid>
-                                        </motion.div>
-                                    )}
-                                </AnimatePresence>
-                            </Box>
-                        )}
-
-                        {/* Step 3: Laws (formerly Step 2) */}
-                        {activeStep === 3 && (
-                            <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
-                                <Box sx={{ display: 'flex', justifyContent: 'space-between', alignItems: 'flex-end', borderBottom: '1px solid', borderColor: 'divider', pb: 2 }}>
-                                    <Box>
-                                        <Typography variant="h5" fontWeight="bold">4. Statutory Framework</Typography>
-                                        <Typography variant="body2" color="text.secondary">Applicable Statutes from the Constitution, PPC, CrPC & CPC</Typography>
-                                    </Box>
-                                    {caseData.relevantLaws.length > 0 && !loading && (
-                                        <Button 
-                                            variant="outlined" 
-                                            size="small" 
-                                            startIcon={<Search />} 
-                                            onClick={handleFindLaws}
-                                        >
-                                            Re-Scan Laws
-                                        </Button>
-                                    )}
-                                </Box>
-                                
-                                <AnimatePresence mode="wait">
-                                    {caseData.relevantLaws.length === 0 && !loading ? (
-                                        <motion.div
-                                            key="search-cta"
-                                            initial={{ opacity: 0, scale: 0.95 }}
-                                            animate={{ opacity: 1, scale: 1 }}
-                                            exit={{ opacity: 0, scale: 1.05 }}
-                                        >
-                                            <Paper 
-                                                sx={{ 
-                                                    p: 8, 
-                                                    textAlign: 'center', 
-                                                    borderRadius: 4, 
-                                                    bgcolor: 'rgba(25, 118, 210, 0.04)', 
-                                                    border: '2px dashed', 
-                                                    borderColor: 'primary.light',
-                                                    display: 'flex',
-                                                    flexDirection: 'column',
-                                                    alignItems: 'center'
-                                                }}
-                                            >
-                                                <Gavel sx={{ fontSize: 80, mb: 3, color: 'primary.main', opacity: 0.8 }} />
-                                                <Typography variant="h5" gutterBottom fontWeight="800">
-                                                    Identify Legal Foundations
-                                                </Typography>
-                                                <Typography variant="body1" color="text.secondary" sx={{ mb: 4, maxWidth: 600 }}>
-                                                    Our engine will perform a cross-referential search across the entire Pakistani legal corpus to find the exact sections relevant to your case.
-                                                </Typography>
-                                                <Button 
-                                                    variant="contained" 
-                                                    size="large"
-                                                    startIcon={<Search />} 
-                                                    onClick={handleFindLaws}
-                                                    sx={{ 
-                                                        borderRadius: '50px', 
-                                                        px: 10, 
-                                                        py: 2, 
-                                                        fontSize: '1.2rem', 
-                                                        fontWeight: 'bold', 
-                                                        boxShadow: '0 10px 30px rgba(25, 118, 210, 0.3)',
-                                                        '&:hover': { transform: 'scale(1.02)', boxShadow: '0 15px 40px rgba(25, 118, 210, 0.4)' }
-                                                    }}
-                                                >
-                                                    Initiate Statutory Intelligence Scan
+                                                    Find Relevant Laws
                                                 </Button>
                                             </Paper>
                                         </motion.div>
@@ -1241,15 +1060,15 @@ Return JSON array: [{"section": "...", "law": "...", "description": "...", "rele
                                         <Typography variant="body2" color="text.secondary" sx={{ mb: 4, maxWidth: 500, mx: 'auto' }}>
                                             Search thousands of Supreme Court and High Court judgments to find matching ratios that support your client's position.
                                         </Typography>
-                                        <Button 
-                                            variant="contained" 
+                                        <Button
+                                            variant="contained"
                                             color="secondary"
                                             size="large"
-                                            startIcon={<Search />} 
+                                            startIcon={<Search />}
                                             onClick={handleFindPrecedents}
-                                            sx={{ borderRadius: 3, px: 6, py: 1.5 }}
+                                            sx={{ px: 5, py: 1.5, fontWeight: 600 }}
                                         >
-                                            Search Case Law Database
+                                            Search Case Law
                                         </Button>
                                     </Paper>
                                 ) : (
@@ -1499,15 +1318,15 @@ Return JSON array: [{"section": "...", "law": "...", "description": "...", "rele
                         {activeStep === 6 && (
                             <Box sx={{ display: 'flex', flexDirection: 'column', gap: 4 }}>
                                 <Typography variant="h5" fontWeight="bold">7. Legal Document Drafting</Typography>
-                                <Button 
-                                    variant="contained" 
-                                    size="large" 
-                                    startIcon={<Description />} 
+                                <Button
+                                    variant="contained"
+                                    size="large"
+                                    startIcon={<Description />}
                                     onClick={handleGenerateDocuments}
                                     disabled={loading}
-                                    sx={{ alignSelf: 'center', py: 2, px: 6, borderRadius: 3 }}
+                                    sx={{ alignSelf: 'center', py: 1.5, px: 5, fontWeight: 600 }}
                                 >
-                                    {loading ? <CircularProgress size={24} color="inherit" /> : 'Generate Petition / Application'}
+                                    {loading ? <CircularProgress size={24} color="inherit" /> : 'Generate Petition'}
                                 </Button>
 
                                 <Stack spacing={6}>

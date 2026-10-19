@@ -22,6 +22,17 @@ class LegalAgentService {
         const routing = await this.classifyAndRoute(userQuery, history);
         console.log(`🎯 Route: ${routing.route} | Domain: ${routing.domain}`);
 
+        // Safety net: the LLM dispatcher sometimes under-routes. Always retrieve the
+        // statutes, and FORCE case-law retrieval whenever the user is clearly asking
+        // about judgments / precedents (so "give me Supreme Court judgments" always
+        // hits the judgment corpus instead of being answered from nothing).
+        if (!Array.isArray(routing.tools)) routing.tools = [];
+        if (!routing.tools.includes('authoritative-laws')) routing.tools.push('authoritative-laws');
+        if (/\b(judgment|judgement|case ?laws?|precedent|rulings?|verdict|supreme court|high court|landmark|case on|cases? (about|on|regarding))\b/i.test(userQuery)
+            && !routing.tools.includes('precedents')) {
+            routing.tools.push('precedents');
+        }
+
         // 2. Parallel Information Retrieval
         const retrievalTasks = [];
         
@@ -259,7 +270,12 @@ RESPONSE FORMAT: JSON
      * Format aggregated context for the LLM
      */
     static formatContext(results, tools) {
-        let formatted = "=== AGENTIC RAG CONTEXT ===\n\n";
+        let formatted =
+            "=== RETRIEVED PAKISTANI LEGAL SOURCES (use these to answer) ===\n" +
+            "Answer using the sources below. When judgments are listed, present them as a " +
+            "clear numbered list, each with its case title, citation, bench, and decision " +
+            "date. NEVER claim you lack access to a database or legal sources — the relevant " +
+            "sources are provided right here. Cite each source you rely on.\n\n";
         
         results.forEach(res => {
             if (res.type === 'laws') {
@@ -273,11 +289,19 @@ RESPONSE FORMAT: JSON
                 res.data.forEach(match => {
                     formatted += `[Document: ${match.documentName}]\nExcerpt: ${match.text}\n\n`;
                 });
-            } else if (res.summary) { // Intelligent Search result
-                formatted += "--- SUPREME COURT PRECEDENTS ---\n";
-                formatted += `Summary: ${res.summary}\n`;
-                res.results.forEach(j => {
-                    formatted += `[Precedent: ${j.caseTitle} (${j.citation})]\nRatio: ${j.ratio}\n\n`;
+            } else if (res.summary !== undefined || Array.isArray(res.results)) { // Judgments
+                formatted += "--- SUPREME COURT / SUPERIOR-COURT JUDGMENTS (from the case-law database) ---\n";
+                if (res.summary) formatted += `Overview: ${res.summary}\n\n`;
+                (res.results || []).forEach((j, i) => {
+                    formatted += `${i + 1}. ${j.caseTitle || 'Case'} — ${j.citation || ''}\n`;
+                    if (j.bench) formatted += `   Bench: ${j.bench}\n`;
+                    if (j.judge) formatted += `   Authored by: ${j.judge}\n`;
+                    const dt = j.decisionDate ? new Date(j.decisionDate).toISOString().slice(0, 10) : '';
+                    if (dt) formatted += `   Decided: ${dt}\n`;
+                    if (j.caseType) formatted += `   Category: ${j.caseType}\n`;
+                    if (j.ratio) formatted += `   Holding: ${String(j.ratio).slice(0, 600)}\n`;
+                    if (j.matchReason) formatted += `   Relevance: ${j.matchReason}\n`;
+                    formatted += '\n';
                 });
             }
         });
@@ -295,11 +319,14 @@ RESPONSE FORMAT: JSON
             hasDocumentContext: routing.tools.includes('user-documents')
         });
 
-        // DEBUG: Inject Context directly into User Message for stronger attention
+        // Always ground the model in the retrieved context (statutes, judgments, and user
+        // documents). Previously this happened ONLY when an uploaded document was present,
+        // so retrieved case-law and statutes were silently dropped — and the model answered
+        // from nothing, producing "I don't have access to a database" style refusals.
         let finalUserMessage = query;
-        if (context && context.includes('USER CASE CONTEXT')) {
-             console.log('📝 Injecting Document Context into User Message Block for Reliability...');
-             finalUserMessage = `${context}\n\nUSER QUESTION: ${query}`;
+        if (context && context.trim().length > 60) {
+            console.log('📝 Injecting retrieved legal context into the prompt...');
+            finalUserMessage = `${context}\n\nUSER QUESTION: ${query}`;
         }
 
         const messages = [

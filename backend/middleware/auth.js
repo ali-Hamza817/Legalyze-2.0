@@ -24,10 +24,14 @@ const protect = async (req, res, next) => {
         }
 
         try {
-            // Verify token
-            console.log('Auth Middleware - Verifying token:', token.substring(0, 10) + '...');
-            console.log('Auth Middleware - Secret length:', process.env.JWT_SECRET ? process.env.JWT_SECRET.length : 'MISSING');
+            // Verify token (access tokens only — refresh tokens must not grant access)
             const decoded = jwt.verify(token, process.env.JWT_SECRET);
+            if (decoded.type === 'refresh') {
+                return res.status(401).json({
+                    success: false,
+                    message: 'Invalid access token. Please use an access token.'
+                });
+            }
 
             // Get user from token (exclude password)
             req.user = await User.findById(decoded.id).select('-password');
@@ -74,13 +78,43 @@ const protect = async (req, res, next) => {
     }
 };
 
-// Helper function to generate JWT token
-const generateToken = (userId) => {
-    return jwt.sign(
-        { id: userId },
-        process.env.JWT_SECRET
-        // No expiresIn: Token persists indefinitely or until secret is rotated
-    );
-};
+// ---- JWT token helpers: short-lived access token + long-lived refresh token ----
+const ACCESS_EXPIRY = process.env.JWT_ACCESS_EXPIRY || '2h';
+const REFRESH_EXPIRY = process.env.JWT_REFRESH_EXPIRY || '30d';
+// A distinct secret for refresh tokens; derived from JWT_SECRET if not set, so it
+// stays stable across restarts without extra config.
+const REFRESH_SECRET = process.env.JWT_REFRESH_SECRET || `${process.env.JWT_SECRET}::refresh`;
 
-module.exports = { protect, generateToken };
+// Short-lived access token — sent on every API request (Authorization: Bearer).
+const generateAccessToken = (userId) =>
+    jwt.sign({ id: userId, type: 'access' }, process.env.JWT_SECRET, { expiresIn: ACCESS_EXPIRY });
+
+// Long-lived refresh token — used ONLY to obtain new access tokens. It carries the
+// user's tokenVersion so every refresh token can be revoked at once by bumping it
+// (on logout, password change, or a forced sign-out).
+const generateRefreshToken = (user) =>
+    jwt.sign(
+        { id: user._id, type: 'refresh', tokenVersion: user.tokenVersion || 0 },
+        REFRESH_SECRET,
+        { expiresIn: REFRESH_EXPIRY }
+    );
+
+const generateTokens = (user) => ({
+    accessToken: generateAccessToken(user._id),
+    refreshToken: generateRefreshToken(user),
+});
+
+const verifyRefreshToken = (token) => jwt.verify(token, REFRESH_SECRET);
+
+// Backward-compatible alias (older call sites import `generateToken`).
+const generateToken = generateAccessToken;
+
+module.exports = {
+    protect,
+    generateToken,
+    generateAccessToken,
+    generateRefreshToken,
+    generateTokens,
+    verifyRefreshToken,
+    REFRESH_SECRET,
+};

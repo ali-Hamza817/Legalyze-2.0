@@ -13,7 +13,7 @@ const User = require('../models/User');
 const SystemSettings = require('../models/SystemSettings');
 console.log('  User model loaded');
 
-const { protect, generateToken } = require('../middleware/auth');
+const { protect, generateToken, generateTokens, generateRefreshToken, verifyRefreshToken } = require('../middleware/auth');
 console.log('  auth middleware loaded');
 
 const sendEmail = require('../utils/sendEmail');
@@ -243,10 +243,8 @@ const SystemSettings = require('../models/SystemSettings');
 
             await user.save({ validateBeforeSave: false });
 
-            // Generate JWT token
-            const token = generateToken(user._id);
-            console.log('Login Route - Generated token:', token.substring(0, 10) + '...');
-            console.log('Login Route - Secret length:', process.env.JWT_SECRET ? process.env.JWT_SECRET.length : 'MISSING');
+            // Issue a short-lived access token + a long-lived refresh token
+            const { accessToken, refreshToken } = generateTokens(user);
 
             // Return success response
             res.status(200).json({
@@ -263,7 +261,8 @@ const SystemSettings = require('../models/SystemSettings');
                         lastLogin: user.lastLogin,
                         disabledFeatures: user.disabledFeatures || []
                     },
-                    token
+                    token: accessToken,
+                    refreshToken
                 }
             });
 
@@ -336,6 +335,13 @@ router.post('/logout', protect, async (req, res) => {
             console.error('Failed to update logout log:', logErr);
         }
 
+        // Revoke all outstanding refresh tokens for this user (bump tokenVersion)
+        try {
+            await User.updateOne({ _id: req.user.id }, { $inc: { tokenVersion: 1 } });
+        } catch (revErr) {
+            console.error('Failed to revoke refresh tokens:', revErr);
+        }
+
         res.status(200).json({
             success: true,
             message: 'Logout successful. Please remove token from client.'
@@ -346,6 +352,44 @@ router.post('/logout', protect, async (req, res) => {
             success: false,
             message: 'Error during logout'
         });
+    }
+});
+
+// @route   POST /api/auth/refresh
+// @desc    Exchange a valid refresh token for a new access token (and a rotated refresh token)
+// @access  Public (requires a valid refresh token in the request body)
+router.post('/refresh', async (req, res) => {
+    const { refreshToken } = req.body;
+    if (!refreshToken) {
+        return res.status(401).json({ success: false, message: 'Refresh token required.' });
+    }
+    try {
+        const decoded = verifyRefreshToken(refreshToken);
+        if (decoded.type !== 'refresh') {
+            return res.status(401).json({ success: false, message: 'Invalid refresh token.' });
+        }
+
+        const user = await User.findById(decoded.id);
+        if (!user || !user.isActive) {
+            return res.status(401).json({ success: false, message: 'User not found or inactive.' });
+        }
+
+        // Reject refresh tokens revoked by a tokenVersion bump (logout / password change)
+        if ((user.tokenVersion || 0) !== (decoded.tokenVersion || 0)) {
+            return res.status(401).json({ success: false, message: 'Session expired. Please login again.' });
+        }
+
+        // Issue a fresh access token and slide the refresh window forward
+        const tokens = generateTokens(user);
+        return res.status(200).json({
+            success: true,
+            data: { token: tokens.accessToken, refreshToken: tokens.refreshToken }
+        });
+    } catch (error) {
+        if (error.name === 'TokenExpiredError') {
+            return res.status(401).json({ success: false, message: 'Refresh token expired. Please login again.' });
+        }
+        return res.status(401).json({ success: false, message: 'Invalid refresh token.' });
     }
 });
 
@@ -375,11 +419,11 @@ router.get('/google/callback', (req, res, next) => {
         }
 
         try {
-            // Generate JWT token
-            const token = generateToken(user._id);
+            // Issue access + refresh tokens for the Google-authenticated user
+            const { accessToken, refreshToken } = generateTokens(user);
 
-            // Redirect to frontend with token
-            res.redirect(`${process.env.FRONTEND_URL}/auth/google/success?token=${token}&userId=${user._id}`);
+            // Redirect to frontend with both tokens
+            res.redirect(`${process.env.FRONTEND_URL}/auth/google/success?token=${accessToken}&refreshToken=${refreshToken}&userId=${user._id}`);
         } catch (error) {
             console.error('Token generation error:', error);
             res.redirect(`${process.env.FRONTEND_URL}/signin?error=token_generation_failed`);

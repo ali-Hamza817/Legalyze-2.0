@@ -23,44 +23,74 @@ api.interceptors.request.use(
     }
 );
 
-// Response interceptor - Handle errors globally
-api.interceptors.response.use(
-    (response) => {
-        return response;
-    },
-    (error) => {
-        if (error.response) {
-            // Server responded with error status
-            const { status, data } = error.response;
+// ---- Automatic access-token refresh on 401 ----
+const AUTH_BASE = `${import.meta.env.VITE_API_BASE_URL || 'http://localhost:5000'}/api`;
+let refreshPromise = null; // single-flight: all queued 401s share one refresh call
 
-            // Handle specific status codes
-            if (status === 401) {
-                // Unauthorized - clear token and redirect to login
-                localStorage.removeItem('token');
-                localStorage.removeItem('user');
-                
-                // STOPPING AUTO-REDIRECT TO DEBUG LOGIN LOOP
-                // if (!window.location.pathname.includes('/signin') && 
-                //     !window.location.pathname.includes('/signup')) {
-                //     window.location.href = '/signin';
-                // }
-                console.warn('Unauthorized (401) received. Session cleared.');
+async function refreshAccessToken() {
+    const rt = localStorage.getItem('refreshToken');
+    if (!rt) throw new Error('No refresh token');
+    if (!refreshPromise) {
+        refreshPromise = axios
+            .post(`${AUTH_BASE}/auth/refresh`, { refreshToken: rt })
+            .then((res) => {
+                const data = (res.data && res.data.data) || {};
+                if (data.token) localStorage.setItem('token', data.token);
+                if (data.refreshToken) localStorage.setItem('refreshToken', data.refreshToken);
+                return data.token;
+            })
+            .finally(() => { refreshPromise = null; });
+    }
+    return refreshPromise;
+}
+
+function forceLogout() {
+    localStorage.removeItem('token');
+    localStorage.removeItem('refreshToken');
+    localStorage.removeItem('user');
+    const path = window.location.pathname;
+    if (!path.includes('/signin') && !path.includes('/signup')) {
+        window.location.href = '/signin';
+    }
+}
+
+// Response interceptor - transparently refresh the access token on expiry, then retry
+api.interceptors.response.use(
+    (response) => response,
+    async (error) => {
+        const original = error.config || {};
+        if (error.response) {
+            const { status, data } = error.response;
+            const url = String(original.url || '');
+            const isAuthCall = url.includes('/auth/login') || url.includes('/auth/refresh') || url.includes('/auth/signup');
+
+            // Access token expired/invalid → try a one-time refresh, then replay the request.
+            if (status === 401 && !original._retry && !isAuthCall && localStorage.getItem('refreshToken')) {
+                original._retry = true;
+                try {
+                    const newToken = await refreshAccessToken();
+                    if (newToken) {
+                        original.headers = original.headers || {};
+                        original.headers.Authorization = `Bearer ${newToken}`;
+                        return api(original);
+                    }
+                } catch (e) {
+                    forceLogout();
+                }
+                forceLogout(); // refresh returned no token → session is dead
             }
 
-            // Return formatted error
             return Promise.reject({
-                message: data.message || 'An error occurred',
-                errors: data.errors || [],
+                message: (data && data.message) || 'An error occurred',
+                errors: (data && data.errors) || [],
                 status
             });
         } else if (error.request) {
-            // Request made but no response received
             return Promise.reject({
                 message: 'No response from server. Please check your connection.',
                 status: 0
             });
         } else {
-            // Something else happened
             return Promise.reject({
                 message: error.message || 'An unexpected error occurred',
                 status: 0

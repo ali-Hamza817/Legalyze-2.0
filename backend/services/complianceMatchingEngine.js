@@ -16,29 +16,27 @@ const openai = new OpenAI({ apiKey: process.env.OPENAI_API_KEY });
  */
 async function matchSentenceToAuthoritativeLaws(sentence, topK = 5) {
     try {
-        const { generateEmbedding } = require('../utils/documentProcessor');
-        const { queryVectorsWithFilter } = require('./pineconeService');
-        
-        const queryEmbedding = await generateEmbedding(sentence.text);
-        
-        // Query Authoritative Laws namespace for semantically similar provisions
-        const results = await queryVectorsWithFilter(
-            queryEmbedding, 
-            topK, 
-            { isAuthoritative: true }, 
-            'authoritative-laws'
-        );
-        
-        return results.map(match => ({
-            legalText: match.metadata.text,
-            article: match.metadata.sectionNumber || "N/A",
-            sectionType: match.metadata.sectionType || "Section",
-            fullCitation: match.metadata.fullCitation || `${match.metadata.shortName} Section ${match.metadata.sectionNumber}`,
-            shortName: match.metadata.shortName,
-            source: match.metadata.source,
-            lawType: match.metadata.lawType,
-            similarity_score: match.score,
-            pineconeId: match.id
+        // Dual-Stream Discovery over the FULL authoritative corpus — Constitution of
+        // Pakistan + PPC + CrPC + Qanun-e-Shahadat — fused by Reciprocal Rank Fusion.
+        // (The old path queried only the statute namespace semantically, so it missed
+        //  the Constitution entirely and ignored exact statute-reference matches.)
+        const { retrieveAuthoritative } = require('./authoritativeRetrieval');
+        const result = await retrieveAuthoritative(sentence.text, topK);
+
+        return (result.data || []).map((d) => ({
+            legalText: d.text,
+            article: d.fullCitation,
+            sectionType: d.lawType === 'CONSTITUTIONAL' ? 'Article' : 'Section',
+            sectionNumber: d.sectionNumber,
+            fullCitation: d.fullCitation,
+            breadcrumb: d.breadcrumb,            // SAHI path, e.g. "Constitution of Pakistan, Part II, Chapter 1, Article 10A"
+            semanticAnchor: d.semanticAnchor,    // the provision heading / legal concept
+            shortName: d.shortName,
+            source: d.source,
+            lawType: d.lawType,
+            matchType: d.matchType,              // hybrid | semantic | lexical
+            similarity_score: d.rrfScore,
+            pineconeId: d.id
         }));
     } catch (error) {
         console.error('Error matching sentence to authoritative laws:', error);
@@ -249,9 +247,11 @@ async function createComplianceMapping(sentence, uploadedDocMeta = {}) {
             constitution_match: {
                 text: bestMatch.legalText,
                 article: bestMatch.fullCitation,
-                articleHeading: bestMatch.shortName,
+                breadcrumb: bestMatch.breadcrumb,
+                articleHeading: bestMatch.semanticAnchor || bestMatch.shortName,
                 source: bestMatch.source,
                 lawType: bestMatch.lawType,
+                matchType: bestMatch.matchType,
                 file: bestMatch.source
             },
             decision: complianceResult.decision,
@@ -360,46 +360,52 @@ async function processThematicCompliance(documentText, documentMeta = {}) {
 
     // 2. Process all sections in parallel (No sequential delays!)
     const mappingPromises = sections.map(async (section, idx) => {
-        // Find best legal match for this chunk
-        const matches = await matchSentenceToAuthoritativeLaws({ text: section.content }, 3);
+        // Dual-stream retrieval across the Constitution + statutes (RRF-fused)
+        const matches = await matchSentenceToAuthoritativeLaws({ text: section.content }, 4);
         if (matches.length === 0) return null;
 
         const bestMatch = matches[0];
-        
-        // Detailed compliance analysis for this chunk
-        const analysisPrompt = `Critically analyze this document section for compliance with the Authoritative Laws of Pakistan.
-        
-        SECTION: "${section.title}"
-        TEXT: "${section.content}"
-        
-        LEGAL PROVISION:
-        ${bestMatch.fullCitation}: ${bestMatch.source}
-        "${bestMatch.legalText}"
-        
-        TASK:
-        1. Decide: YES (Compliant), NO (Violation), PARTIAL (Ambiguous).
-        2. Identify specific "Loopholes" or "Conflicts".
-        3. Provide a "Proposed Fix" (Exact citation-based correction).
-        4. Generate an "Explainable Reasoning Chain" showing exactly how you reached this conclusion step-by-step.
-        
-        Return JSON object:
-        {
-          "decision": "YES|NO|PARTIAL",
-          "confidence": 0-100,
-          "rationale": "Overall summary cite ${bestMatch.shortName}",
-          "reasoningChain": [
-            "Step 1: Extracted core directive from document...",
-            "Step 2: Compared against ${bestMatch.fullCitation}...",
-            "Step 3: Identified divergence/alignment regarding...",
-            "Step 4: Concluded status as..."
-          ],
-          "loophole": "State the conflict clearly",
-          "proposedFix": "Corrected legal text"
-        }`;
+        // Supply the top authorities (each with its SAHI breadcrumb) so the audit is
+        // grounded strictly in the retrieved provisions — not model guesswork.
+        const authorities = matches.slice(0, 3).map((m, i) =>
+            `[${i + 1}] ${m.breadcrumb || m.fullCitation}${m.semanticAnchor ? ` — ${m.semanticAnchor}` : ''}\n"${(m.legalText || '').slice(0, 700)}"`
+        ).join('\n\n');
+
+        const analysisPrompt = `You are a Justice of the Supreme Court of Pakistan auditing a legal text for constitutional and statutory compliance. Be precise and authoritative, and cite the exact governing provision.
+
+SECTION UNDER REVIEW: "${section.title}"
+TEXT:
+"${section.content}"
+
+AUTHORITATIVE PROVISIONS (retrieved from the Constitution of Pakistan, PPC, CrPC and Qanun-e-Shahadat):
+${authorities}
+
+Produce a rigorous compliance finding:
+1. decision: YES (compliant), NO (conflict/violation), PARTIAL (ambiguous or conditional).
+2. constitutionalBasis: the SINGLE most applicable provision, cited by its full structural path exactly as supplied above (e.g. "Constitution of Pakistan, Part II, Chapter 1, Article 10A — Right to fair trial").
+3. rationale: 2-3 sentences stating the legal principle and how the text aligns or conflicts.
+4. loophole: the precise conflict, ambiguity or omission (empty string if fully compliant).
+5. proposedFix: an actionable redline — corrected wording grounded in the cited provision (empty string if compliant).
+6. reasoningChain: 3-4 short steps (directive extracted → provision applied → divergence/alignment → conclusion).
+
+Return ONLY valid JSON:
+{
+  "decision": "YES|NO|PARTIAL",
+  "confidence": 0-100,
+  "constitutionalBasis": "full structural citation of the governing provision",
+  "rationale": "...",
+  "loophole": "...",
+  "proposedFix": "...",
+  "reasoningChain": ["Step 1: ...", "Step 2: ...", "Step 3: ..."]
+}`;
 
         const response = await openai.chat.completions.create({
             model: 'gpt-4o-mini',
-            messages: [{ role: 'system', content: 'You are a Supreme Court constitutional expert.' }, { role: 'user', content: analysisPrompt }],
+            messages: [
+                { role: 'system', content: 'You are a Justice of the Supreme Court of Pakistan. You never invent provisions; you cite only the provisions supplied. Return only valid JSON.' },
+                { role: 'user', content: analysisPrompt }
+            ],
+            temperature: 0.2,
             response_format: { type: "json_object" }
         });
 
@@ -412,16 +418,24 @@ async function processThematicCompliance(documentText, documentMeta = {}) {
             decision: result.decision,
             confidence: result.confidence,
             rationale: result.rationale,
+            constitutionalBasis: result.constitutionalBasis || bestMatch.breadcrumb || bestMatch.fullCitation,
             reasoningChain: result.reasoningChain || [],
             loophole: result.loophole,
             proposedFix: result.proposedFix,
             constitution_match: {
                 article: bestMatch.fullCitation,
-                articleHeading: bestMatch.shortName,
+                breadcrumb: bestMatch.breadcrumb,
+                articleHeading: bestMatch.semanticAnchor || bestMatch.shortName,
                 text: bestMatch.legalText,
                 source: bestMatch.source,
-                lawType: bestMatch.lawType
+                lawType: bestMatch.lawType,
+                matchType: bestMatch.matchType
             },
+            relatedProvisions: matches.slice(1, 3).map((m) => ({
+                citation: m.breadcrumb || m.fullCitation,
+                heading: m.semanticAnchor,
+                lawType: m.lawType
+            })),
             similarity_score: bestMatch.similarity_score || 0
         };
     });

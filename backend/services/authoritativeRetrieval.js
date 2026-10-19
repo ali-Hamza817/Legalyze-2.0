@@ -86,6 +86,8 @@ async function retrieveAuthoritative(query, topK = 8) {
             shortName: p.shortName,
             fullCitation: p.fullCitation,
             breadcrumb: p.breadcrumb,
+            semanticAnchor: p.semanticAnchor,
+            sectionNumber: p.sectionNumber,
             lawType: p.lawType,
             text: p.text || '',
             rrfScore: Number(f.rrfScore.toFixed(5)),

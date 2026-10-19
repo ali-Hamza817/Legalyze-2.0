@@ -258,7 +258,7 @@ router.get('/stats', adminAuth, async (req, res) => {
         });
     } catch (err) {
         console.error('Analytics Error:', err);
-        res.status(500).json({ message: 'Server Error', details: err.message });
+        res.status(500).json({ message: 'Server Error' }); // never leak internal error detail to the client
     }
 });
 

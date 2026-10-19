@@ -16,6 +16,7 @@ const GoogleAuthSuccess = () => {
         handled.current = true;
 
         const token = searchParams.get('token');
+        const refreshToken = searchParams.get('refreshToken');
         const oauthError = searchParams.get('error');
 
         if (oauthError || !token) {
@@ -24,8 +25,9 @@ const GoogleAuthSuccess = () => {
         }
 
         (async () => {
-            // The JWT is enough - /api/auth/me resolves the user from it.
-            const result = await loginWithToken(token);
+            // The access token resolves the user via /api/auth/me; the refresh token
+            // keeps the session alive after the access token expires.
+            const result = await loginWithToken(token, refreshToken);
             if (result.success) {
                 navigate('/chat', { replace: true });
             } else {

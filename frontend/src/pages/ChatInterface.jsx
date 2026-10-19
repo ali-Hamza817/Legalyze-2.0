@@ -345,6 +345,172 @@ const DocumentMessageBubble = ({ document, role, theme, mode }) => {
 
 
 
+// Isolated, memoized message composer. It owns its own text state so that typing
+// re-renders ONLY this small component — NOT the 2000-line ChatInterface tree and
+// its ReactMarkdown-heavy message list. This removes the multi-second input lag.
+// Markdown renderer config hoisted to module scope so it is created ONCE (not per
+// message, per render). MarkdownBlock is memoized on `content`, so a message's
+// markdown is parsed once and never re-parsed when OTHER messages change or the
+// typing indicator toggles — the main cost in a long chat.
+const MD_COMPONENTS = {
+                                                            p: ({node, ...props}) => <Typography variant="body2" sx={{ fontSize: '0.9rem', lineHeight: 1.6, wordBreak: 'break-word' }} {...props} />,
+                                                            strong: ({node, ...props}) => <strong style={{ fontWeight: 700, wordBreak: 'break-word' }} {...props} />,
+                                                            em: ({node, ...props}) => <em style={{ wordBreak: 'break-word' }} {...props} />,
+                                                            ul: ({node, ...props}) => <ul style={{ margin: '8px 0', paddingLeft: '20px', wordBreak: 'break-word' }} {...props} />,
+                                                            ol: ({node, ...props}) => <ol style={{ margin: '8px 0', paddingLeft: '20px', wordBreak: 'break-word' }} {...props} />,
+                                                            li: ({node, ...props}) => <li style={{ marginBottom: '4px', wordBreak: 'break-word' }} {...props} />,
+                                                            h2: ({node, ...props}) => <Typography variant="h6" sx={{ fontWeight: 700, mt: 2, mb: 1, wordBreak: 'break-word' }} {...props} />,
+                                                            h3: ({node, ...props}) => <Typography variant="subtitle1" sx={{ fontWeight: 600, mt: 1.5, mb: 0.5, wordBreak: 'break-word' }} {...props} />,
+                                                            hr: ({node, ...props}) => <Divider sx={{ my: 1.5 }} {...props} />,
+                                                            code: ({node, inline, className, children, ...props}) => {
+                                                                const match = /language-(\w+)/.exec(className || '');
+                                                                const isStrategy = match && match[1] === 'strategy';
+                                                                
+                                                                if (!inline && isStrategy) {
+                                                                    return (
+                                                                        <Accordion 
+                                                                            disableGutters 
+                                                                            elevation={0} 
+                                                                            sx={{ 
+                                                                                bgcolor: 'action.hover', 
+                                                                                my: 1, 
+                                                                                borderRadius: '4px',
+                                                                                border: '1px solid',
+                                                                                borderColor: 'divider',
+                                                                                '&:before': { display: 'none' }
+                                                                            }}
+                                                                        >
+                                                                            <AccordionSummary 
+                                                                                expandIcon={<ExpandMore fontSize="small" />}
+                                                                                sx={{ minHeight: 40, height: 40, px: 2 }}
+                                                                            >
+                                                                                <Typography variant="caption" sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, color: 'primary.main' }}>
+                                                                                    Strategic Reasoning (Click to Unveil)
+                                                                                </Typography>
+                                                                            </AccordionSummary>
+                                                                            <AccordionDetails sx={{ pt: 0, px: 2, pb: 1.5 }}>
+                                                                                <Box sx={{ 
+                                                                                    '& ul': { mt: 0, mb: 0 },
+                                                                                    '& li': { fontSize: '0.85rem', color: 'text.secondary', py: 0.25 }
+                                                                                }}>
+                                                                                    <ReactMarkdown components={{
+                                                                                        p: ({node, ...props}) => <Typography variant="body2" sx={{ fontSize: '0.85rem' }} {...props} />,
+                                                                                        li: ({node, ...props}) => <li style={{ marginBottom: '2px' }} {...props} />
+                                                                                    }}>
+                                                                                        {String(children).replace(/\n$/, '')}
+                                                                                    </ReactMarkdown>
+                                                                                </Box>
+                                                                            </AccordionDetails>
+                                                                        </Accordion>
+                                                                    );
+                                                                }
+
+                                                                return (
+                                                                    <code 
+                                                                        className={className}
+                                                                        style={{ 
+                                                                            background: 'rgba(0,0,0,0.1)', 
+                                                                            padding: '2px 4px', 
+                                                                            borderRadius: '4px',
+                                                                            fontSize: '0.85rem',
+                                                                            whiteSpace: 'pre-wrap',
+                                                                            wordBreak: 'break-word'
+                                                                        }} 
+                                                                        {...props} 
+                                                                    >
+                                                                        {children}
+                                                                    </code>
+                                                                );
+                                                            },
+                                                            pre: ({node, ...props}) => (
+                                                                <pre 
+                                                                    style={{ 
+                                                                        background: 'rgba(0,0,0,0.05)', 
+                                                                        padding: '12px', 
+                                                                        borderRadius: '4px', 
+                                                                        overflowX: 'hidden',
+                                                                        whiteSpace: 'pre-wrap',
+                                                                        wordBreak: 'break-word'
+                                                                    }} 
+                                                                    {...props} 
+                                                                />
+                                                            ),
+                                                            table: ({node, ...props}) => (
+                                                                <Box sx={{ width: '100%', overflowX: 'auto', my: 2 }}>
+                                                                    <table style={{ width: '100%', borderCollapse: 'collapse' }} {...props} />
+                                                                </Box>
+                                                            )
+                                                        };
+
+const MarkdownBlock = React.memo(function MarkdownBlock({ content }) {
+    return <ReactMarkdown components={MD_COMPONENTS}>{content}</ReactMarkdown>;
+});
+
+const MessageInput = React.memo(function MessageInput({ onSend, onAttach, fileInputRef, attachedFiles, removeFile, chatDisabled, lawMode }) {
+    const [text, setText] = useState('');
+    const submit = () => {
+        if (!text.trim() && attachedFiles.length === 0) return;
+        onSend(text);
+        setText('');
+    };
+    const sendDisabled =
+        (!text.trim() && attachedFiles.length === 0) ||
+        attachedFiles.some((f) => f.processing || !f.processed) ||
+        chatDisabled;
+    return (
+        <Paper
+            elevation={0}
+            sx={{ p: '2px 4px', display: 'flex', alignItems: 'center', border: '1px solid', borderColor: 'divider', borderRadius: '2px', bgcolor: 'background.paper' }}
+        >
+            <input type="file" multiple ref={fileInputRef} style={{ display: 'none' }} onChange={onAttach} />
+            <IconButton sx={{ p: '10px' }} onClick={() => fileInputRef.current.click()}>
+                <AttachFile />
+            </IconButton>
+            <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
+            <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
+                {attachedFiles.length > 0 && (
+                    <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, p: 1 }}>
+                        {attachedFiles.map((file, index) => (
+                            <Chip
+                                key={index}
+                                label={
+                                    <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
+                                        <Typography variant="caption">{file.filename}</Typography>
+                                        {file.processing && (
+                                            <Typography variant="caption" sx={{ fontStyle: 'italic', opacity: 0.8 }}>
+                                                (Processing...)
+                                            </Typography>
+                                        )}
+                                    </Box>
+                                }
+                                onDelete={() => removeFile(index)}
+                                size="medium"
+                                icon={file.processing ? <CircularProgress size={16} color="inherit" /> : <Description />}
+                                sx={{ borderRadius: '4px', height: 'auto', py: 0.5, bgcolor: file.processing ? 'rgba(255, 193, 7, 0.1)' : 'default', borderColor: file.processing ? 'warning.main' : 'default', border: file.processing ? '1px solid' : 'default', '& .MuiChip-label': { color: 'text.primary' } }}
+                            />
+                        ))}
+                    </Box>
+                )}
+                <TextField
+                    fullWidth
+                    placeholder={chatDisabled ? 'Chat is restricted by admin' : (lawMode === 'international' ? 'Ask an international-law question (UN Charter \u00b7 ICJ Statute \u00b7 Vienna Convention)\u2026' : 'Type your message...')}
+                    value={text}
+                    onChange={(e) => setText(e.target.value)}
+                    onKeyPress={(e) => { if (e.key === 'Enter' && !e.shiftKey) { e.preventDefault(); submit(); } }}
+                    variant="standard"
+                    InputProps={{ disableUnderline: true, sx: { px: 1 } }}
+                    multiline
+                    maxRows={4}
+                    disabled={chatDisabled}
+                />
+            </Box>
+            <IconButton color="primary" sx={{ p: '10px' }} onClick={submit} disabled={sendDisabled}>
+                <Send />
+            </IconButton>
+        </Paper>
+    );
+});
+
 const ChatInterface = () => {
     const navigate = useNavigate();
     const theme = useTheme();
@@ -512,10 +678,10 @@ const ChatInterface = () => {
         }
     };
 
-    const handleSendMessage = async () => {
-        if ((!inputMessage.trim() && attachedFiles.length === 0) || isTyping) return;
+    const handleSendMessage = async (textArg) => {
+        const messageContent = (typeof textArg === 'string' ? textArg : inputMessage);
+        if ((!messageContent.trim() && attachedFiles.length === 0) || isTyping) return;
 
-        const messageContent = inputMessage;
         const currentAttachedFiles = [...attachedFiles]; // Snapshot for the async process
         setInputMessage('');
         setAttachedFiles([]);
@@ -1279,99 +1445,7 @@ const ChatInterface = () => {
                                                 }}
                                             >
                                                 <Box sx={{ '& p': { margin: 0 }, '& p + p': { marginTop: 1 } }}>
-                                                    <ReactMarkdown
-                                                        components={{
-                                                            p: ({node, ...props}) => <Typography variant="body2" sx={{ fontSize: '0.9rem', lineHeight: 1.6, wordBreak: 'break-word' }} {...props} />,
-                                                            strong: ({node, ...props}) => <strong style={{ fontWeight: 700, wordBreak: 'break-word' }} {...props} />,
-                                                            em: ({node, ...props}) => <em style={{ wordBreak: 'break-word' }} {...props} />,
-                                                            ul: ({node, ...props}) => <ul style={{ margin: '8px 0', paddingLeft: '20px', wordBreak: 'break-word' }} {...props} />,
-                                                            ol: ({node, ...props}) => <ol style={{ margin: '8px 0', paddingLeft: '20px', wordBreak: 'break-word' }} {...props} />,
-                                                            li: ({node, ...props}) => <li style={{ marginBottom: '4px', wordBreak: 'break-word' }} {...props} />,
-                                                            h2: ({node, ...props}) => <Typography variant="h6" sx={{ fontWeight: 700, mt: 2, mb: 1, wordBreak: 'break-word' }} {...props} />,
-                                                            h3: ({node, ...props}) => <Typography variant="subtitle1" sx={{ fontWeight: 600, mt: 1.5, mb: 0.5, wordBreak: 'break-word' }} {...props} />,
-                                                            hr: ({node, ...props}) => <Divider sx={{ my: 1.5 }} {...props} />,
-                                                            code: ({node, inline, className, children, ...props}) => {
-                                                                const match = /language-(\w+)/.exec(className || '');
-                                                                const isStrategy = match && match[1] === 'strategy';
-                                                                
-                                                                if (!inline && isStrategy) {
-                                                                    return (
-                                                                        <Accordion 
-                                                                            disableGutters 
-                                                                            elevation={0} 
-                                                                            sx={{ 
-                                                                                bgcolor: 'action.hover', 
-                                                                                my: 1, 
-                                                                                borderRadius: '4px',
-                                                                                border: '1px solid',
-                                                                                borderColor: 'divider',
-                                                                                '&:before': { display: 'none' }
-                                                                            }}
-                                                                        >
-                                                                            <AccordionSummary 
-                                                                                expandIcon={<ExpandMore fontSize="small" />}
-                                                                                sx={{ minHeight: 40, height: 40, px: 2 }}
-                                                                            >
-                                                                                <Typography variant="caption" sx={{ fontWeight: 700, textTransform: 'uppercase', letterSpacing: 0.5, color: 'primary.main' }}>
-                                                                                    Strategic Reasoning (Click to Unveil)
-                                                                                </Typography>
-                                                                            </AccordionSummary>
-                                                                            <AccordionDetails sx={{ pt: 0, px: 2, pb: 1.5 }}>
-                                                                                <Box sx={{ 
-                                                                                    '& ul': { mt: 0, mb: 0 },
-                                                                                    '& li': { fontSize: '0.85rem', color: 'text.secondary', py: 0.25 }
-                                                                                }}>
-                                                                                    <ReactMarkdown components={{
-                                                                                        p: ({node, ...props}) => <Typography variant="body2" sx={{ fontSize: '0.85rem' }} {...props} />,
-                                                                                        li: ({node, ...props}) => <li style={{ marginBottom: '2px' }} {...props} />
-                                                                                    }}>
-                                                                                        {String(children).replace(/\n$/, '')}
-                                                                                    </ReactMarkdown>
-                                                                                </Box>
-                                                                            </AccordionDetails>
-                                                                        </Accordion>
-                                                                    );
-                                                                }
-
-                                                                return (
-                                                                    <code 
-                                                                        className={className}
-                                                                        style={{ 
-                                                                            background: 'rgba(0,0,0,0.1)', 
-                                                                            padding: '2px 4px', 
-                                                                            borderRadius: '4px',
-                                                                            fontSize: '0.85rem',
-                                                                            whiteSpace: 'pre-wrap',
-                                                                            wordBreak: 'break-word'
-                                                                        }} 
-                                                                        {...props} 
-                                                                    >
-                                                                        {children}
-                                                                    </code>
-                                                                );
-                                                            },
-                                                            pre: ({node, ...props}) => (
-                                                                <pre 
-                                                                    style={{ 
-                                                                        background: 'rgba(0,0,0,0.05)', 
-                                                                        padding: '12px', 
-                                                                        borderRadius: '4px', 
-                                                                        overflowX: 'hidden',
-                                                                        whiteSpace: 'pre-wrap',
-                                                                        wordBreak: 'break-word'
-                                                                    }} 
-                                                                    {...props} 
-                                                                />
-                                                            ),
-                                                            table: ({node, ...props}) => (
-                                                                <Box sx={{ width: '100%', overflowX: 'auto', my: 2 }}>
-                                                                    <table style={{ width: '100%', borderCollapse: 'collapse' }} {...props} />
-                                                                </Box>
-                                                            )
-                                                        }}
-                                                    >
-                                                        {message.content}
-                                                    </ReactMarkdown>
+                                                    <MarkdownBlock content={message.content} />
                                                 </Box>
                                             </Paper>
                                         
@@ -1527,87 +1601,15 @@ const ChatInterface = () => {
 
                 {/* Input Area */}
                 <Box sx={{ p: 2, background: theme.palette.background.default }}>
-                    <Paper
-                        elevation={0}
-                        sx={{
-                            p: '2px 4px',
-                            display: 'flex',
-                            alignItems: 'center',
-                            border: '1px solid',
-                            borderColor: 'divider',
-                            borderRadius: '2px',
-                            bgcolor: 'background.paper'
-                        }}
-                    >
-                        <input
-                            type="file"
-                            multiple
-                            ref={fileInputRef}
-                            style={{ display: 'none' }}
-                            onChange={handleFileAttach}
-                        />
-                        <IconButton sx={{ p: '10px' }} onClick={() => fileInputRef.current.click()}>
-                            <AttachFile />
-                        </IconButton>
-                        <Divider sx={{ height: 28, m: 0.5 }} orientation="vertical" />
-                        <Box sx={{ flex: 1, display: 'flex', flexDirection: 'column' }}>
-                            {attachedFiles.length > 0 && (
-                                <Box sx={{ display: 'flex', flexWrap: 'wrap', gap: 0.5, p: 1 }}>
-                                    {attachedFiles.map((file, index) => (
-                                        <Chip
-                                            key={index}
-                                            label={
-                                                <Box sx={{ display: 'flex', alignItems: 'center', gap: 1 }}>
-                                                    <Typography variant="caption">{file.filename}</Typography>
-                                                    {file.processing && (
-                                                        <Typography variant="caption" sx={{ fontStyle: 'italic', opacity: 0.8 }}>
-                                                            (Processing...)
-                                                        </Typography>
-                                                    )}
-                                                </Box>
-                                            }
-                                            onDelete={() => removeFile(index)}
-                                            size="medium" // Increased size for better visibility
-                                            icon={file.processing ? <CircularProgress size={16} color="inherit" /> : <Description />}
-                                            sx={{ 
-                                                borderRadius: '4px',
-                                                height: 'auto',
-                                                py: 0.5,
-                                                bgcolor: file.processing ? 'rgba(255, 193, 7, 0.1)' : 'default', // Slight yellow tint for processing
-                                                borderColor: file.processing ? 'warning.main' : 'default',
-                                                border: file.processing ? '1px solid' : 'default',
-                                                '& .MuiChip-label': { color: 'text.primary' }
-                                            }}
-                                        />
-                                    ))}
-                                </Box>
-                            )}
-                            <TextField
-                                fullWidth
-                                placeholder={user?.disabledFeatures?.includes('chat') ? "Chat is restricted by admin" : (lawMode === 'international' ? "Ask an international-law question (UN Charter · ICJ Statute · Vienna Convention)…" : "Type your message...")}
-                                value={inputMessage}
-                                onChange={(e) => setInputMessage(e.target.value)}
-                                onKeyPress={(e) => e.key === 'Enter' && !e.shiftKey && handleSendMessage()}
-                                variant="standard"
-                                InputProps={{ disableUnderline: true, sx: { px: 1 } }}
-                                multiline
-                                maxRows={4}
-                                disabled={user?.disabledFeatures?.includes('chat')}
-                            />
-                        </Box>
-                        <IconButton 
-                            color="primary" 
-                            sx={{ p: '10px' }} 
-                            onClick={handleSendMessage}
-                            disabled={
-                                (!inputMessage.trim() && attachedFiles.length === 0) || 
-                                attachedFiles.some(f => f.processing || !f.processed) ||
-                                user?.disabledFeatures?.includes('chat')
-                            }
-                        >
-                            <Send />
-                        </IconButton>
-                    </Paper>
+                    <MessageInput
+                        onSend={handleSendMessage}
+                        onAttach={handleFileAttach}
+                        fileInputRef={fileInputRef}
+                        attachedFiles={attachedFiles}
+                        removeFile={removeFile}
+                        chatDisabled={user?.disabledFeatures?.includes('chat')}
+                        lawMode={lawMode}
+                    />
                 </Box>
             </Box>
 
