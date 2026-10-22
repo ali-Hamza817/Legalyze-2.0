@@ -14,7 +14,7 @@ The author (Ali Hamza) wants to continue the research direction that **extends t
 by transferring the methodology of Ren et al. (2026) to Pakistani law and fusing it with Legalyze's
 structure-aware retrieval**, evaluated **fully automatically (no human annotation)**, on the author's
 **own compute cluster (512 GB RAM, no cloud GPU rental)**. The detailed plan is in
-`Q1 Survery Paper IA/research_direction.tex` (compiled: `research_direction.pdf`). The next concrete
+`research/research_direction.tex` (compiled: `research/research_direction.pdf`). The next concrete
 engineering step is to build the automated synthetic-data + fine-tuning + fully-automatic-evaluation
 pipeline described in Sections 6–8 below.
 
@@ -52,18 +52,15 @@ Legalyze 2.0/                              <- git repo root (remote: github.com/
 ├── backend/                               <- Node/Express backend (port 5000). SECRETS in backend/.env are GITIGNORED.
 ├── frontend/                              <- React/Vite frontend (port 3000)
 ├── Legalyze-2.0/ (engine)                 <- Python 2.0 engine (SAHI ingestion etc.)
-└── Q1 Survery Paper IA/                   <- THE Q1 SURVEY PAPER + the research-direction template
-    ├── main.tex                           <- survey master (12-section, two-column)
-    ├── main.pdf                           <- COMPILED SURVEY (31 pages)
-    ├── sections/01..11_*.tex              <- the 11 content sections
-    ├── figures/*.tex                      <- TikZ figures (timeline, pipelines, architectures)
-    ├── references.bib                     <- 40 VERIFIED references (the only citation source)
+└── research/                              <- Legalyze research-direction plan (the ACTIVE work)
     ├── research_direction.tex             <- THE RESEARCH PLAN (Ren -> Legalyze) + automatic-eval design
     ├── research_direction.pdf             <- compiled (6 pages)
-    ├── papers/                            <- downloaded open-access PDFs of cited works
-    ├── legal_ai_survey_seed_literature.xlsx / literature_master.csv / verified_metadata.json
-    └── build/                             <- LaTeX aux files (ignore)
+    └── references.bib                     <- 40 VERIFIED references (citation source for the plan)
 ```
+
+**The Q1 SURVEY PAPER is a SEPARATE publication and is NOT part of this repository.** The author
+maintains it elsewhere; it is gitignored here. Only the Legalyze research-direction plan lives in this
+repo, in `research/`.
 
 **Secrets:** `backend/.env`, `frontend/.env` are gitignored and are NOT in the repo. They hold the
 MongoDB Atlas URI, OpenAI key, Pinecone key, AWS, and JWT secrets. Never commit them. If the cluster
@@ -99,7 +96,11 @@ express-mongo-sanitize, hpp, rate limiting, AES-256-GCM encryption, and a CORS w
 
 ---
 
-## 4. The Q1 survey paper (in `Q1 Survery Paper IA/`)
+## 4. The Q1 survey paper (SEPARATE publication, NOT in this repo)
+
+The survey described below is maintained by the author **outside this repository** and is gitignored
+here. It is kept in FACTS.md only as background; its Legalyze offshoot (the research direction) lives
+in `research/`.
 
 - **Title:** "Legal AI: From Case-Based Reasoning to Reliable, Structure-Aware Retrieval-Augmented
   Generation." Single author: Ali Hamza.
@@ -116,13 +117,10 @@ express-mongo-sanitize, hpp, rate limiting, AES-256-GCM encryption, and a CORS w
   integrated it **verbatim** (not rewritten), merged duplicate section drafts without duplication,
   removed copy-paste artifacts, drew conceptual pipelines as TikZ figures, and auto-numbered tables
   via `\ref{}`.
-- **Build:**
-  ```
-  cd "Q1 Survery Paper IA"
-  latexmk -pdf -interaction=nonstopmode -halt-on-error main.tex
-  ```
-  Requires a TeX distribution (TeX Live on the cluster; MiKTeX on the author's Windows machine) with
-  `natbib`, `tikz`, `tabularx`, `booktabs`, `titlesec`, `hyperref`.
+- **Build (author's local copy only):** `latexmk -pdf main.tex` inside the author's local survey
+  folder. Requires a TeX distribution with `natbib`, `tikz`, `tabularx`, `booktabs`, `titlesec`,
+  `hyperref`. The research-direction template in `research/` builds the same way:
+  `cd research && latexmk -pdf research_direction.tex`.
 
 ---
 
@@ -253,7 +251,7 @@ evaluation without human annotation", Table: automatic sources of ground truth).
 
 ---
 
-## 9. Verified references (full list in `Q1 Survery Paper IA/references.bib`)
+## 9. Verified references (full list in `research/references.bib`)
 
 The 40 verified bib keys include, among others: `ashley1991`, `ashley1992`, `chalkidis2017`,
 `chalkidis2020`, `chalkidis2022`, `guha2023`, `zheng2021`, `rabelo2022`, `goebel2023/2024/2026`,
@@ -262,8 +260,7 @@ The 40 verified bib keys include, among others: `ashley1991`, `ashley1992`, `cha
 `zhang2025`, `dahl2024`, `magesh2025`, `silva2026`, `afane2026`, `kelsall2025`, `chi2026`, `zhao2026`,
 `dugac2025`, `tritto2025`, `kim2025`, `le2026`, `italiani2025`, `butler2026`, `pipitone2024`
 (LegalBench-RAG), `cormack2009` (RRF), `ref312025` (Ali et al., the other Pakistani RAG framework),
-`hamza2026` (LEGALYZE, the author's own paper). Full title/author/DOI for each is in `references.bib`;
-verified metadata is in `verified_metadata.json`.
+`hamza2026` (LEGALYZE, the author's own paper). Full title/author/DOI for each is in `research/references.bib`.
 
 **Two base papers on disk:**
 - `Ren et al.pdf` (repo root) = `ren2026`, the base methodology.
@@ -273,7 +270,7 @@ verified metadata is in `verified_metadata.json`.
 
 ## 10. How to continue (for a fresh Claude on the cluster)
 
-1. Read this `FACTS.md`, then skim `Q1 Survery Paper IA/research_direction.pdf` (the plan) and
+1. Read this `FACTS.md`, then skim `research/research_direction.pdf` (the plan) and
    `Ren et al.pdf` (the base method).
 2. Confirm the environment: TeX distribution for the paper; Python + a fine-tuning stack
    (transformers/peft/sentence-transformers) for the pipeline; the ingested corpus (SAHI) and the
