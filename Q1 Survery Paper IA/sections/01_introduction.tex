@@ -1,0 +1,135 @@
+\section{Introduction}
+\label{sec:intro}
+
+Law is a domain in which the quality of an answer depends not only on whether it sounds
+reasonable, but also on whether it is supported by the correct legal authority. A useful legal
+information system must identify relevant statutes and precedents, interpret them in context,
+account for their relationships, and present conclusions that can be checked against
+authoritative sources. These requirements make legal artificial intelligence (LegalAI) a
+distinctive research challenge. Unlike many general question-answering tasks, legal information
+retrieval can depend on exact statutory language, the relationship between a provision and its
+subordinate clauses, the authority of a judicial decision, and the jurisdiction and date to
+which a legal rule applies. A response that overlooks one of these conditions may appear
+convincing while remaining legally incomplete or incorrect.
+
+The effort to automate legal reasoning predates modern machine learning. Early research explored
+how computational systems could represent legal rules, compare cases, and construct arguments
+resembling those used by lawyers. Ashley's work on case-based reasoning, including HYPO,
+demonstrated how a system could reason about legal disputes by comparing fact patterns and
+identifying legally meaningful similarities and differences \citep{ashley1991}. This tradition
+established an important principle: legal reasoning cannot always be reduced to matching a
+question with a sentence. It often requires identifying which facts matter, which rules apply,
+and why one authority supports an argument more strongly than another. However, rule-based and
+case-based approaches also faced practical constraints. Their performance depended on how legal
+knowledge was represented, how exceptions and changing authorities were handled, and how much
+domain-specific knowledge could be encoded and maintained.
+
+The growth of statistical natural language processing and pretrained language models changed how
+researchers approached these problems. Rather than relying exclusively on manually encoded rules,
+machine-learning systems began to learn linguistic patterns from legal documents and perform
+tasks such as document classification, information extraction, and case retrieval. Domain-adapted
+models such as LEGAL-BERT illustrated the value of training language representations on legal text
+rather than relying only on general-purpose language data \citep{chalkidis2020}. Benchmarks such
+as LexGLUE and LegalBench subsequently provided more systematic ways to evaluate legal language
+models across different tasks and forms of legal reasoning \citep{chalkidis2022, guha2023}. These
+developments helped move LegalAI from narrowly engineered expert systems toward more flexible,
+data-driven models.
+
+The arrival of large language models (LLMs) expanded these capabilities further. Modern models can
+summarize legal documents, explain provisions in natural language, compare arguments, and draft
+responses to complex questions. Yet fluency introduces a serious reliability problem. A model may
+generate an answer that is coherent and professionally written without accurately reflecting the
+law, may cite a nonexistent authority, or may combine correct legal statements in a way that
+produces an unsupported conclusion. Research on legal hallucinations has shown why apparent
+linguistic quality cannot be treated as evidence of legal correctness \citep{dahl2024,
+magesh2025}. In legal practice, this distinction is particularly important because users need to
+verify not only the answer, but also the authorities and reasoning on which it depends.
+
+Retrieval-augmented generation (RAG) offers one response to this challenge. Instead of asking an
+LLM to answer exclusively from its learned parameters, a RAG system retrieves external documents
+and supplies their content as evidence for answer generation. This design can make legal answers
+more current, traceable, and specific to an authoritative corpus. However, retrieval does not
+automatically guarantee correctness. If a system retrieves an irrelevant judgment, misses a
+decisive statutory exception, or separates a provision from its legal hierarchy, the generator
+may produce a plausible answer from incomplete evidence. Likewise, the presence of a citation
+does not establish that the cited passage actually supports the associated claim. Reliable legal
+RAG therefore depends on the interaction between retrieval quality, document representation,
+evidence selection, generation, and verification, not on the language model alone.
+
+A central challenge is that legal documents are structured sources of authority, not merely
+collections of text passages. Statutes contain parts, chapters, sections, articles, clauses,
+provisos, and exceptions; judgments contain facts, issues, arguments, reasoning, and decisions.
+Flattening these documents into independent text chunks can remove the context needed to
+interpret a retrieved passage correctly. A short provision may appear relevant when read in
+isolation but mean something different when its parent section, exception, amendment, or related
+provision is considered. Structure-aware indexing attempts to preserve this context by attaching
+information about a passage's position in the original document. Hybrid retrieval, which combines
+lexical matching with semantic similarity, addresses a complementary problem: exact legal
+expressions and section numbers can be important, while conceptually relevant evidence may use
+different wording from the user's question. Rank-fusion methods can combine these complementary
+retrieval signals, although their effectiveness must be evaluated rather than assumed.
+
+Recent research reflects the growing breadth of this field. Broad surveys now examine LegalAI
+through the roles of data, modelling, retrieval, generation, and evaluation, while more focused
+studies investigate case retrieval, legal information extraction, and the reliability of legal
+language models \citep{feng2024, premasiri2025, kelsall2025, chi2026}. These reviews provide
+essential foundations, but the field still benefits from a connected account of how legal AI's
+design priorities have evolved: from representing legal reasoning, to learning legal language, to
+retrieving external evidence, and finally to preserving the structure and provenance needed to
+verify generated answers.
+
+This survey follows that evolution. Rather than treating every model or benchmark as an isolated
+development, it examines the relationship between legal representation, retrieval architecture,
+evidence grounding, and reliability. It considers classical case-based reasoning, legal language
+models and benchmarks, legal RAG, structure-aware and hybrid retrieval, hallucination and
+citation verification, and the challenges created by jurisdictional and linguistic variation.
+Particular attention is given to systems that must operate over structured legal authorities and
+to jurisdictions that are less represented in dominant English-language datasets. Pakistani legal
+information retrieval provides a useful motivating context because its authoritative sources
+include constitutional provisions, legislation, procedural laws, and judicial decisions whose
+relationships must be preserved during retrieval. It is considered here as a specific instance of
+a wider challenge: a legal AI system cannot be considered reliable merely because its language
+model is powerful if its evidence representation fails to preserve the legal context in which that
+evidence must be interpreted.
+
+The survey makes four contributions:
+\begin{enumerate}[leftmargin=1.4em, itemsep=2pt, topsep=2pt]
+\item \textbf{Historical synthesis:} It connects early computational legal reasoning with
+domain-specific language models and contemporary retrieval-augmented systems, explaining the
+problems that motivated each transition.
+\item \textbf{Architectural analysis:} It distinguishes document representation, retrieval, rank
+fusion, generation, and evidence verification, clarifying how these components contribute to the
+overall reliability of legal AI.
+\item \textbf{Critical comparison:} It examines contemporary legal AI systems in terms of their
+design choices, evaluation methods, reported strengths, and limitations, while distinguishing
+results obtained under different datasets and experimental conditions.
+\item \textbf{Research agenda:} It identifies open challenges in structure-preserving retrieval,
+jurisdiction-aware evidence selection, multilingual legal access, knowledge-graph integration, and
+verifiable answer generation.
+\end{enumerate}
+
+These contributions are organized around the research questions in Table~\ref{tab:rq}.
+
+\begin{table*}[t]
+\centering
+\caption{Research questions guiding the survey.}
+\label{tab:rq}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.0cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Research question} & \textbf{Focus} & \textbf{Purpose} \\
+\midrule
+\textbf{RQ1.} How has legal AI evolved? & From case-based reasoning and rule-based systems to legal language models and RAG & Identify the principal methodological transitions and the limitations that motivated them. \\
+\textbf{RQ2.} How do legal retrieval architectures affect evidence quality? & Lexical, dense, hybrid, rank-fusion, structure-aware, and knowledge-graph-based retrieval & Explain how systems locate relevant authorities and preserve the context needed to interpret them. \\
+\textbf{RQ3.} How should reliability be assessed in legal AI? & Hallucination, factual support, citation correctness, retrieval quality, and human evaluation & Distinguish fluent generation from evidence-supported legal answers and examine the limits of common evaluation practices. \\
+\textbf{RQ4.} What challenges remain for jurisdiction-aware and multilingual legal AI? & Legal hierarchy, jurisdictional variation, English and low-resource languages, and evidence provenance & Identify research opportunities for systems that must retrieve and verify legal information across different legal and linguistic contexts. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+Together, these questions frame the survey around a single problem: how can legal AI move beyond
+generating plausible legal language toward producing answers whose supporting evidence is
+relevant, contextually correct, and independently verifiable? The next section explains how the
+literature was identified, assessed, and organized to investigate this question.

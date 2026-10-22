@@ -1,0 +1,91 @@
+\documentclass[10pt,twocolumn]{article}
+
+% ===== packages =====
+\usepackage[a4paper,margin=0.75in,columnsep=0.55cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{tikz}
+\usetikzlibrary{positioning,arrows.meta,calc,shapes.geometric,backgrounds,fit}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[round]{natbib}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+
+% ===== light styling =====
+\definecolor{legalblue}{RGB}{20,60,120}
+\titleformat{\section}{\normalfont\large\bfseries\color{legalblue}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{1.1em}
+\emergencystretch=2em
+\renewcommand{\arraystretch}{1.25}
+\hypersetup{colorlinks=true, linkcolor=legalblue, citecolor=legalblue, urlcolor=legalblue}
+
+% ===== float tuning (many wide tables) =====
+\setcounter{topnumber}{3}
+\setcounter{totalnumber}{5}
+\renewcommand{\topfraction}{0.95}
+\renewcommand{\bottomfraction}{0.9}
+\renewcommand{\textfraction}{0.05}
+\renewcommand{\floatpagefraction}{0.8}
+
+% ===== title =====
+\title{\textbf{Legal AI: From Case-Based Reasoning to Reliable, Structure-Aware Retrieval-Augmented Generation}}
+\author{Ali Hamza\\[2pt]
+\small Department of Software Engineering, Military College of Signals (MCS),\\
+\small National University of Sciences and Technology (NUST), Islamabad, Pakistan\\
+\small \texttt{ahamza.msse25mcs@student.nust.edu.pk}}
+\date{\today}
+
+\begin{document}
+\twocolumn[
+\begin{@twocolumnfalse}
+\maketitle
+
+\begin{abstract}
+\noindent
+Legal work depends on finding, interpreting, and applying authoritative texts. Lawyers
+and judges work with statutes, regulations, prior decisions, and procedural rules. A
+useful AI system must therefore do more than produce fluent language: it must connect its
+claims to relevant and reliable legal sources. This survey traces the development of legal
+artificial intelligence from case-based reasoning in the early 1990s to contemporary legal
+language models and retrieval-augmented generation (RAG). Rather than presenting a simple
+chronology, we explain how each wave of methods responded to limitations in earlier
+approaches. We review foundational reasoning systems, legal language models, benchmarks,
+legal information retrieval, RAG, and studies of hallucination and citation reliability. We
+then examine three recent system designs that improve different parts of the pipeline:
+document drafting with RAG, fine-tuning of retrieval and generation, and structure-aware
+indexing. The review highlights persistent challenges in statutory hierarchy preservation,
+citation verification, multilingual access, and jurisdictional coverage, with particular
+attention to under-represented legal systems such as Pakistan. We distinguish findings
+reported by the original authors from limitations inferred from a study's scope or
+evaluation.
+\end{abstract}
+\vspace{1.2em}
+\end{@twocolumnfalse}
+]
+
+\input{sections/01_introduction}
+\input{sections/02_methodology}
+\input{sections/03_foundations}
+\input{sections/04_language_models}
+\input{sections/05_rag_emergence}
+\input{sections/06_retrieval_architectures}
+\input{sections/07_reliability}
+\input{sections/08_comparative_analysis}
+\input{sections/09_jurisdiction_multilingual}
+\input{sections/10_open_challenges}
+\input{sections/11_conclusion}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

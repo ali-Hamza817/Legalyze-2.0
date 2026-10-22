@@ -1,0 +1,33 @@
+% Conceptual unified legal retrieval architecture (vertical staged pipeline). Vector TikZ.
+\begin{figure}[t]
+\centering
+\resizebox{\columnwidth}{!}{%
+\begin{tikzpicture}[
+  font=\footnotesize,
+  stage/.style={draw, thick, rounded corners=2pt, align=center, text width=6.6cm,
+                minimum height=8mm, inner sep=3pt, fill=legalblue!6, draw=legalblue!70},
+  sub/.style={draw, thick, rounded corners=2pt, align=center, text width=3.1cm,
+              minimum height=8mm, inner sep=3pt, fill=black!4, draw=black!55},
+  fl/.style={-{Latex[length=2.4mm]}, draw=black!50, line width=0.8pt}]
+
+  \node[stage] (ing) at (0,0) {\textbf{1. Legal document ingestion}\\\scriptsize statutes, regulations, judgments, and metadata};
+  \node[stage] (pre) at (0,-1.5) {\textbf{2. Structure-aware preprocessing}\\\scriptsize hierarchical segmentation, metadata, source links, provenance};
+  \node[sub] (lex) at (-1.85,-3.1) {\textbf{Lexical retrieval}\\\scriptsize BM25, exact legal expressions};
+  \node[sub] (den) at ( 1.85,-3.1) {\textbf{Dense retrieval}\\\scriptsize embedding-based semantic similarity};
+  \node[stage] (fus) at (0,-4.7) {\textbf{3. Rank fusion and reranking}\\\scriptsize combine candidate lists and refine relevance};
+  \node[stage] (ctx) at (0,-6.2) {\textbf{4. Context and authority checks}\\\scriptsize parent provisions, related authorities, jurisdiction, provenance};
+  \node[stage] (gen) at (0,-7.7) {\textbf{5. Evidence-grounded generation and verification}\\\scriptsize generate an answer and check its claims against the sources};
+
+  \draw[fl] (ing) -- (pre);
+  \draw[fl] (pre.south) -- (lex.north);
+  \draw[fl] (pre.south) -- (den.north);
+  \draw[fl] (lex.south) -- (fus.north);
+  \draw[fl] (den.south) -- (fus.north);
+  \draw[fl] (fus) -- (ctx);
+  \draw[fl] (ctx) -- (gen);
+\end{tikzpicture}}
+\caption{Conceptual architecture synthesizing complementary legal retrieval methods. This is a
+proposed reference architecture, not a claim that every component has been validated together in a
+single experiment.}
+\label{fig:arch}
+\end{figure}

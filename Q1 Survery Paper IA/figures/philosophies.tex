@@ -1,0 +1,63 @@
+% Three ways to build a modern legal AI system (Buffa / Ren / Hamza). Vector TikZ.
+% Design goal: three parallel pipelines, short labels, one highlighted step each.
+% Full page width via figure* + resizebox.
+\begin{figure*}[t]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  every node/.style={font=\footnotesize},
+  hdr/.style={rounded corners=2pt, align=center, text width=4.2cm, inner sep=4pt,
+              font=\footnotesize\bfseries, text=white, minimum height=9mm},
+  stp/.style={draw, rounded corners=2pt, align=center, text width=4.2cm,
+               minimum height=8mm, inner sep=3pt, fill=white},
+  key/.style={draw, line width=1pt, rounded corners=2pt, align=center, text width=4.2cm,
+              minimum height=8.5mm, inner sep=3pt, font=\footnotesize\bfseries},
+  tag/.style={align=center, text width=4.4cm, font=\scriptsize\itshape, text=black!55},
+  fl/.style={-{Latex[length=2.2mm]}, draw=black!45, line width=0.7pt}]
+
+  \definecolor{cBuffa}{HTML}{3B6EA5} % blue
+  \definecolor{cRen}{HTML}{D98E2B}   % amber
+  \definecolor{cHamza}{HTML}{BE3B39} % crimson
+
+  \def\cA{0}     % column x-centres (cm)
+  \def\cB{5.6}
+  \def\cC{11.2}
+  \def\rowH{1.2}
+
+  % ===== Column 1 : Buffa et al. =====
+  \node[hdr, fill=cBuffa] (b0) at (\cA,0) {Buffa et al.\\\normalfont\scriptsize RAG document building};
+  \node[stp, draw=cBuffa] (b1) at (\cA,-\rowH)   {User query};
+  \node[stp, draw=cBuffa] (b2) at (\cA,-2*\rowH) {Retrieve sources};
+  \node[key, draw=cBuffa, fill=cBuffa!12, text=cBuffa!55!black] (b3) at (\cA,-3*\rowH) {Generate draft};
+  \node[stp, draw=cBuffa] (b4) at (\cA,-4*\rowH) {Legal document};
+  \node[tag] at (\cA,-4.95*\rowH) {Adapt the \textbf{generation}};
+  \foreach \a/\b in {b0/b1,b1/b2,b2/b3,b3/b4} \draw[fl] (\a)--(\b);
+
+  % ===== Column 2 : Ren et al. =====
+  \node[hdr, fill=cRen] (r0) at (\cB,0) {Ren et al.\\\normalfont\scriptsize Fine-tuned legal RAG};
+  \node[stp, draw=cRen] (r1) at (\cB,-\rowH)   {Synthetic legal data};
+  \node[key, draw=cRen, fill=cRen!15, text=cRen!55!black] (r2) at (\cB,-2*\rowH) {Fine-tune retriever + generator};
+  \node[stp, draw=cRen] (r3) at (\cB,-3*\rowH) {Retrieve + generate};
+  \node[stp, draw=cRen] (r4) at (\cB,-4*\rowH) {Answer};
+  \node[tag] at (\cB,-4.95*\rowH) {Adapt the \textbf{model}};
+  \foreach \a/\b in {r0/r1,r1/r2,r2/r3,r3/r4} \draw[fl] (\a)--(\b);
+
+  % ===== Column 3 : Hamza et al. =====
+  \node[hdr, fill=cHamza] (h0) at (\cC,0) {Hamza et al.\\\normalfont\scriptsize Legalyze (SAHI)};
+  \node[stp, draw=cHamza] (h1) at (\cC,-\rowH)   {Statute hierarchy};
+  \node[key, draw=cHamza, fill=cHamza!12, text=cHamza!60!black] (h2) at (\cC,-2*\rowH) {SAHI index + breadcrumb};
+  \node[stp, draw=cHamza] (h3) at (\cC,-3*\rowH) {Dual-stream + RRF};
+  \node[stp, draw=cHamza] (h4) at (\cC,-4*\rowH) {Cited, addressed answer};
+  \node[tag] at (\cC,-4.95*\rowH) {Adapt the \textbf{index}};
+  \foreach \a/\b in {h0/h1,h1/h2,h2/h3,h3/h4} \draw[fl] (\a)--(\b);
+
+\end{tikzpicture}}
+\caption{Three ways to build a modern legal system, drawn as parallel pipelines. \citet{buffa2025}
+adapt the \emph{generation} side: retrieve supporting text and let a model assemble a draft.
+\citet{ren2026} go further and adapt the \emph{model} itself, fine-tuning both the retriever and the
+generator on synthetic legal data. \citet{hamza2026} instead adapt the \emph{index}: they preserve
+the statute's hierarchy with a breadcrumb per chunk, retrieve through two streams fused by rank, and
+return each passage with its exact address. The highlighted box in each column marks that system's
+defining step. The three answer different questions, and a mature system is likely to combine them.}
+\label{fig:philosophies}
+\end{figure*}

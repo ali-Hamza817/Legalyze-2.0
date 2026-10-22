@@ -1,0 +1,238 @@
+\section{Open Challenges and Future Research Directions}
+\label{sec:future}
+
+\subsection{From capable legal AI to dependable legal information retrieval}
+
+The preceding sections show that contemporary legal AI has made progress in legal language
+understanding, evidence retrieval, document drafting, and agentic processing. However, these
+capabilities remain difficult to integrate into a system that consistently returns relevant, applicable,
+and verifiable legal answers.
+
+The central research challenge is therefore not simply to produce more fluent legal text. It is to
+develop systems that can retrieve authoritative evidence, preserve its legal context, reason over
+relationships between sources, and verify the claims they generate. The following research directions
+emerge from the comparison of legal AI architectures and the challenges of jurisdiction-specific
+retrieval.
+
+\subsection{Research direction 1: Knowledge-graph-grounded legal retrieval}
+
+Conventional retrieval methods primarily rank text passages according to lexical or semantic relevance.
+While effective for many questions, they may struggle with queries requiring relationships across
+multiple documents. For example, answering a complex legal question may require connecting a statutory
+provision to a definition, identifying judgments that interpret it, and determining whether a later
+authority modifies or distinguishes an earlier interpretation. A flat index may retrieve individual
+passages without explicitly representing these relationships.
+
+Knowledge graphs provide a complementary representation by encoding entities and relationships as
+structured edges. In legal applications, graph entities might represent statutes, provisions, judgments,
+courts, parties, legal concepts, and dates. Relationships could represent references, interpretation,
+amendment, procedural connections, or other explicitly supported links.
+
+Future research should investigate how to combine graph-based retrieval with lexical and dense retrieval
+while preserving provenance for every relationship. The graph must distinguish explicitly stated facts
+from inferred connections and should not encode a legal relationship merely because two documents discuss
+similar subjects. Key research questions include:
+\begin{itemize}[leftmargin=1.4em, itemsep=2pt, topsep=2pt]
+\item Does graph-grounded retrieval improve recall for multi-hop legal questions compared with hybrid
+text retrieval alone?
+\item Can graph relationships improve the identification of relevant authorities and exceptions?
+\item How should uncertain, conflicting, or incomplete graph relationships be represented?
+\item What methods can update the graph when statutes are amended or new judgments become available?
+\end{itemize}
+
+The most useful evaluation would compare a text-only baseline, a hybrid retrieval system, a graph-only
+method, and a combined graph--text architecture using the same test queries and evidence annotations.
+
+\subsection{Research direction 2: Multilingual and low-resource legal retrieval}
+
+Multilingual legal retrieval remains challenging when queries are expressed in languages or scripts that
+are poorly represented in training data. English, Urdu, and Roman Urdu may express similar legal
+intentions through different lexical forms, transliterations, or terminology.
+
+Future research should investigate cross-lingual retrieval models, legal terminology alignment,
+transliteration-aware indexing, and query expansion. Rather than translating every query into English and
+discarding the original wording, a system could search across multiple query representations and fuse the
+results. The principal challenge is to distinguish linguistic similarity from legal equivalence. A
+translated phrase may be grammatically correct but fail to represent a jurisdiction-specific legal concept
+accurately. Useful research questions include:
+\begin{itemize}[leftmargin=1.4em, itemsep=2pt, topsep=2pt]
+\item How does retrieval performance vary between English, Urdu, and Roman Urdu queries?
+\item Does multilingual dense retrieval outperform translation-only and transliteration-only baselines?
+\item Can legal entity linking reduce errors involving statutory names, section numbers, courts, and
+legal terminology?
+\item How can multilingual benchmarks evaluate both retrieval relevance and legal correctness?
+\end{itemize}
+
+A reproducible benchmark should include queries in each supported language, authoritative source passages,
+equivalent or carefully aligned legal intents, and explicit judgments of whether retrieved evidence is
+applicable. It should also test spelling variation, code-switching, and unseen transliteration forms.
+
+\subsection{Research direction 3: Structure-aware legal indexing}
+
+Legal document structure is frequently lost during conversion, chunking, and indexing. This creates a
+risk that the retrieval system will return a fragment without the definitions, exceptions, headings, or
+parent sections needed to interpret it correctly.
+
+Structure-aware indexing offers a way to preserve these relationships. Future research should compare
+fixed-size chunking, semantic chunking, hierarchical indexing, and parent-child retrieval under the same
+evaluation conditions. A particularly important question is whether preserving structure improves
+downstream answer quality beyond its effect on retrieval recall. For example, a structure-aware system
+may retrieve a relevant subsection and its parent heading, allowing the generator to interpret the
+provision more accurately even if the retrieved subsection itself is unchanged.
+
+Research should also examine how to handle malformed PDFs, inconsistent numbering, footnotes, tables,
+nested clauses, and cross-references. These are not merely preprocessing inconveniences: errors during
+document parsing can propagate through retrieval and generation. Promising evaluation measures include:
+\begin{itemize}[leftmargin=1.4em, itemsep=2pt, topsep=2pt]
+\item structural extraction accuracy for headings, sections, and subsections;
+\item retrieval recall for provisions whose meaning depends on parent context;
+\item accuracy of cross-reference resolution;
+\item citation localization accuracy at the section or paragraph level;
+\item downstream legal correctness under controlled comparisons.
+\end{itemize}
+
+\subsection{Research direction 4: Claim-level evidence verification}
+
+Citation-grounded generation is insufficient if the system only checks whether a response contains
+references. Future legal AI architectures should explicitly associate each material claim with the passage
+or passages intended to support it.
+
+A claim-level verification pipeline could identify factual and legal assertions, resolve their citations,
+compare each claim with its evidence, and flag unsupported or contradictory statements. Depending on the
+application, verification might combine deterministic citation resolution, metadata checks, textual
+entailment models, and qualified human review. The research challenge is that legal support is often more
+complex than ordinary textual entailment. A passage may establish a general rule while a different passage
+provides an exception. A judgment may discuss an argument without adopting it. A later authority may change
+how an earlier decision should be understood.
+
+Future work should therefore evaluate more than whether a cited passage is topically relevant. It should
+assess whether the passage supports the claim in context and whether material qualifications or
+counter-authorities have been omitted. Possible research questions include:
+\begin{itemize}[leftmargin=1.4em, itemsep=2pt, topsep=2pt]
+\item How accurately can automated methods distinguish supported, contradicted, and unsupported legal
+claims?
+\item Can verification identify citations to the wrong subsection or an irrelevant paragraph within an
+otherwise valid authority?
+\item Does claim-level verification reduce unsupported-claim rates without introducing excessive false
+alarms?
+\item When should the system abstain rather than generate a legal conclusion?
+\end{itemize}
+
+An effective benchmark should include claim-level annotations, source locations, support labels, and
+cases involving exceptions or conflicting authorities.
+
+\subsection{Research direction 5: Agentic legal AI with explicit quality gates}
+
+Agentic AI can coordinate multiple operations, such as query decomposition, iterative retrieval, legal
+analysis, and citation checking. However, orchestration introduces additional opportunities for error. An
+agent may select an inappropriate tool, carry forward a mistaken assumption, or produce a confident
+conclusion based on incomplete evidence.
+
+Future research should focus on evidence-controlled orchestration rather than simply increasing the number
+of agents. Each stage should have explicit input requirements, output contracts, and quality checks. For
+example, an agent responsible for legal analysis should receive retrieved evidence with source identifiers
+and relevant document context. A verification stage should test whether the proposed claims are supported
+before the final response is released. If evidence is missing, the system should trigger additional
+retrieval or qualify its answer.
+
+Software engineering principles are particularly relevant here. Modular interfaces, replaceable
+components, explicit error handling, versioned configurations, and regression tests can make agentic legal
+systems easier to maintain and evaluate. Potential experiments should compare a single-agent baseline with
+multi-stage and multi-agent alternatives under equivalent retrieval and generation settings. Measurements
+should include legal correctness, citation support, failure recovery, latency, computational cost, and the
+rate of unsupported claims. Without such controls, improvements cannot reliably be attributed to agentic
+orchestration.
+
+\subsection{Research direction 6: Temporal and authority-aware reasoning}
+
+Legal information changes over time. Statutes may be amended, judgments may be distinguished or overruled,
+and procedural requirements may change. A retrieval system that ignores these changes can produce an
+answer that was once correct but is no longer applicable.
+
+Future systems should represent source dates, effective periods, amendments, and relevant relationships
+between authorities. Where available and properly established, this information can support temporal
+filtering and authority-aware retrieval. An important distinction is between the date a document was
+published and the period during which its legal rule applied. These dates may differ. A reliable system
+should not assume that the newest document is necessarily the most authoritative or applicable.
+
+Research should evaluate whether temporal and authority-aware retrieval reduces outdated-law errors, and
+how systems should respond when the corpus does not contain enough information to establish current legal
+status.
+
+\subsection{Research direction 7: Reproducible evaluation and realistic legal benchmarks}
+
+Legal AI evaluation remains fragmented across tasks, jurisdictions, corpora, and definitions of
+correctness. A model may perform well on a curated benchmark but struggle with ambiguous queries,
+incomplete evidence, or questions that require multiple sources.
+
+Future benchmarks should combine retrieval and generation evaluation while preserving separate scores for
+each stage. They should include difficult cases involving exceptions, cross-references, competing
+authorities, temporal changes, multilingual queries, and insufficient evidence. A strong evaluation
+protocol should also report dataset construction, source coverage, annotation instructions, reviewer
+expertise, inter-annotator agreement, baseline configurations, and uncertainty estimates. Ablation studies
+should isolate the contributions of hybrid retrieval, rank fusion, reranking, hierarchical indexing,
+knowledge graphs, and verification.
+
+Public datasets and reproducible evaluation code can help researchers distinguish genuine architectural
+improvements from differences in test construction or experimental settings. Where legal or privacy
+restrictions prevent full data release, researchers should document the limitations and provide
+reproducible alternatives where possible.
+
+\subsection{Consolidated research agenda}
+
+Table~\ref{tab:agenda} draws the directions together with measurable research objectives.
+
+\begin{table*}[tp]
+\centering
+\caption{Open challenges and measurable research objectives.}
+\label{tab:agenda}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.4cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Research challenge} & \textbf{Proposed direction} & \textbf{Example evaluation} \\
+\midrule
+Missing cross-document relationships & Combine knowledge graphs with text retrieval. & Recall on multi-hop questions and graph-relation accuracy. \\
+Low-resource multilingual queries & Multilingual retrieval with terminology alignment. & Language-specific Recall@$k$ and expert-assessed correctness. \\
+Loss of legal hierarchy & Structure-aware indexing and parent-child retrieval. & Structural extraction accuracy and downstream answer quality. \\
+Unsupported legal claims & Claim-level evidence verification. & Claim-support precision, recall, and unsupported-claim rate. \\
+Unreliable agentic workflows & Modular orchestration with explicit quality gates. & Correctness, failure recovery, latency, and ablation results. \\
+Outdated or inapplicable authorities & Temporal and authority-aware retrieval. & Outdated-law error rate and applicability accuracy. \\
+Incomparable research results & Shared benchmarks and reproducible protocols. & Cross-system results under common data and evaluation rules. \\
+Limited auditability & Preserve provenance and traceable evidence links. & Citation resolution, provenance completeness, and audit success rate. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+These research directions are interdependent. Knowledge graphs can support authority-aware retrieval, but
+their usefulness depends on accurate source extraction. Multilingual retrieval can improve access, but its
+outputs still require jurisdictional filtering. Structure-aware indexing can preserve context, while
+claim-level verification can assess whether the generated answer uses that context correctly. Agentic
+workflows can coordinate these capabilities, but only reproducible evaluation can establish whether the
+resulting system is more dependable. The most promising research agenda is therefore an integrated one:
+knowledge-graph-grounded, multilingual, structure-aware legal retrieval with explicit evidence
+verification and reproducible evaluation.
+
+\subsection{Concluding synthesis}
+
+The evolution of legal AI demonstrates a shift from systems focused primarily on rules, cases, and legal
+language understanding toward architectures that retrieve external evidence and coordinate more complex
+legal information workflows. Yet access to evidence is not equivalent to legal correctness. Dependable
+systems must preserve the structure and provenance of legal sources, recognize jurisdictional and temporal
+constraints, support multilingual queries, and verify that generated claims are adequately supported.
+Three priorities emerge from this survey:
+\begin{enumerate}[leftmargin=1.4em, itemsep=2pt, topsep=2pt]
+\item represent legal knowledge more faithfully through hierarchical indexing, explicit relationships, and
+provenance-aware knowledge graphs;
+\item make evidence retrieval more accessible and reliable through hybrid and multilingual retrieval,
+contextual ranking, and jurisdiction-aware filtering;
+\item make generated answers more verifiable through claim-level evidence checks, authority validation,
+appropriate abstention, and reproducible expert evaluation.
+\end{enumerate}
+
+For Pakistani legal AI, these priorities provide a concrete path toward systems that connect users'
+questions to applicable legal evidence without treating semantic similarity or fluent generation as proof
+of correctness. More broadly, they suggest that progress in legal AI should be measured not only by what a
+model can generate, but by whether its answers can be traced, evaluated, and justified through the legal
+sources on which they depend.

@@ -1,0 +1,396 @@
+\documentclass[10pt,twocolumn]{article}
+
+% ===== packages =====
+\usepackage[a4paper,margin=0.75in,columnsep=0.55cm]{geometry}
+\usepackage[utf8]{inputenc}
+\usepackage[T1]{fontenc}
+\usepackage{lmodern}
+\usepackage{microtype}
+\usepackage{amsmath,amssymb}
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{array}
+\usepackage{tabularx}
+\usepackage{xcolor}
+\usepackage{enumitem}
+\usepackage[round]{natbib}
+\usepackage{titlesec}
+\usepackage[hidelinks]{hyperref}
+
+% ===== styling =====
+\definecolor{legalblue}{RGB}{20,60,120}
+\titleformat{\section}{\normalfont\large\bfseries\color{legalblue}}{\thesection}{0.6em}{}
+\titleformat{\subsection}{\normalfont\normalsize\bfseries}{\thesubsection}{0.6em}{}
+\setlength{\parskip}{0pt}
+\setlength{\parindent}{1.1em}
+\emergencystretch=2em
+\renewcommand{\arraystretch}{1.25}
+\hypersetup{colorlinks=true, linkcolor=legalblue, citecolor=legalblue, urlcolor=legalblue}
+
+% placeholder for a cell to be filled with a measured result
+\newcommand{\tbd}{\textcolor{black!45}{--}}
+
+% ===== title =====
+\title{\textbf{Enhancing Legalyze: Automated Data Synthesis and Structure-Aware\\ Retrieval-Augmented Generation for Pakistani Legal Intelligence\\[4pt]
+\large A Research-Direction and Results-Design Template}}
+\author{Ali Hamza\\[2pt]
+\small Department of Software Engineering, Military College of Signals (MCS),\\
+\small National University of Sciences and Technology (NUST), Islamabad, Pakistan\\
+\small \texttt{ahamza.msse25mcs@student.nust.edu.pk}}
+\date{\today}
+
+\begin{document}
+\twocolumn[
+\begin{@twocolumnfalse}
+\maketitle
+\begin{abstract}
+\noindent
+This template sets out a proposed research direction that extends the Legalyze platform
+\citep{hamza2026} by transferring the automated data-synthesis and fine-tuning methodology of
+\citet{ren2026} from Chinese to Pakistani law, and fusing it with Legalyze's structure-aware
+hierarchical indexing. The central hypothesis is that a well-adapted generator operating over a
+structure-aware index outperforms either a purely model- and data-centric pipeline or a purely
+structure-centric one. The document states enhanced research questions, maps each component of the
+base methodology onto the Pakistani setting, and specifies a results-focused experimental design,
+including a baseline ladder, separated retrieval and answer-quality metrics, planned ablations, and
+empty result tables (T1--T5) to be completed with measured values. All cited records are drawn from
+the project bibliography; no results are reported here, as every number in the tables is a placeholder.
+\end{abstract}
+\vspace{1.0em}
+\end{@twocolumnfalse}
+]
+
+% ====================================================================
+\section{Motivation and positioning}
+\label{sec:rd-motivation}
+
+The base paper for this direction is \citet{ren2026}, \emph{Automated Data Synthesis and
+Retrieval-Augmented Generation for Legal Large Language Models}. Its pipeline is model- and
+data-centric: it (i)~generates synthetic legal question--answer data, (ii)~curates that data with an
+LLM-based judge and an enhanced Elo-ranking mechanism, (iii)~fine-tunes the retriever and generator on
+the curated data, and (iv)~evaluates the result on a Chinese legal benchmark (LawBench).
+
+Legalyze \citep{hamza2026} follows the opposite, structure-centric philosophy for Pakistani law:
+structure-aware hierarchical indexing (SAHI), a hybrid of BM25 and dense retrieval fused by reciprocal
+rank fusion \citep{cormack2009}, and an agentic, citation-grounded response design.
+
+The proposed direction is therefore not a simple re-run of \citet{ren2026} on Pakistani data. Its
+contribution is the \emph{combination}: transferring the data-synthesis and fine-tuning methodology to a
+low-resource jurisdiction and integrating it with Legalyze's structure-aware retrieval, then testing
+whether the combination improves evidence-grounded answer quality over either philosophy alone. This
+mirrors the synthesis argued for in the accompanying survey, where model-centric designs
+\citep{buffa2025, ren2026} and the structure-centric design \citep{hamza2026} are presented as
+complementary rather than competing.
+
+% ====================================================================
+\section{Enhanced research questions}
+\label{sec:rd-rqs}
+
+Table~\ref{tab:rd-rq} states the research questions that extend Legalyze with the base methodology. Each
+is designed to be answered by a controlled experiment in Section~\ref{sec:rd-results}.
+
+\begin{table*}[t]
+\centering
+\caption{Enhanced research questions for Legalyze under the \citet{ren2026} methodology.}
+\label{tab:rd-rq}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{1.4cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{RQ} & \textbf{Focus} & \textbf{What the experiment must establish} \\
+\midrule
+RQ-A & Automated synthetic legal QA generation for a low-resource jurisdiction & Whether an LLM, grounded in SAHI-retrieved Pakistani provisions and judgments, can produce legally faithful QA pairs usable for fine-tuning. \\
+RQ-B & Data curation (LLM-judge + Elo ranking) & Whether curating synthetic data improves downstream retrieval and answer quality relative to unfiltered synthetic data. \\
+RQ-C & What to fine-tune & Whether fine-tuning the retriever only, the generator only, or both yields the best citation precision and legal correctness on Pakistani law. \\
+RQ-D & The fusion hypothesis (headline) & Whether SAHI combined with synthetic-data fine-tuning outperforms SAHI alone and a \citet{ren2026}-style fine-tuned pipeline over flat chunks. \\
+RQ-E & Multilingual access & How gains differ across English, Urdu, and Roman Urdu queries. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+% ====================================================================
+\section{Methodology transfer}
+\label{sec:rd-method}
+
+Table~\ref{tab:rd-transfer} maps each component of the base methodology onto the Pakistani-Legalyze
+setting, with the principal risk to control at each step. The guiding principle is to keep legal
+evidence external, in the SAHI index, so that fine-tuning adapts \emph{phrasing and retrieval} rather
+than internalising legal knowledge in model weights, which would reintroduce the hallucination risk
+documented by \citet{dahl2024} and \citet{magesh2025}.
+
+\begin{table*}[t]
+\centering
+\caption{Component-by-component transfer of the \citet{ren2026} methodology to Pakistani Legalyze.}
+\label{tab:rd-transfer}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.0cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Base component} & \textbf{Pakistani-Legalyze adaptation} & \textbf{Principal risk and control} \\
+\midrule
+Synthetic QA generation & Prompt an LLM with SAHI-retrieved provisions (Constitution, PPC, CrPC, QSO) and judgments; generate question, answer, and the breadcrumb as the gold citation. & LLM hallucinating Pakistani law; control by grounding every synthetic answer in a retrieved passage and rejecting ungrounded items. \\
+LLM-judge + Elo curation & Judge on legal correctness and citation support, not fluency; auto-verify the cited provision against the SAHI ground truth; Elo-rank candidates. & Judge and generator sharing a model family; control by using a different judge model plus a deterministic citation-resolution check. \\
+Fine-tune retriever & Parameter-efficient (for example LoRA) contrastive fine-tuning of the dense embedder on synthetic (query, gold-passage) pairs; retain BM25 and RRF. & Compute cost; control with parameter-efficient fine-tuning and a retriever-first strategy. \\
+Fine-tune generator & Light parameter-efficient adaptation only; keep evidence external via SAHI. & Re-internalising knowledge in weights; control by measuring hallucination before and after fine-tuning. \\
+Benchmark (LawBench analogue) & Construct a held-out, expert-annotated Pakistani legal QA set (PakLawBench) with statute-retrieval, citation, and application tasks, split by language. & No public analogue exists; the benchmark itself is a contribution and must document coverage and annotation. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+% ====================================================================
+\section{Experimental and results design}
+\label{sec:rd-results}
+
+This section is the focus of the proposed work. It separates retrieval quality from answer reliability,
+reports results only within their own experimental context, and uses ablations to attribute any gain to
+a specific component. These disciplines follow the evaluation guidance synthesised in the survey and the
+evidence that semantic similarity does not establish legal correctness \citep{silva2026}, and that
+failures arise from both retrieval and reasoning \citep{afane2026}.
+
+\subsection{Baseline ladder}
+\label{sec:rd-baselines}
+
+Table~\ref{tab:rd-baselines} defines the systems to be compared. Each step up the ladder isolates one
+idea, so that differences between adjacent rows are interpretable.
+
+\begin{table*}[t]
+\centering
+\caption{Baseline ladder. Each row adds one component relative to the row above.}
+\label{tab:rd-baselines}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{1.1cm} >{\raggedright\arraybackslash}p{5.0cm} >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{ID} & \textbf{System} & \textbf{What it isolates} \\
+\midrule
+B1 & Base LLM, no retrieval & Parametric-only baseline; lower bound on traceability. \\
+B2 & Vanilla RAG (flat chunks, off-the-shelf retriever) & Effect of retrieval alone, without structure or fine-tuning. \\
+B3 & \citet{ren2026}-style: flat chunks + synthetic-data fine-tuned retriever and generator & The base methodology on Pakistani law, without structure. \\
+B4 & Legalyze SAHI (structure-aware, no fine-tuning) \citep{hamza2026} & Effect of structure-aware indexing alone. \\
+B5 & \textbf{Proposed:} SAHI + curated synthetic-data fine-tuning & The fusion of structure and the base methodology. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\subsection{Metrics}
+\label{sec:rd-metrics}
+
+Metrics are reported in separate families and never collapsed into a single score.
+\begin{itemize}[leftmargin=1.4em, itemsep=2pt, topsep=2pt]
+\item \textbf{Retrieval:} Recall@$k$, nDCG@$k$, MRR, and passage-level precision.
+\item \textbf{Answer quality:} expert-assessed legal correctness, citation precision, citation recall,
+citation-support (whether the cited passage entails the claim), and unsupported-claim or hallucination
+rate measured under a declared protocol \citep{dahl2024, magesh2025}.
+\item \textbf{Failure attribution:} the share of errors due to retrieval misses versus reasoning errors
+\citep{afane2026}.
+\item \textbf{Multilingual:} every metric above, reported separately for English, Urdu, and Roman Urdu.
+\item \textbf{Operational:} latency and the compute or service cost of fine-tuning and inference.
+\end{itemize}
+Each reported number should carry its annotation protocol, reviewer expertise, inter-annotator
+agreement, and, where applicable, a significance test. Retrieval-benchmark design follows the precedent
+of passage-level legal retrieval evaluation \citep{pipitone2024, butler2026}, and legal benchmark
+construction follows \citep{chalkidis2022, guha2023}.
+
+\subsection{Planned result tables}
+\label{sec:rd-tables}
+
+All cells are placeholders (\tbd) to be completed with measured values; no results are reported in this
+template.
+
+\begin{table*}[t]
+\centering
+\caption{\textbf{T1 -- Retrieval quality} across baselines. Higher is better. R@$k$: Recall@$k$;
+P@5: passage precision at 5.}
+\label{tab:rd-t1}
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X ccccc}
+\toprule
+\textbf{System} & \textbf{R@5} & \textbf{R@10} & \textbf{nDCG@10} & \textbf{MRR} & \textbf{P@5} \\
+\midrule
+B1 Base LLM (no retrieval) & \tbd & \tbd & \tbd & \tbd & \tbd \\
+B2 Vanilla RAG (flat) & \tbd & \tbd & \tbd & \tbd & \tbd \\
+B3 Ren-style fine-tuned (flat) & \tbd & \tbd & \tbd & \tbd & \tbd \\
+B4 Legalyze SAHI (no FT) & \tbd & \tbd & \tbd & \tbd & \tbd \\
+B5 \textbf{SAHI + synthetic FT (ours)} & \tbd & \tbd & \tbd & \tbd & \tbd \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{\textbf{T2 -- Answer quality and reliability} across baselines. For hallucination rate, lower
+is better; all other columns, higher is better.}
+\label{tab:rd-t2}
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X ccccc}
+\toprule
+\textbf{System} & \textbf{Legal corr.} & \textbf{Cit. prec.} & \textbf{Cit. recall} & \textbf{Cit. support} & \textbf{Halluc. rate} \\
+\midrule
+B1 Base LLM (no retrieval) & \tbd & \tbd & \tbd & \tbd & \tbd \\
+B2 Vanilla RAG (flat) & \tbd & \tbd & \tbd & \tbd & \tbd \\
+B3 Ren-style fine-tuned (flat) & \tbd & \tbd & \tbd & \tbd & \tbd \\
+B4 Legalyze SAHI (no FT) & \tbd & \tbd & \tbd & \tbd & \tbd \\
+B5 \textbf{SAHI + synthetic FT (ours)} & \tbd & \tbd & \tbd & \tbd & \tbd \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{\textbf{T3 -- Ablation.} Each row removes or changes one component of B5 to attribute its effect.}
+\label{tab:rd-t3}
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X cccc}
+\toprule
+\textbf{Configuration} & \textbf{R@10} & \textbf{Cit. prec.} & \textbf{Legal corr.} & \textbf{Halluc. rate} \\
+\midrule
+B5 full (SAHI + curated synthetic FT) & \tbd & \tbd & \tbd & \tbd \\
+\quad fine-tune retriever only & \tbd & \tbd & \tbd & \tbd \\
+\quad fine-tune generator only & \tbd & \tbd & \tbd & \tbd \\
+\quad unfiltered synthetic data (no Elo curation) & \tbd & \tbd & \tbd & \tbd \\
+\quad flat chunks instead of SAHI & \tbd & \tbd & \tbd & \tbd \\
+\quad no RRF (single retrieval stream) & \tbd & \tbd & \tbd & \tbd \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table*}[t]
+\centering
+\caption{\textbf{T4 -- Multilingual breakdown} for the proposed system (B5), by query language.}
+\label{tab:rd-t4}
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}X ccc}
+\toprule
+\textbf{Query language} & \textbf{R@10} & \textbf{Legal corr.} & \textbf{Cit. prec.} \\
+\midrule
+English & \tbd & \tbd & \tbd \\
+Urdu & \tbd & \tbd & \tbd \\
+Roman Urdu & \tbd & \tbd & \tbd \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+\begin{table}[t]
+\centering
+\caption{\textbf{T5 -- Synthetic-data scaling} for the proposed system (B5): quality versus the number
+of curated synthetic training examples.}
+\label{tab:rd-t5}
+\footnotesize
+\setlength{\tabcolsep}{6pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabular}{p{2.4cm} cc}
+\toprule
+\textbf{\# examples} & \textbf{R@10} & \textbf{Legal corr.} \\
+\midrule
+1{,}000 & \tbd & \tbd \\
+5{,}000 & \tbd & \tbd \\
+10{,}000 & \tbd & \tbd \\
+50{,}000 & \tbd & \tbd \\
+\bottomrule
+\end{tabular}
+\end{table}
+
+\subsection{Hypotheses to be tested}
+\label{sec:rd-hypotheses}
+
+The following are stated in advance and then tested; they are not reported findings.
+\begin{enumerate}[leftmargin=1.4em, itemsep=2pt, topsep=2pt]
+\item B5 gives the largest gain on exact-statute citation tasks, because structure aids retrieval while
+fine-tuning aids phrasing.
+\item B3 (model-centric fine-tuning over flat chunks) improves fluency but not citation precision, and
+may raise the hallucination rate, directly testing the survey's critique of model-centric designs.
+\item Curation (LLM-judge and Elo) matters more in the low-resource Pakistani setting than in a
+data-rich setting.
+\item Gains are smaller for Urdu and Roman Urdu unless terminology alignment is added, motivating the
+multilingual work.
+\end{enumerate}
+
+\subsection{Fully automatic evaluation without human annotation}
+\label{sec:rd-auto}
+
+A central design goal of this proposal is to evaluate the system \emph{without} a human annotation team.
+This is possible for two reasons. First, because the corpus is structure-aware, the gold passage and gold
+citation for every synthetic item are known by construction from the breadcrumb that generated it, so
+retrieval and citation metrics need no human labels. Second, the base methodology \citep{ren2026} already
+evaluates with an LLM-based judge and an Elo-ranking mechanism rather than a human panel, and a recent
+legal-RAG study used an LLM-as-judge validated against only a small expert sample \citep{silva2026}.
+Removing human annotation is therefore more faithful to the base method, not a compromise.
+Table~\ref{tab:rd-auto} shows how each metric is obtained automatically.
+
+\begin{table*}[t]
+\centering
+\caption{Fully automatic sources of ground truth, replacing human annotation.}
+\label{tab:rd-auto}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Metric family} & \textbf{Automatic source of ground truth} \\
+\midrule
+Retrieval (Recall@$k$, nDCG, MRR) & Gold passage is known from the generating provision; computed by code with no labels. \\
+Citation existence and resolution & Deterministic lookup in the indexed corpus. \\
+Citation precision and recall & Compare the system's cited passage with the known gold passage. \\
+Citation support (entailment) & A natural-language-inference model or an LLM-as-judge. \\
+Legal correctness & LLM-as-judge against the known gold answer, as in the base methodology \citep{ren2026}. \\
+Hallucination / unsupported-claim rate & A citation that does not resolve is fabricated; a claim not entailed by its citation is unsupported. \\
+Multilingual consistency & Metamorphic test: the same question in English, Urdu, and Roman Urdu should retrieve the same provision. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+A single optional human step preserves trust in the automatic judge: on a small sample of roughly fifty
+items, the LLM-judge and one reviewer score the same answers and the agreement is reported (for example
+Cohen's $\kappa$). This takes a few hours rather than the hundreds required for full annotation, and it can
+be omitted, in which case the evaluation is reported as fully automatic. The honest framing is that legal
+correctness is assessed automatically by a held-out judge, with large-scale expert evaluation left to
+future work; this is a disclosed limitation, not a flaw in the contribution.
+
+All stages are intended to run on a local compute cluster, so no cloud GPU rental is required.
+Parameter-efficient fine-tuning (for example QLoRA on a 7--8B open model) and a low-cost API model used
+under the Batch API for synthetic generation and judging keep the monetary cost minimal.
+
+% ====================================================================
+\section{Contribution and honest-reporting discipline}
+\label{sec:rd-contribution}
+
+The contribution is threefold: (i)~the first application of an automated data-synthesis and
+quality-curation methodology to a low-resource jurisdiction; (ii)~the integration of that methodology
+with structure-aware hierarchical indexing, producing a structure-aware and data-synthesis hybrid; and
+(iii)~a multilingual, results-focused evaluation that separates retrieval, citation, and legal
+correctness across English, Urdu, and Roman Urdu. Because fine-tuning can re-internalise knowledge, the
+hallucination rate is measured before and after fine-tuning and evidence is kept external in the SAHI
+index, so a known risk becomes a reported finding rather than a hidden assumption. Any comparison with
+the existing Pakistani RAG framework \citep{ref312025} requires a shared query set and corpus before a
+claim of superiority can be made.
+
+% ====================================================================
+\section{Risks and mitigations}
+\label{sec:rd-risks}
+
+\begin{itemize}[leftmargin=1.4em, itemsep=2pt, topsep=2pt]
+\item \textbf{Synthetic Pakistani law may be incorrect.} Generate only from retrieved passages,
+auto-verify the gold citation, and human-check a sample.
+\item \textbf{Fine-tuning cost.} Use parameter-efficient fine-tuning and prioritise the retriever, which
+is the cheapest change with the largest expected citation gain.
+\item \textbf{Fabricated evaluation numbers.} Every table here is a design; publish only measured results
+with agreement statistics and significance tests.
+\item \textbf{Unfair cross-study comparison.} Do not compare against results from other jurisdictions or
+protocols without re-running under a common setting.
+\end{itemize}
+
+\bibliographystyle{plainnat}
+\bibliography{references}
+
+\end{document}

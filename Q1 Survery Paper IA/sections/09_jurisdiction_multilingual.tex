@@ -1,0 +1,182 @@
+\section{Jurisdiction, Document Structure, and Multilingual Legal AI}
+\label{sec:jurisdiction}
+
+\subsection{Why legal information retrieval is jurisdiction-dependent}
+
+Legal information retrieval differs from general-purpose information retrieval because the relevance of a
+document depends not only on its subject matter but also on its legal authority, jurisdiction, temporal
+validity, and relationship to the question being asked. Two passages may discuss the same legal
+principle while having different implications because they originate from different jurisdictions or
+occupy different positions within a legal system.
+
+For example, a question concerning criminal procedure in Pakistan should prioritize applicable Pakistani
+legislation and relevant Pakistani judicial decisions. A semantically similar provision from another
+jurisdiction may help explain a general concept, but it should not automatically be treated as governing
+authority. Jurisdiction-sensitive retrieval must therefore consider several factors:
+\begin{itemize}[leftmargin=1.4em, itemsep=2pt, topsep=2pt]
+\item \textbf{Territorial and institutional jurisdiction:} whether the authority applies to the relevant
+court, territory, or legal institution.
+\item \textbf{Authority type:} whether a document is legislation, a regulation, a binding judgment, a
+persuasive judgment, or secondary commentary.
+\item \textbf{Temporal validity:} whether the provision or interpretation was applicable at the relevant
+time.
+\item \textbf{Procedural context:} whether the authority addresses the procedural stage and legal issue
+involved.
+\item \textbf{Precedential relationships:} whether a judgment follows, distinguishes, overrules, or
+otherwise relates to another decision.
+\end{itemize}
+
+These considerations expose a limitation of conventional semantic retrieval. An embedding model may
+identify two passages as highly similar without determining whether either passage is legally
+applicable. Consequently, jurisdictional and temporal constraints should influence retrieval and
+verification, not merely appear as explanatory text in the final answer.
+
+\subsection{Legal hierarchy and document structure}
+
+Legal documents contain multiple layers of organization. Statutes may be divided into parts, chapters,
+sections, subsections, clauses, and provisos. Judgments may contain procedural histories, questions of
+law, arguments, judicial reasoning, and final orders. These structural elements help determine the
+meaning and applicability of individual passages.
+
+A conventional chunking strategy often divides documents into fixed-size text segments or overlapping
+windows. Although computationally convenient, this can separate a provision from its heading, definition,
+exception, proviso, or parent section. The resulting fragment may remain semantically understandable
+while losing context that is essential to legal interpretation. Consider a hypothetical example:
+
+\begin{quote}
+\textit{Illustrative statutory structure (schematic):}
+\begin{itemize}[leftmargin=1.3em, itemsep=1pt, topsep=2pt]
+\item \textbf{Chapter III: General Conditions}
+  \begin{itemize}[leftmargin=1.2em, itemsep=1pt, topsep=1pt]
+  \item \textbf{Section 12 (general rule):} a person may exercise the stated right subject to the
+  conditions specified in this section.
+    \begin{itemize}[leftmargin=1.2em, itemsep=1pt, topsep=1pt]
+    \item \textbf{Subsection (2) (limitation):} the right is subject to the additional restrictions
+    specified in the subsection.
+    \item \textbf{Proviso:} an exception applies where the specified conditions are satisfied.
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+This is an illustrative structure only, not an actual statutory provision.
+\end{quote}
+
+If retrieval returns only the general rule, the generated answer may omit the limitation or exception.
+If it returns only the proviso, the system may fail to explain the general rule to which that exception
+applies. Structure-aware retrieval addresses this problem by preserving the relationship between a
+passage and its parent document elements. Useful techniques include:
+\begin{enumerate}[leftmargin=1.4em, itemsep=2pt, topsep=2pt]
+\item \textbf{Hierarchical metadata:} storing the document, chapter, section, subsection, and paragraph
+identifiers associated with each passage.
+\item \textbf{Context-preserving chunking:} retaining headings, definitions, exceptions, and relevant
+neighboring passages.
+\item \textbf{Parent-child retrieval:} retrieving a focused passage while allowing the system to recover
+its broader context.
+\item \textbf{Reference resolution:} linking references to other sections, definitions, schedules, and
+related legal instruments.
+\item \textbf{Provenance preservation:} maintaining the source document, version, location, and other
+information needed to verify the passage.
+\end{enumerate}
+
+Structure-aware indexing and knowledge-graph retrieval are complementary. Hierarchical indexing preserves
+the organization of a document, whereas a knowledge graph represents explicit relationships between
+entities, legal provisions, judgments, and other objects. A system may use both, but each requires
+separate construction and evaluation.
+
+\subsection{Pakistani legal information retrieval}
+
+Pakistan provides a useful case study of the challenges involved in building jurisdiction-aware legal
+AI. Its legal information needs span constitutional provisions, statutes, procedural codes, judicial
+decisions, and other legal materials. A useful system must preserve the relationships among these
+sources rather than treating every retrieved passage as an interchangeable text fragment.
+
+For example, the Constitution of Pakistan, the Pakistan Penal Code (PPC), the Code of Criminal Procedure
+(CrPC), the Qanun-e-Shahadat Order (QSO), and judicial decisions serve different legal functions. The
+appropriate source depends on the question. A constitutional question may require a constitutional
+provision and relevant case law, while a question about a criminal procedure may require the applicable
+procedural provision and related judicial interpretation.
+
+Three challenges are particularly important. First, \textit{document coverage and authority.} A corpus
+may contain a large volume of legal text but still omit relevant amendments, judgments, or authoritative
+documents. Corpus size alone is therefore an inadequate measure of legal coverage. Second, \textit{legal
+relationships.} A statutory provision may depend on a definition elsewhere in the same enactment or be
+interpreted by a later judgment. Retrieval should preserve these relationships where relevant, rather
+than relying exclusively on textual similarity. Third, \textit{temporal and jurisdictional
+applicability.} A provision's wording, legal status, or interpretation may change over time. Systems
+should record source dates and applicable versions, and distinguish the date of a judgment from the
+period in which the underlying law applied.
+
+A jurisdiction-aware Pakistani legal retrieval system should consequently combine source provenance,
+hierarchical indexing, authority-aware ranking, and temporal metadata. These features can improve the
+reliability of evidence selection, although they do not eliminate the need for legal interpretation and
+claim-level verification.
+
+\subsection{English, Urdu, and low-resource legal retrieval}
+
+Multilingual legal AI introduces an additional challenge: the language of a user's query may differ from
+the language, terminology, or script of the authoritative source. This is particularly relevant when
+users express legal questions in Urdu or Roman Urdu while the source material they need is written in
+English.
+
+A multilingual system must bridge differences in vocabulary, spelling, transliteration, morphology, and
+legal terminology. Direct translation alone may be insufficient because legal concepts can have
+jurisdiction-specific meanings that do not map exactly across languages. Four technical approaches are
+particularly relevant, as summarized in Table~\ref{tab:multilingual}.
+
+\begin{table*}[tp]
+\centering
+\caption{Technical approaches to multilingual legal retrieval.}
+\label{tab:multilingual}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{3.2cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Approach} & \textbf{How it works} & \textbf{Main advantage} & \textbf{Main limitation} \\
+\midrule
+Query translation & Translates the query into the language of the source corpus. & Enables use of existing monolingual retrieval infrastructure. & Translation may distort legal terms or procedural meaning. \\
+Multilingual dense retrieval & Maps queries and documents from different languages into a shared embedding space. & Supports cross-language semantic matching. & Similar embeddings do not guarantee legal-concept equivalence. \\
+Transliteration normalization & Normalizes alternative representations of words across scripts. & Helps retrieve Roman Urdu and Urdu variants. & Many transliterations are ambiguous or inconsistent. \\
+Legal terminology alignment & Links expressions to jurisdiction-specific legal concepts and authoritative terms. & Improves conceptual consistency. & Requires curated terminology, entity linking, or legal-domain resources. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+A practical architecture can combine these methods rather than relying on one. Language identification
+and transliteration normalization can first process the query. Legal entity linking and terminology
+alignment can then identify important statutes, provisions, courts, or legal concepts. Retrieval can
+search both the original query and its normalized or translated variants, followed by rank fusion and
+legal-context filtering.
+
+The system should preserve the original user query and the original authoritative passage. Translation
+can support retrieval, but the final answer should not silently substitute a translated interpretation
+for the governing source text.
+
+Evaluation should also be multilingual. An English-only benchmark cannot establish whether the system
+works reliably for Urdu or Roman Urdu. Separate evaluation should measure retrieval recall, citation
+support, legal correctness, and robustness to spelling and transliteration variation across each
+supported query language.
+
+\subsection{Integrating jurisdiction, hierarchy, and multilingual processing}
+
+The three challenges discussed above are interdependent. Language normalization may help locate a
+relevant provision, but document structure is needed to preserve its context. Hierarchical indexing may
+identify the correct section, but jurisdictional and temporal checks are still required to determine its
+applicability. A conceptual architecture connecting these stages is shown in Figure~\ref{fig:mlarch}.
+
+\input{figures/multilingual_arch}
+
+This architecture offers a research framework for connecting multilingual query understanding, legal
+document structure, knowledge graphs, retrieval, and evidence verification. It also provides a basis for
+modular implementation: individual components can be replaced or evaluated independently without
+redesigning the entire platform.
+
+\subsection{Section synthesis}
+
+Jurisdiction, document structure, and language are not peripheral concerns in legal information
+retrieval. They determine which evidence should be retrieved, how its meaning should be interpreted, and
+whether it applies to the question being asked.
+
+For Pakistani legal AI, the main implication is that effective retrieval requires more than semantic
+similarity. Systems should preserve legal hierarchy, authority relationships, temporal metadata, source
+provenance, and cross-language concept alignment. These requirements lead directly to the open
+challenges discussed next.

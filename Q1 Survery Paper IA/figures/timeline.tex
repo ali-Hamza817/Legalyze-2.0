@@ -1,0 +1,59 @@
+% Evolution timeline of legal AI (1991-2026). Pure vector TikZ (crisp at any zoom).
+% Design goal: minimal text, one short label per milestone, clear era bands.
+% Full page width via figure* + resizebox.
+\begin{figure*}[t]
+\centering
+\resizebox{\textwidth}{!}{%
+\begin{tikzpicture}[
+  x=1.78cm,
+  ms/.style={circle, draw=white, line width=1.1pt, minimum size=9mm, inner sep=0pt,
+             font=\footnotesize\bfseries, text=white},
+  lab/.style={align=center, anchor=south, font=\scriptsize, text=black!80,
+              inner sep=1.5pt, text width=1.75cm},
+  conn/.style={draw=black!30, line width=0.5pt},
+  eraname/.style={font=\scriptsize\bfseries, anchor=north, align=center}]
+
+  % refined palette (one accent per era)
+  \definecolor{cFound}{HTML}{3B5BA5} % indigo  - foundations
+  \definecolor{cLM}{HTML}{2A9D8F}    % teal    - legal language models
+  \definecolor{cBench}{HTML}{D98E2B} % amber   - benchmarks & RAG
+  \definecolor{cRel}{HTML}{BE3B39}   % crimson - reliability & structure
+
+  % baseline with progress arrow
+  \draw[black!30, line width=1pt, -{Latex[length=2.6mm]}] (-0.55,0) -- (8.75,0);
+
+  % milestones: all labels above the axis (keeps the design uncluttered)
+  % #1 colour  #2 x  #3 year  #4 label
+  \foreach \c/\x/\yr/\t in {%
+      cFound/0/91/HYPO,
+      cLM/1/17/Contract IE,
+      cLM/2/20/LEGAL-BERT,
+      cBench/3/21/CaseHOLD,
+      cBench/4/22/LexGLUE,
+      cBench/5/23/LegalBench,
+      cRel/6/24/Hallucination,
+      cRel/7/25/Legal RAG,
+      cRel/8/26/Legalyze} {
+    \draw[conn] (\x,0.12) -- (\x,0.62);
+    \node[ms, fill=\c] at (\x,0) {\yr};
+    \node[lab] at (\x,0.66) {\t};
+  }
+
+  % era bands (thin underlines) with names, set below the axis
+  \foreach \c/\xa/\xb/\name in {%
+      cFound/-0.32/0.32/{Foundations\\(1991--2016)},
+      cLM/0.68/2.32/{Legal language\\models},
+      cBench/2.68/5.32/{Benchmarks \& RAG},
+      cRel/5.68/8.32/{Reliability \&\\structure-aware}} {
+    \draw[\c, line width=2.6pt] (\xa,-0.7) -- (\xb,-0.7);
+    \node[eraname, text=\c] at ({(\xa+\xb)/2},-0.86) {\name};
+  }
+
+\end{tikzpicture}}
+\caption{The evolution of legal AI, 1991--2026, read as a sequence of methods rather than
+dates. Four waves build on one another: transparent but non-scaling reasoning systems
+(\emph{Foundations}); \emph{legal language models} that scaled but were hard to trust; shared
+\emph{benchmarks and retrieval-augmented generation}; and recent work on \emph{reliability and
+structure-aware} retrieval. Only verified sources are placed on the line.}
+\label{fig:timeline}
+\end{figure*}

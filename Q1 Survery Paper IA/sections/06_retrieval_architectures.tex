@@ -1,0 +1,321 @@
+\section{Retrieval Architectures for Legal Intelligence}
+\label{sec:retrieval}
+
+\subsection{Why retrieval is a distinct legal AI problem}
+
+In a legal RAG system, the generator cannot reliably compensate for evidence that the retrieval
+component fails to identify. If the relevant statutory provision, exception, or judicial
+interpretation is absent from the retrieved context, the model may generate an incomplete answer even
+when its language-generation capabilities are strong.
+
+Legal retrieval therefore requires more than finding documents that discuss the same topic. The
+system must identify evidence that is relevant to the user's legal question, sufficiently
+authoritative for the intended purpose, and detailed enough to support the answer. Depending on the
+query, this may require an exact statutory citation, a particular paragraph in a judgment, a related
+provision, or several authorities that must be considered together.
+
+Research on legal case retrieval has highlighted the specialized nature of this task and the need to
+evaluate retrieval methods using legal-specific datasets and criteria \citep{feng2024}. Four
+dimensions are especially important:
+\begin{itemize}[leftmargin=1.4em, itemsep=2pt, topsep=2pt]
+\item \textbf{Lexical relevance:} Does the evidence contain the exact legal terms, names, identifiers,
+or expressions needed?
+\item \textbf{Semantic relevance:} Does the evidence address the underlying legal issue, even if it
+uses different wording?
+\item \textbf{Structural relevance:} Does the retrieved passage retain the context of the provision,
+document section, or judgment from which it originates?
+\item \textbf{Evidential sufficiency:} Does the retrieved material adequately support the intended
+answer, including relevant exceptions or qualifications?
+\end{itemize}
+
+These dimensions are related but not interchangeable. A passage may be semantically relevant without
+containing the exact provision required. An exact match may retrieve a provision without its
+exception. A correctly retrieved paragraph may still be insufficient to establish the legal
+conclusion.
+
+\subsection{Lexical retrieval: precision through exact wording}
+
+Lexical retrieval ranks documents or passages according to their textual relationship with the query.
+One widely used method is BM25, a probabilistic ranking function that considers term frequency,
+inverse document frequency, and document length.
+
+In simplified terms, BM25 gives greater importance to query terms that are informative across the
+collection and evaluates how frequently those terms occur in a candidate document, with adjustments
+that prevent very long documents from receiving an unfair advantage merely because they contain more
+words.
+
+This is useful in legal retrieval because legal questions frequently include highly specific
+expressions. A search for a section number, statutory phrase, party name, case citation, or defined
+legal term may require exact matching that a purely semantic search does not consistently prioritize.
+
+For example, a query that refers to a particular article of a constitution may benefit from matching
+the article identifier directly. A dense embedding system might rank a conceptually similar passage
+above the exact provision if the two passages are semantically close.
+
+Lexical retrieval also has limitations. Users may describe a legal concept in everyday language while
+the relevant authority uses formal terminology. A query about a right to a fair hearing, for instance,
+may use different wording from the authoritative provision or the language of a judgment. A lexical
+system can miss relevant evidence when the query and the source use different expressions.
+
+BM25 should therefore be understood as a strong retrieval baseline, particularly for exact legal
+terminology, rather than a complete solution to legal information retrieval.
+
+\subsection{Dense retrieval: matching legal meaning}
+
+Dense retrieval represents queries and documents as numerical vectors, usually produced by an
+embedding model. The system retrieves passages whose vectors are close to the query vector under a
+chosen similarity or distance measure.
+
+The advantage is that retrieval can respond to conceptual similarity even when the wording differs. A
+user does not necessarily need to know the exact phrase used in a statute or judgment to retrieve
+potentially relevant material. This is particularly useful for natural-language questions, paraphrases,
+and legal concepts expressed differently across documents.
+
+However, semantic similarity is not equivalent to legal relevance. Two provisions may discuss the same
+broad topic but apply under different conditions. A judgment may mention a legal doctrine while
+rejecting its applicability to the facts. A dense retriever may rank such material highly because the
+language is similar, even though the material does not support the answer.
+
+Dense retrieval also depends on the quality of the embedding model and its training data. A model may
+represent general semantic relationships well while failing to capture distinctions involving legal
+terminology, jurisdiction, procedural posture, or the authority of a source.
+
+The practical implication is that dense retrieval is valuable for discovering conceptually related
+evidence, but its results must still be assessed for legal relevance and sufficiency.
+
+\subsection{Hybrid retrieval: combining lexical and semantic evidence}
+
+Lexical and dense retrieval address complementary weaknesses. Lexical search is often effective for
+exact terms, identifiers, and citations; dense search can retrieve conceptually relevant passages
+expressed using different language. Hybrid retrieval combines these signals to reduce dependence on
+either one alone.
+
+A hybrid architecture may run BM25 and dense retrieval in parallel, obtain ranked lists from both, and
+combine them using a fusion method. One widely used method is Reciprocal Rank Fusion (RRF), introduced
+by \citet{cormack2009}. RRF combines rankings using the reciprocal of each document's rank, with a
+constant controlling how much the rank position contributes to the final score.
+
+Its central advantage is that it can combine rankings without requiring their original scores to be
+directly comparable. BM25 scores and dense similarity scores may have different distributions; rank
+fusion provides a way to combine their relative ordering instead. Conceptually, RRF can be written as
+\begin{equation}
+\operatorname{RRF}(d)=\sum_{r \in R}\frac{1}{k+\operatorname{rank}_{r}(d)},
+\end{equation}
+where $d$ is a candidate document or passage, $R$ is the set of ranked retrieval results,
+$\operatorname{rank}_{r}(d)$ is the rank of the candidate in retrieval list $r$, and $k$ is a
+smoothing constant.
+
+A passage ranked highly by multiple retrieval methods can receive a strong fused score. A passage
+found by only one method may still rank well if that method places it sufficiently high.
+
+Importantly, RRF combines rankings; it does not independently verify legal correctness. If both
+retrieval streams return irrelevant evidence, fusion cannot turn that evidence into authoritative
+support. Likewise, RRF does not automatically preserve statutory hierarchy or determine whether a
+retrieved passage contains a decisive exception. Table~\ref{tab:retrstrat} compares the principal
+retrieval strategies.
+
+\begin{table*}[tp]
+\centering
+\caption{Comparison of principal retrieval strategies.}
+\label{tab:retrstrat}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{2.9cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Strategy} & \textbf{Primary strength} & \textbf{Main weakness} & \textbf{Role in legal RAG} \\
+\midrule
+BM25 / lexical retrieval & Exact legal terms, names, identifiers, and statutory references. & May miss relevant passages expressed using different terminology. & Strong baseline for exact-match legal search. \\
+Dense retrieval & Semantic similarity and paraphrase matching. & Can retrieve conceptually similar but legally inapplicable passages. & Expands retrieval beyond exact wording. \\
+Hybrid retrieval & Combines exact-term matching and semantic search. & Requires tuning and does not guarantee evidence correctness. & Broadens the candidate evidence set. \\
+Reciprocal Rank Fusion & Combines ranked lists without directly comparing their raw scores. & Cannot correct poor candidate lists or assess legal authority by itself. & Integrates complementary retrieval results. \\
+Reranking & Reassesses candidate passages using a more targeted relevance model. & Adds computation and remains dependent on the quality of candidates and training. & Refines the ordering before evidence is passed to the generator. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+Hybrid retrieval is therefore best understood as a method for improving evidence discovery. Whether it
+improves final answer reliability must be tested separately through retrieval metrics and
+grounded-generation evaluation.
+
+\subsection{Reranking and evidence selection}
+
+Retrieval systems often return a relatively broad set of candidate passages. These candidates may be
+sufficient for an initial search but unsuitable for direct inclusion in a generator's context.
+Reranking introduces a second-stage relevance assessment that reorders candidates according to a more
+targeted relationship between the query and each passage.
+
+A typical architecture first uses a relatively efficient retriever to obtain candidate passages. A
+reranker then evaluates the query--passage pairs more carefully and assigns a refined ranking. Only
+the highest-ranked evidence is passed to the generator.
+
+In legal applications, reranking can help distinguish between a passage that merely mentions a legal
+concept and one that directly addresses the question. Nevertheless, relevance alone is not enough. A
+reranker trained to estimate textual relevance may still fail to recognize that a provision has been
+superseded, that a judgment is distinguishable, or that a qualification elsewhere in the statute
+changes the interpretation.
+
+Evidence selection must therefore consider more than similarity. Where available, useful signals
+include source authority, jurisdiction, date or version, document type, and structural relationships.
+These signals can be incorporated into filtering, ranking, or subsequent verification, but their
+effectiveness depends on the quality of the underlying metadata and rules.
+
+A further issue is context-window management. Providing every retrieved passage to the generator can
+introduce noise, redundancy, or conflicting information. Providing too little context can omit an
+exception or related provision. The goal is not simply to maximize the number of retrieved passages;
+it is to provide a compact and sufficiently complete set of evidence for the question.
+
+\subsection{Structure-aware indexing: preserving legal hierarchy}
+
+Legal documents are inherently hierarchical. A statute may contain parts, chapters, sections,
+subsections, clauses, and provisos. A judgment may contain procedural history, facts, issues,
+arguments, reasoning, and the final decision. These structures help determine how an individual
+passage should be interpreted.
+
+Conventional chunking strategies often divide documents according to a fixed token limit or a simple
+text boundary. Such methods are computationally convenient, but they can separate a provision from its
+heading, remove the parent section from a subsection, or split an exception away from the rule it
+qualifies. Consider a simplified example:
+
+\begin{quote}
+\textit{Illustrative legal hierarchy (schematic):}
+\begin{itemize}[leftmargin=1.3em, itemsep=1pt, topsep=2pt]
+\item \textbf{Act}: the governing legislative document
+  \begin{itemize}[leftmargin=1.2em, itemsep=1pt, topsep=1pt]
+  \item \textbf{Section 10}: general legal rule
+    \begin{itemize}[leftmargin=1.2em, itemsep=1pt, topsep=1pt]
+    \item \textbf{Section 10(2)}: condition or qualification
+    \item \textbf{Section 10(3)}: exception or additional requirement
+    \end{itemize}
+  \end{itemize}
+\end{itemize}
+The example is schematic, not a statement about a particular statute.
+\end{quote}
+
+If a system retrieves only the general rule, it may overlook a condition or exception in a subordinate
+provision. The retrieved text may be relevant yet insufficient to support a complete answer.
+Structure-aware indexing seeks to reduce this risk by preserving information about the location and
+relationships of passages within the original document.
+
+A structure-aware index may retain hierarchical breadcrumbs, section identifiers, headings,
+parent-child relationships, document metadata, and source references alongside the text itself. For
+example, a passage can be associated with a breadcrumb such as Constitution $\to$ Part~II $\to$
+Chapter~1 $\to$ Article~10A. When retrieved, this information helps the system identify where the
+passage belongs and may support retrieval of its surrounding context.
+
+Structure-aware indexing is not identical to semantic chunking. Semantic chunking attempts to create
+text segments that are coherent in meaning; structure-aware indexing additionally represents the
+passage's position within the source document. The two can be combined: a system may create
+semantically coherent chunks while retaining their statutory hierarchy and provenance.
+
+Nor does preserving hierarchy automatically resolve legal interpretation. The system must still
+determine which related provisions matter to the question, whether the source is authoritative and
+current, and whether the combined evidence supports the conclusion. Structure-aware indexing supplies
+useful context; it does not replace legal reasoning or verification.
+
+\subsection{Knowledge-graph-based retrieval}
+
+Knowledge graphs offer another way to represent relationships among legal entities and authorities.
+Rather than storing documents only as independent passages, a graph represents entities as nodes and
+relationships as edges. Legal entities may include statutes, provisions, cases, courts, parties, legal
+concepts, and amendments. A graph can represent relationships such as:
+\begin{itemize}[leftmargin=1.4em, itemsep=1pt, topsep=2pt]
+\item a provision belonging to a particular statute;
+\item a judgment interpreting or citing a provision;
+\item an amendment modifying an earlier provision;
+\item a court issuing a decision;
+\item a judgment addressing a defined legal issue.
+\end{itemize}
+
+Such relationships can support retrieval beyond direct text similarity. A system may retrieve a
+provision and then traverse relevant connections to locate judgments that interpret it or related
+provisions that constrain its application. When combined with dense or lexical retrieval, graph
+traversal can help connect evidence that is dispersed across documents.
+
+However, graph quality depends on the accuracy of entity extraction, relationship identification,
+source linking, and temporal information. An incorrectly extracted citation can create a misleading
+connection. A graph that records that a judgment cites a provision does not necessarily establish that
+the judgment adopts, applies, or endorses the provision's interpretation.
+
+Knowledge graphs and structure-aware indexes also solve different problems. A hierarchical index
+preserves a document's internal organization; a knowledge graph can represent relationships across
+multiple documents. They can be complementary components of a retrieval system rather than competing
+alternatives.
+
+\subsection{A unified retrieval architecture for legal intelligence}
+
+The preceding approaches address different parts of the retrieval problem. Lexical retrieval identifies
+exact textual matches; dense retrieval expands discovery to semantically related passages; rank fusion
+combines their results; reranking refines candidate ordering; structure-aware indexing preserves
+document context; and knowledge graphs represent explicit relationships among legal authorities. A
+unified architecture can combine these components in a staged pipeline, illustrated in
+Figure~\ref{fig:arch}.
+
+\input{figures/retrieval_arch}
+
+A knowledge graph can be connected to the context-and-authority stage to discover relationships among
+retrieved sources. An agentic controller may also invoke retrieval again when the evidence is
+incomplete or contradictory. Both additions should be justified by measurable benefits rather than
+included merely to increase architectural complexity.
+
+\subsection{How retrieval architectures should be evaluated}
+
+A retrieval architecture should be assessed independently from the quality of its generated answers.
+If the retrieval component does not return the required evidence, the generator's output cannot
+reliably compensate for that failure. Conversely, successful retrieval does not establish that the
+generator will interpret the evidence correctly. Several complementary metrics are useful, as
+summarized in Table~\ref{tab:metrics}.
+
+\begin{table*}[tp]
+\centering
+\caption{Complementary metrics for evaluating legal retrieval architectures.}
+\label{tab:metrics}
+\footnotesize
+\setlength{\tabcolsep}{5pt}
+\renewcommand{\arraystretch}{1.3}
+\begin{tabularx}{\textwidth}{>{\raggedright\arraybackslash}p{4.2cm} >{\raggedright\arraybackslash}X >{\raggedright\arraybackslash}X}
+\toprule
+\textbf{Metric} & \textbf{What it measures} & \textbf{Why it matters in legal retrieval} \\
+\midrule
+Recall@$k$ & Whether relevant evidence appears among the top $k$ retrieved results. & Measures the system's ability to find needed authorities or passages. \\
+Precision@$k$ & The proportion of the top $k$ results that are relevant. & Indicates how much irrelevant material may enter the generation context. \\
+Mean Reciprocal Rank (MRR) & The reciprocal rank of the first relevant result, averaged across queries. & Measures how early the system finds a relevant passage. \\
+Normalized Discounted Cumulative Gain (nDCG) & Ranking quality when results have graded relevance. & Helps distinguish highly relevant legal evidence from merely related passages. \\
+Citation precision & The proportion of supplied citations that correctly support their associated claims, under a defined annotation protocol. & Measures whether references are actually evidentially useful. \\
+Citation recall & The proportion of required supporting sources or claims that receive appropriate citations, under a defined protocol. & Helps detect missing legal support. \\
+Unsupported-claim rate & The proportion of evaluated claims that lack adequate support in the permitted evidence. & Evaluates grounding beyond the presence of citations. \\
+Latency and cost & Time and computational or service cost per query. & Helps determine whether architectural improvements are practical. \\
+\bottomrule
+\end{tabularx}
+\end{table*}
+
+These metrics require clear annotation guidelines. For example, relevance may be graded at the document
+level or the passage level; the two can produce different results. Similarly, citation correctness
+requires an explicit definition of what counts as support. A citation that mentions the same topic is
+not necessarily a citation that substantiates the claim.
+
+A rigorous evaluation should therefore use a consistent query set and legal corpus, compare lexical,
+dense, hybrid, and structure-aware configurations under controlled conditions, and measure both
+retrieval and final answer reliability. Where feasible, ablation studies should remove one component at
+a time to determine whether improvements can be attributed to rank fusion, structural metadata,
+reranking, graph traversal, or another architectural choice.
+
+\subsection{Synthesis and remaining research challenges}
+
+The development of legal retrieval architectures reflects a progression from finding text that matches
+a query toward identifying evidence that is relevant, structurally contextualized, and suitable for
+supporting a legal conclusion. Lexical retrieval provides a strong foundation for exact legal
+terminology. Dense retrieval addresses differences in wording. Hybrid retrieval and rank fusion combine
+complementary signals, while reranking refines the candidate set. Structure-aware indexing preserves
+the organization of legal documents, and knowledge graphs can connect authorities across documents.
+
+None of these components independently guarantees legal correctness. Their value depends on the legal
+corpus, source provenance, retrieval configuration, quality of metadata, and evaluation protocol. A
+sophisticated retriever can still return an incomplete set of authorities, while a well-ranked passage
+can remain insufficient if its parent provision or relevant exception is missing.
+
+The resulting research direction is not simply to build a larger or more complicated retrieval
+pipeline. It is to design systems in which the evidence required for a legal answer can be retrieved,
+contextualized, and verified systematically. This provides the technical foundation for the next part
+of the survey, which examines hallucination, factual support, and citation correctness as separate but
+connected dimensions of legal AI reliability.
