@@ -62,9 +62,11 @@ Legalyze 2.0/                              <- git repo root (remote: github.com/
 maintains it elsewhere; it is gitignored here. Only the Legalyze research-direction plan lives in this
 repo, in `research/`.
 
-**Secrets:** `backend/.env`, `frontend/.env` are gitignored and are NOT in the repo. They hold the
-MongoDB Atlas URI, OpenAI key, Pinecone key, AWS, and JWT secrets. Never commit them. If the cluster
-needs them, the author provides them out of band.
+**Secrets:** `backend/.env`, `frontend/.env`, and the root `.env` are gitignored and are NOT in the
+repo. They hold the MongoDB Atlas URI, OpenAI key, Pinecone key, AWS, JWT, Google OAuth, and SMTP
+secrets. Never commit them. A **unified template `.env.example`** (variable names, empty values) IS in
+the repo. On a new machine / cluster: `cp .env.example .env`, paste the real values into that one file,
+then `cp .env backend/.env` for the backend; the research pipeline can read the single root `.env`.
 
 ---
 
